@@ -35,7 +35,7 @@ This book covers Mau v2.x. If you are still using Mau 1.x please consider migrat
 
 == Use stand-alone Mau
 
-You can get help directory on the command line running
+You can get help directly on the command line running
 
 [source]
 ----
@@ -68,7 +68,7 @@ Create the file `test.mau` in the current directory with this content
 ----
 = A test
 
-This is a text for the Mau markup processor.
+This is a test for the Mau markup processor.
 ----
 
 Now you can run
@@ -94,7 +94,7 @@ That will parse the content of `test.mau` and render it as HTML into `test.html`
   </head>
   <body>
     <h1 id="a-test">A test</h1>
-    <p>This is a text for the Mau markup processor.</p>
+    <p>This is a test for the Mau markup processor.</p>
   </body>
 </html>
 ----
@@ -144,6 +144,6 @@ The basic usage of the plugin is simple. Every file in your content directory th
 :pelican.summary:I have a lot to write
 ----
 
-Head to the chapter about Pelican to discover how to configure the templates and header anchors, and how to use the TOC and footnotes.
+The syntax `:name:value` is used by Mau to create variables and you can learn more about it in the dedicated chapter.
 
 ::footnotes:

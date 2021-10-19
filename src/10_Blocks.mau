@@ -161,7 +161,7 @@ This is a block
 
 == Block attributes
 
-Blocks can have attributes, specified between square brackets before the opening fence, and the first attribute is the type of the block. Mau provides some special block types like `admonition` and `quote` (see the documentation below), and each one of them has a specific set of required and optional attributes.
+Blocks can have attributes, specified between square brackets before the opening fence, and the first attribute is the type of the block.
 
 . Mau source
 [source]

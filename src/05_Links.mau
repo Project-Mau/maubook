@@ -26,9 +26,7 @@ The source code can be found
 at [link](https://github.com/Project-Mau/mau).
 ----
 
----
-
-The values between round brackets are arguments, as `link` is a macro. Though macros haven't been introduced yet, please bear in mind what explained in the section dedicated to arguments.
+The values between round brackets are arguments, as `link` is a macro.
 
 == Add text to the link
 

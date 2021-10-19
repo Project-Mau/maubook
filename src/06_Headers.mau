@@ -53,7 +53,7 @@ As you can see Mau converts it into a tag `h1` and automatically assigns an ID t
 
 == Headers and TOC
 
-Mau stores all headers in a Table of Contents that can be created with a command
+Mau stores all headers in a Table of Contents that can be created with the command `::toc:`
 
 . Mau source
 [source,callouts="|"]
@@ -144,7 +144,7 @@ Pay attention that this removes the header from the TOC but doesn't remove the c
 
 This will exclude from the rendered TOC both `Section 1.2` and `Section 1.2.1`, but not `Section 1.3`.
 
-Please note that you can pass multiple comma-separated tags to `exclude_tags`, e.g. `::toc:exclude_tags="tag1,tag2"`. The syntax for passing arguments has not been explained yet, see the relative section for more details on how to format argument strings.
+Please note that you can pass multiple comma-separated tags to `exclude_tags`, e.g. `::toc:exclude_tags="tag1,tag2"`.
 
 == Anchors
 

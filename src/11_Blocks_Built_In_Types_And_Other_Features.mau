@@ -15,7 +15,7 @@ Mau provides some built-in block types that are rendered in a different way.
 
 == Quotes
 
-The simplest block type the Mau provides is called `quote`. This block's content is the quote itself, while the secondary content is the source of the quote, commonly called attribution.
+The simplest block type that Mau provides is called `quote`. This block's content is the quote itself, while the secondary content is the source of the quote, commonly called attribution.
 
 . Mau source
 [source]

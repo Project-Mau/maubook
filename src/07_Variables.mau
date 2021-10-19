@@ -175,4 +175,4 @@ Namespaces are useful to communicate with external tools. For example, the Pelic
 :pelican.series:Mau - A template-based markup language
 ----
 
-which allows the Pelican plugin to extract them and pass them to Pelican itself.
+which allows the Mau reader plugin to extract them and pass them to Pelican.

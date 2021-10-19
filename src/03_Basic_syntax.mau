@@ -11,7 +11,7 @@ Some of the newer ones are having trouble because they never really mastered som
 ----
 Orson Scott Card, _Ender's Game_ (1985)
 
-This and the following chapters will give you an overview of the basic syntax for paragraphs, styles, and inline elements like links and images. If you are familiar with either Markdown or Asciidoctor none of these will be a surprise to you, but I will describe everything assuming the reader doesn't know simple markup languages.
+This and the following chapters will give you an overview of the basic syntax for paragraphs, styles, and inline elements like links and images. If you are familiar with either Markdown or Asciidoctor none of these will be a surprise to you, but I will describe everything assuming the reader doesn't know any markup language.
 
 I will assume you followed the instructions in the previous chapter and know how to run Mau in a stand-alone fashion, or that you are running it in Pelican. Either way, I will refer to generic input and output, meaning respectively the Mau source and the HTML final result. I will show the source code in a block like this
 
@@ -60,7 +60,7 @@ the full output is actually
 </html>
 ----
 
-Finally, remember that both Markdown and Asciidoctor have a fixed rendering, while the output in Mau is ruled by templates. What you see in the output HTML and in the rendered boxes is the result of Mau's default templates, but those can be overrided at any time, as we will see in a later section.
+Finally, remember that both Markdown and Asciidoctor have a fixed rendering, while the output in Mau is ruled by templates. What you see in the output HTML and in the rendered boxes is the result of Mau's default templates, but those can be overrided at any time, as we will see in a later chapter.
 
 == Paragraphs
 
@@ -185,7 +185,7 @@ little more readable
 
 == Arguments
 
-As we will see later, some advanced commands in Mau accept arguments, which are not too different from standard function arguments in programming languages. The most important thing to remember is that Mau values are always strings, so arguments do not have different type.
+As we will see later, some advanced commands in Mau accept arguments, which are not too different from standard function arguments in programming languages. The most important thing to remember is that Mau values are always strings, so arguments do not really have types.
 
 Arguments can appear between round brackets `()`, square brackets `[]`, or directly after a command, depending on the context. This will be clearly specified in each section when arguments are discussed.
 
@@ -195,7 +195,7 @@ Arguments can be unnamed or named. An unnamed argument has just a value, for exa
 
 Multiple arguments are separated by commas, optionally followed by one or more spaces. So, `source,html` and `source, html` are both valid, and the same is valid for named arguments, as `source,language=html` and `source, language=html` are equally accepted by the parser.
 
-In the documentation, arguments will be given uppercase (`TYPE`), and named ones will followed by an equal sign (`LANGUAGE=`).
+In the documentation, arguments will be given uppercase (e.g. `TYPE`), and named ones will followed by an equal sign (e.g. `LANGUAGE=`).
 You can avoid specifying the key if you pass argument values respecting the order provided in the documentation. So, if in a certain context you have to provide `TYPE, LANGUAGE=` you can either give `source, html` or `source, language=html`. Unnamed arguments can never follow named ones.
 
 ---
@@ -208,7 +208,7 @@ If you need to pass quotes as value of an argument you need to escape them, e.g.
 
 == Macros
 
-Mau allows you to run functions called "macros". Macros always come in the form `[NAME](ARGUMENTS)` where `NAME` is either one of the macros provided by Mau or one defined by you, and `ARGUMENTS` is a string formatted as described in the previous section. Built-in macros will be described in the following chapters, and in the final chapters it will be shown how to created custom ones.
+Mau allows you to run functions called "macros". Macros always come in the form `[NAME](ARGUMENTS)` where `NAME` is the name of the macro and `ARGUMENTS` is a string formatted as described in the previous section. Built-in macros will be described in the following chapters.
 
 == Include other files
 

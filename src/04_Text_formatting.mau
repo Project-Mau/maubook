@@ -111,11 +111,11 @@ If you have \_more than two\_ it's better to just \_escape\_ all of them.
 Oh, this is valid for `verbatim as well.
 ----
 
-=== Text classes
+== Text classes
 
-You can assign specific classes to part of the text. These can or can't be meaningful depending on the output format. If the output is HTML, those will become CSS classes.
+You can assign specific classes to part of the text. These can or meaningful or not depending on the output format. If the output is HTML, those will become CSS classes.
 
-To give text a class use the macro `class`. Macros have not been introduced yet, see the relative chapter for more information about how they manage arguments.
+To give text a class use the macro `class`
 
 . Mau source
 [source]
@@ -123,7 +123,7 @@ To give text a class use the macro `class`. Macros have not been introduced yet,
 This is [class]("text wrapped", myclass) in a class.
 ----
 
-Since the rendering would depend on the CSS style used on the website at the moment, I will show the HTML output only
+Since the rendering depends on the CSS style used on the website at the moment, I will show the HTML output only
 
 . HTML output
 [source,html]
@@ -168,7 +168,5 @@ This is [myclass]#text wrapped# in a class.
 ----
 
 This still works in the current version of Mau but will be removed in the future.
-
-TODO: Look into custom macros
 
 ::footnotes:
