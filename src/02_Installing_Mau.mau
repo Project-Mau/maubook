@@ -1,14 +1,9 @@
 :pelican.title:Installing Mau
-:pelican.date:2021-04-23 10:00:00 +0100
-:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.date:2021-10-19 08:30:00 +0100
 :pelican.slug:maubook-installing-mau
 :pelican.series:Mau - A template-based markup language
 :pelican.series_index:2
-:pelican.image:pycabook/card
-
-:TIP:admonition,tip,lightbulb
-:NOTE:admonition,note,github,"Source code"
-:gh-rentomatic:https://github.com/pycabook/rentomatic
+:pelican.image:maubook/card
 
 [quote]
 ----
