@@ -3,7 +3,6 @@
 :pelican.slug:maubook-introduction
 :pelican.series:Mau - A template-based markup language
 :pelican.series_info:Mau is a lightweight markup language heavily inspired by AsciiDoc that makes is very easy to write blog posts or books. The main goal of Mau is to provide a customisable markup language, reusing the good parts of AsciiDoc and providing a pure Python 3 implementation.
-:pelican.series_buy_url:https://leanpub.com/clean-architectures-in-python
 :pelican.series_index:1
 :pelican.image:maubook/card
 
