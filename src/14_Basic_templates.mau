@@ -1,0 +1,151 @@
+:pelican.title:Basic templates
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-basic_templates
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:14
+:pelican.image:pycabook/card
+
+[quote]
+----
+'That's the idea,' replied Norton. 'This may be an indexed catalogue for 3-D images—templates—solid blueprints, if you like to call them that.'
+----
+Arthur C. Clarke, _Rendezvous with Rama_ (1973)
+
+So far, Mau provides features similar to Markdown, Asciidoc, and other markup languages. The real power of Mau, however relies in its use of Jinja templates to render the output of the syntax.
+
+Everything you saw in the previous chapters is rendered as described thanks to the default Jinja templates included in the HTML visitor that I used to render the Mau text into HTML, but such templates can be easily customised to provide the output you prefer.
+
+== A simple example
+
+To start off on our journey with template let's have a look a the simplest ones. You know that the Mau provides styles like
+
+. Mau source
+[source]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text
+----
+
+. HTML output
+[source,html]
+----
+<p>Stars identify <strong>strong</strong> text.</p>
+<p>Underscores for <em>emphasized</em> text</p>
+----
+
+This happens because the default templates for `underscore` and `star` are
+
+[source, yaml]
+----
+underscore.html: '<em>{{ content }}</em>'
+star.html: '<strong>{{ content }}</strong>'
+----
+
+If I change those templates to
+
+[source, yaml]
+----
+underscore.html: '<span class="bold">{{ content }}</span>'
+star.html: '<span class="italic">{{ content }}</span>'
+----
+
+the result is
+
+. HTML output
+[source,html]
+----
+<p>Stars identify <span class="italic">strong</span> text.</p>
+<p>Underscores for <span class="bold">emphasized</span> text</p>
+----
+
+== How to define templates
+
+Mau templates can be provided either as single files or as element of a dictionary. The name of the template is specific to the Mau syntax that you target (see the full description in the next chapter) and includes the proper extension.
+
+=== Configuration file
+
+If you use stand-alone Mau you can pass a YAML configuration file using the option `-c` and you can define custom templates using the key `custom_templates`. The configuration file used to implement the new templates show above is
+
+[source, yaml]
+----
+---
+ target_format: html
+ custom_templates:
+   underscore.html: '<span class="bold">{{ content }}</span>'
+   star.html: '<span class="italic">{{ content }}</span>'
+----
+
+=== Configuration file for Pelican
+
+If you are using the Pelican static site generator you can customise Mau through the configuration variable `MAU`. The templates shown above would have been implemented in that file as
+
+[source, python]
+----
+MAU = {
+    "custom_templates": {
+        "underscore.html": '<span class="bold">{{ content }}</span>',
+        "star.html": '<span class="italic">{{ content }}</span>',
+    }
+----
+
+=== Single files
+
+When you use stand-alone Mau you can create a directory (e.g. `templates`) and create there two files, called `underscore.html` and `star.html`. The content of each is the template, so for example the file `underscore.html` will contain
+
+.underscore.html
+[source, html+jinja]
+----
+<span class="bold">{{ content }}</span>
+----
+
+The directory containing the templates will be passed to Mau through the configuration file with the key `templates_directory`
+
+[source, yaml]
+----
+---
+ target_format: html
+ templates_directory: templates
+----
+
+== Templates syntax
+
+Mau templates are written using [link]("https://jinja.palletsprojects.com/en/3.0.x/", "Jinja") so you need to use that syntax. The template itself is supposed to render into the target format, so an HTML template must produce a valid HTML snippet, while a Markdown template must produce valid Markdown.
+
+For example you can emphasise text in HTML with `&lt;em&gt;text&lt;em&gt;`, while in markdown you have to write `*text*`
+
+. HTML template
+[source, yaml]
+----
+ custom_templates:
+   underscore.html: '<em>{{ content }}</em>'
+----
+
+. Markdown template
+[source, yaml]
+----
+ custom_templates:
+   underscore.html: '*{{ content }}*'
+----
+
+The variables available to Jinja change according to the Mau node, that is the element connected to that template, and you can find a detailed description of each one in the next chapter.
+
+== Block templates
+
+Blocks are special in Mau because they are highly customisable. As we saw in a previous chapter blocks can use a specific `ENGINE` and have a `BLOCKTYPE`. A block will then try to use the following templates in order
+
+* `block-ENGINE-BLOCKTYPE`
+* `block-ENGINE`
+* `block-BLOCKTYPE`
+* `block`
+
+So, a block defined as
+
+. Mau source
+[source]
+----
+[aside, engine="raw"]
+----
+
+will be rendered in HTML using the first available template among `block-raw-aside.html`, `block-raw.html`, `block-aside.html`, `block.html`.

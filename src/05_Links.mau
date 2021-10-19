@@ -1,0 +1,128 @@
+:pelican.title:Links
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-links
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:5
+:pelican.image:pycabook/card
+
+[quote]
+----
+I had to nod. I was not unaware of the weakness of that link in my chain of speculations. Still, there were so many unknowns... I could offer alternatives, such as Random then did, but guesses prove nothing.
+----
+Roger Zelazny, _The Chronicles of Amber - Sign of the Unicorn_ (1975)
+
+Since markup languages are mostly used to write hyperlinked documents, links play a big part in the syntax. Mau's implementation uses a syntax shared by all macros in the language (see the chapter about macros)
+
+. Mau source
+[source]
+----
+The source code can be found
+at [link](https://github.com/Project-Mau/mau).
+----
+
+[mau]
+----
+The source code can be found
+at [link](https://github.com/Project-Mau/mau).
+----
+
+---
+
+The values between round brackets are arguments, as `link` is a macro. Though macros haven't been introduced yet, please bear in mind what explained in the section dedicated to arguments.
+
+== Add text to the link
+
+You can add an optional text to the link that will replace the URL in the rendered text
+
+. Mau source
+[source]
+----
+The source code can be found
+on [link](https://github.com/Project-Mau/mau, GitHub).
+----
+
+[mau]
+----
+The source code can be found on [link](https://github.com/Project-Mau/mau, GitHub).
+----
+
+== Using spaces and quotes
+
+Please note that if the title contains spaces or the closing parenthesis `)` you need to wrap it between double quotes
+
+. Mau source
+[source]
+----
+The source code can be found
+on [link](https://github.com/Project-Mau/mau, "the GitHub page").
+----
+
+[mau]
+----
+The source code can be found on [link](https://github.com/Project-Mau/mau, "the GitHub page").
+----
+
+---
+
+Should you need to add quotes to the title you will have to escape them
+
+. Mau source
+[source]
+----
+The main [link](https://github.com/Project-Mau/mau, "\"repository\"").
+----
+
+[mau]
+----
+The main [link](https://github.com/Project-Mau/mau, "\"repository\"").
+----
+
+---
+
+The same rules are valid for the URL
+
+. Mau source
+[source]
+----
+A [link]("https://example.org/?q=[a b]","URL with special characters").
+----
+
+[mau]
+----
+A [link]("https://example.org/?q=[a b]","URL with special characters").
+----
+
+== Automatic links
+
+Mau provides a limited support for automatic links. A text that starts with `http://` or `https://` will be automatically converted into a link, for example
+
+. Mau source
+[source]
+----
+The source code can be found at https://github.com/Project-Mau/mau.
+----
+
+[mau]
+----
+The source code can be found at https://github.com/Project-Mau/mau.
+----
+
+The parser will automatically detach any final period or comma from the URL, but otherwise all characters before the next space are considered part of it. Remember that you can always use the full link macro syntax to remove any ambiguity.
+
+== Mailto links
+
+Mailto links can be created with the `mailto` macro, which works like the `link` macro described above.
+
+. Mau source
+[source]
+----
+Get in touch at [mailto](info@example.com).
+----
+
+[mau]
+----
+Get in touch at [mailto](info@example.com).
+----
+
+::footnotes:

@@ -1,0 +1,154 @@
+:pelican.title:Installing Mau
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-installing-mau
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:2
+:pelican.image:pycabook/card
+
+:TIP:admonition,tip,lightbulb
+:NOTE:admonition,note,github,"Source code"
+:gh-rentomatic:https://github.com/pycabook/rentomatic
+
+[quote]
+----
+“I’ll tell you. I’m going to install a visiplate right over my desk. Right on the wall over there, see!”
+----
+Isaac Asimov, _I, Robot_ (1950)
+
+In this chapter I will show you how to install Mau both as a stand-alone tool and as a plugin for Pelican. The only requirements are a working Python3 installation and a virtual environment.
+
+While Python comes preinstalled in several operating systems these days, you can find detailed instructions on how to install it on the Python official website. Virtual environments are covered in the official documentation, but you might want to also explore tools to manage them, like pyenv etc. These are however not mandatory to run Mau.
+
+== Install stand-alone Mau
+
+Mau is available on PyPI at https://pypi.org/project/mau/ and to install it you just need to run
+
+[source]
+----
+pip install mau
+----
+
+At this point you should have the command line tool `mau` available. You can test it with
+
+[source]
+----
+mau --version
+----
+
+This book covers Mau v2.x. If you are still using Mau 1.x please consider migrating to the new version. The README file contains the list of incompatibilities between the two versions, which is fortunately short.
+
+== Use stand-alone Mau
+
+You can get help directory on the command line running
+
+[source]
+----
+mau --help
+----
+
+The simplest command line for Mau is
+
+[source]
+----
+mau -i INPUT.mau
+----
+
+that reads the Mau source file `INPUT.mau` and converts it into HTML saving the output in a file called accordingly. Mau will strip the extension `.mau` and replace it with `.html`.
+
+If you want to specify the output format and the name of the output file you can use the two options `-f` and `-o`
+
+[source]
+----
+mau -f FORMAT -i INPUT -o OUTPUT
+----
+
+where `FORMAT` is one of the output formats that Mau supports (currently `html`, `asciidoctor`, or `markua`), and both `INPUT` and `OUTPUT` are full paths, extensions included.
+
+=== Example
+
+Create the file `test.mau` in the current directory with this content
+
+[source]
+----
+= A test
+
+This is a text for the Mau markup processor.
+----
+
+Now you can run
+
+[source]
+----
+mau -i test.mau
+----
+
+or
+
+[source]
+----
+mau -f html -i test.mau -o test.html
+----
+
+That will parse the content of `test.mau` and render it as HTML into `test.html`. The content of that file is
+
+[source,html]
+----
+<html>
+  <head>
+  </head>
+  <body>
+    <h1 id="a-test">A test</h1>
+    <p>This is a text for the Mau markup processor.</p>
+  </body>
+</html>
+----
+
+(minus the formatting which was added here for clarity)
+
+You can now open the output file with your browser
+
+[source]
+----
+firefox test.html
+----
+
+and enjoy your first document created with Mau.
+
+== The configuration file
+
+Mau supports a configuration file written in YAML that can be loaded with the option `-c`
+
+[source]
+----
+mau -c config.yml -f html -i test.mau -o test.html
+----
+
+Each value defined in the config file is stored as a variable under the namespace `mau`, and can be used in the Mau source. See the section about variables to know more about this.
+
+== Using Mau in Pelican
+
+You can use Mau to write posts and pages in Pelican. First you need to install the plugin that enables it
+
+[source]
+----
+pip install pelican-mau-reader
+----
+
+You can see the updated documentation about the plugin on the project page at [link](https://github.com/pelican-plugins/mau-reader) but you will find everything you need in this book as well.
+
+The basic usage of the plugin is simple. Every file in your content directory that ends with `.mau` will be processed by it, and you need to specify metadata using Mau's variables under the namespace `pelican`. For example
+
+[source]
+----
+:pelican.title:This is a post written with Mau
+:pelican.date:2021-02-17 13:00:00
+:pelican.modified:2021-02-17 14:00:00
+:pelican.category:tests
+:pelican.tags:foo, bar, foobar
+:pelican.summary:I have a lot to write
+----
+
+Head to the chapter about Pelican to discover how to configure the templates and header anchors, and how to use the TOC and footnotes.
+
+::footnotes:

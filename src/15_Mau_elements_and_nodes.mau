@@ -1,0 +1,527 @@
+:pelican.title:Mau elements and nodes
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-mau-elements-and-nodes
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:15
+:pelican.image:pycabook/card
+
+[quote]
+----
+Zane noted how artistically the elements of both carpet and machine had been integrated to make the device unidentifiable; this was a symbolic example, not a literal one. It had also been hastily done, for Luna had been home only a few hours.
+----
+Piers Anthony, _On a Pale Horse_ (1983)
+
+This chapter contains the full documentation of each Mau node, which is the Python dictionary created for each Mau syntax element. For each node I will provide the name of the template (without the format extension), it's fields, and a brief description of each of them.
+
+To simplify the use of this chapter I will list the templates in alphabetical order.
+
+Some notes on fields and types.
+
+* The most commong type for node fields is `string` that represents pure text.
+* The type `target` means that the content is in the target format. For example when rendering in HTML a field like `"content": target` means that using `{{ content }}` in the Jinja template will insert some HTML.
+* The type `boolean` is a Python boolean that can be used directly in Jinja `if` statements.
+* The type `list` means a list of strings. The type `list[TYPE]` means a list of values of the given `TYPE`.
+* The type `dict` means a dictionary whose keys and values are strings. Since block definitions can fix which fields are allowed, a syntax like `dict[key1, key2]` means a dictionary with keys `"key1"` and `"key2"`.
+* A value like `a | b | c` means that the value can only be one of the listed ones.
+* Each node receives the field `type` that is used to select the template.
+
+== Block
+
+This node represents a standard block. The fields `blocktype` and `engine` are used to find specific templates, see the dedicated chapter for details.
+
+Template name: `block.html`
+
+.Fields
+[source]
+----
+"type": string
+"blocktype": string
+"content": target
+"secondary_content": target
+"classes": list
+"engine": raw | source | mau | deafult
+"preprocessor": none
+"args": list
+"kwargs": dict
+"title": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div class="{{ blocktype }}{% if classes %} {{ classes }}{% endif %}">
+  {% if title %}
+  <div class="title">{{ title }}</div>
+  {% endif %}
+
+  <div class="content">{{ content }}</div>
+</div>
+----
+
+== Block admonition
+
+Template name: `block-admonition`
+
+.Fields
+[source]
+----
+"type": string
+"blocktype": string
+"content": target
+"secondary_content": target
+"classes": list
+"engine": raw | source | mau | deafult
+"preprocessor": none
+"args": list
+"kwargs": dict[class, icon, label]
+"title": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div class="admonition {{ kwargs.class }}">
+  <i class="{{ kwargs.icon }}"></i>
+
+  <div class="content">
+    <div class="title">{{ kwargs.label }}</div>
+    <div>{{ content }}</div>
+  </div>
+</div>
+----
+
+== Block quote
+
+Template name: `block-quote`
+
+.Fields
+[source]
+----
+"type": string
+"blocktype": string
+"content": target
+"secondary_content": target
+"classes": list
+"engine": raw | source | mau | deafult
+"preprocessor": none
+"args": list
+"kwargs": dict
+"title": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<blockquote>
+  {{ content }}
+
+  <cite>
+    {% if kwargs.attribution %}
+    {{ kwargs.attribution }}
+    {% else %}
+    {{ secondary_content }}
+    {% endif %}
+  </cite>
+</blockquote>
+----
+
+== Block source
+
+Template name: `block-source`
+
+.Fields
+[source]
+----
+"type": string
+"blocktype": string
+"content": target
+"secondary_content": target
+"classes": list
+"engine": raw | source | mau | deafult
+"preprocessor": none
+"args": list
+"kwargs": dict[callouts]
+"title": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div{% if blocktype %} class="{{ blocktype }}"{% endif %}>
+  {% if title %}
+  <div class="title">{{ title }}</div>
+  {% endif %}
+
+  <div class="content">{{ content }}</div>
+  
+  {% if kwargs.callouts %}
+  <div class="callouts">
+    <table>
+      <tbody>
+        {% for callout in kwargs.callouts %}
+        <tr>
+          <td>{{ callout[0] }}</td>
+          <td>{{ callout[1] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+----
+
+== Callout
+
+This is the template used to inject a callout in the source code.
+
+Template name: `callout`
+
+.Fields
+[source]
+----
+"name": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<span class="callout">{{ name }}</span>
+----
+
+== Class
+
+Template name: `class`
+
+.Fields
+[source]
+----
+"type": string
+"classes": list
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<span class="{{ classes }}">{{ content }}</span>
+----
+
+== Footnote definition
+
+Template name: `footnote_def`
+
+.Fields
+[source]
+----
+"type": string
+"refanchor": string
+"defanchor": string
+"number": string
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div id="{{ defanchor }}">
+  <a href="#{{ refanchor }}">{{ number }}</a> {{ content }}
+</div>
+----
+
+== Footnote reference
+
+Template name: `footnote_ref`
+
+.Fields
+[source]
+----
+"type": string
+"refanchor": string
+"defanchor": string
+"number": string
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<sup>
+  [<a id="{{ refanchor }}" href="#{{ defanchor }}">{{ number }}</a>]
+</sup>
+----
+
+== Footnotes
+
+Template name: `footnotes`
+
+.Fields
+[source]
+----
+"type": string
+"entries": list[target]
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div id="_footnotes">{{ entries }}</div>
+----
+
+== Header
+
+Template name: `header`
+
+.Fields
+[source]
+----
+"type": string
+"value": string
+"level": string
+"anchor": string
+"tags": list
+"kwargs": dict
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<h{{ level }} id="{{ anchor }}">{{ value }}</h{{ level }}>
+----
+
+== Horizontal rule
+
+Template name: `horizontal_rule`
+
+.Fields
+[source]
+----
+"type": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<hr>
+----
+
+== Image
+
+Template name: `image`
+
+.Fields
+[source]
+----
+"type": string
+"uri": string
+"alt_text": string
+"width": string
+"height": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div class="imageblock">
+  <div class="content">
+    <img src="{{ uri }}"{% if alt_text %} alt="{{ alt_text }}"{% endif %} />
+    {% if title %}
+    <div class="title">{{ title }}</div>
+    {% endif %}
+  </div>
+</div>
+----
+
+== Inline image
+
+Template name: `inline_image`
+
+.Fields
+[source]
+----
+"type": string
+"uri": string
+"alt_text": string
+"width": string
+"height": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<span class="image">
+  <img src="{{ uri }}"{%if alt_text %} alt="{{ alt_text }}"{% endif %}>
+</span>
+----
+
+== Link
+
+Template name: `link`
+
+.Fields
+[source]
+----
+"type": string
+"target": string
+"text": string
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<a href="{{ target }}">{{ text }}</a>
+----
+
+== List
+
+Template name: `list`
+
+.Fields
+[source]
+----
+"type": string
+"ordered": boolean
+"items": list
+"main_node": boolean
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<{% if ordered %}ol{% else %}ul{% endif %}>
+  {{ items }}
+</{% if ordered %}ol{% else %}ul{% endif %}>
+----
+
+== List item
+
+Template name: `list_item`
+
+.Fields
+[source]
+----
+"type": string
+"level": string
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<li>{{ content }}</li>
+----
+
+== Paragraph
+
+Template name: `paragraph`
+
+.Fields
+[source]
+----
+"type": string
+"content": target
+"args": list
+"kwargs": dict
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<p>{{ content }}</p>
+----
+
+== Star
+
+Template name: `star`
+
+.Fields
+[source]
+----
+"type": string
+"value": string
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<strong>{{ content }}</strong>
+----
+
+== TOC
+
+Template name: `toc`
+
+.Fields
+[source]
+----
+"type": string
+"entries": list[target]
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<div>{% if entries%}<ul>{{ entries }}</ul>{% endif %}</div>
+----
+
+== TOC entry
+
+Template name: `toc_entry`
+
+.Fields
+[source]
+----
+"type": string
+"header": target
+"children": list[target]
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<li>
+  <a href="#{{ header.anchor }}">{{ header.value }}</a>
+
+  {% if children %}
+  <ul>{{ children }}</ul>
+  {% endif %}
+</li>
+----
+
+== Underscore
+
+Template name: `underscore`
+
+.Fields
+[source]
+----
+"type": string
+"value": string
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<em>{{ content }}</em>
+----
+
+== Verbatim
+Template name: `verbatim`
+
+.Fields
+[source]
+----
+"type": string
+"value": string
+"content": target
+----
+
+.Default HTML template
+[source, html+jinja]
+----
+<code>{{ content }}</code>
+----
+

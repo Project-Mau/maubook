@@ -1,0 +1,250 @@
+:pelican.title:Blocks
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-blocks
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:10
+:pelican.image:pycabook/card
+
+[quote]
+----
+The chamber was lit by a wide shaft high in the further eastern wall; it slanted upwards and, far above, a small square patch of blue sky could be seen. The light of the shaft fell directly on a table in the middle of the room: a single oblong block, about two feet high, upon which was laid a great slab of white stone.
+----
+J.R.R. Tolkien, _The Lord of the Rings - The Fellowship of the Ring_ (1954)
+
+Mau has the concept of blocks, which are parts of the text delimited by fences
+
+. Mau source
+[source]
+++++
+----
+This is a block
+----
+++++
+
+. HTML output
+[source,html]
+----
+<div>
+  <div class="content">
+    <p>This is a block</p>
+  </div>
+</div>
+----
+
+[mau]
+++++
+----
+This is a block
+----
+++++
+
+---
+
+You can use any sequence of 4 identical characters to delimit a block, provided this doesn't clash with other syntax like the one used for headers or for comments
+
+. Mau source
+[source]
+----
+++++
+This is a block
+++++
+
+%%%%
+This is another block
+%%%%
+----
+
+[mau]
+----
+++++
+This is a block
+++++
+
+%%%%
+This is another block
+%%%%
+----
+
+---
+
+If you need to insert 4 identical characters on a line for some reasons, you have to escape the first of them
+
+. Mau source
+[source]
+----
+\++++
+----
+
+[mau]
+----
+\++++
+----
+
+== Secondary content
+
+Blocks have the concept of _secondary content_, which is any paragraph that is adjacent to the closing fence. This paragraph is included in the block metadata and used according to the type of block (see the chapter about highlighting code, for example). The default block simply discards that content
+
+. Mau source
+[source]
+++++
+----
+Content of the block
+----
+Secondary content that won't be in the output
+
+This is not part of the block
+++++
+
+
+[mau]
+++++
+----
+Content of the block
+----
+Secondary content that won't be in the output
+
+This is not part of the block
+++++
+
+== Block titles
+
+Blocks can have titles, created by a paragraph starting with a dot
+
+. Mau source
+[source]
+++++
+. The title
+----
+This is a block
+----
+++++
+
+. HTML output
+[source,html]
+----
+<div>
+  <div class="title">The title</div>
+  <div class="content">
+    <p>This is a block</p>
+  </div>
+</div>
+----
+
+[mau]
+++++
+. The title
+----
+This is a block
+----
+++++
+
+---
+
+The space between the dot and the title is optional
+
+. Mau source
+[source]
+++++
+.The title
+----
+This is a block
+----
+++++
+
+[mau]
+++++
+.The title
+----
+This is a block
+----
+++++
+
+== Block attributes
+
+Blocks can have attributes, specified between square brackets before the opening fence, and the first attribute is the type of the block. Mau provides some special block types like `admonition` and `quote` (see the documentation below), and each one of them has a specific set of required and optional attributes.
+
+. Mau source
+[source]
+++++
+[aside]
+----
+This is a block of type `aside`
+----
+++++
+
+. HTML output
+[source,html]
+----
+<div class="aside">
+  <div class="content">
+    <p>This is a block of type <code>aside</code></p>
+  </div>
+</div>
+----
+
+[mau]
+++++
+[aside]
+----
+This is a block of type `aside`
+----
+++++
+
+---
+
+You can combine title and attributes in any order.
+
+. Mau source
+[source]
+++++
+. Title of the block
+[aside]
+----
+This is a block of type `aside` and a title
+----
+
+[aside]
+. Title of the block
+----
+This is a block of type `aside` and a title
+----
+++++
+
+[mau]
+++++
+. Title of the block
+[aside]
+----
+This is a block of type `aside` and a title
+----
+
+[aside]
+. Title of the block
+----
+This is a block of type `aside` and a title
+----
+++++
+
+---
+
+Title and attributes are consumed by the next block, so they don't need to be adjacent to it.
+
+. Mau source
+[source]
+++++
+[aside]
+
+----
+This is a block of type `aside`
+----
+++++
+
+[mau]
+++++
+[aside]
+
+----
+This is a block of type `aside`
+----
+++++

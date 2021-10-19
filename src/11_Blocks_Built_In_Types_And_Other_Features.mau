@@ -1,0 +1,255 @@
+:pelican.title:Blocks: built-in types and other features
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-blocks-built-in-types-and-other-features
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:11
+:pelican.image:pycabook/card
+
+[quote]
+----
+Over an inner wall he saw the pinnacles of strangely shaped towerlike structures. One of these towers was built in, or projected into the court in which he found himself, and a broad stair led up to it, along the side of the wall.
+----
+Robert E. Howard, _The Pool of the Black One_ (1933)
+
+Mau provides some built-in block types that are rendered in a different way.
+
+== Quotes
+
+The simplest block type the Mau provides is called `quote`. This block's content is the quote itself, while the secondary content is the source of the quote, commonly called attribution.
+
+. Mau source
+[source]
+++++
+[quote]
+----
+Learn about the Force, Luke.
+----
+_Star Wars_, 1977
+++++
+
+. HTML output
+[source,html]
+----
+<blockquote>
+  <p>Learn about the Force, Luke.</p>
+  <cite>
+    <p><em>Star Wars</em>, 1977</p>
+  </cite>
+</blockquote>
+----
+
+[mau]
+++++
+[quote]
+----
+Learn about the Force, Luke.
+----
+_Star Wars_, 1977
+++++
+
+---
+
+Mau 1.x used the key `attribution` to specify the source of a quote, and that is still available for backward compatibility.
+
+. Mau source
+[source]
+++++
+[quote, attribution="Star Wars, 1977"]
+----
+Learn about the Force, Luke.
+----
+++++
+
+[mau]
+++++
+[quote, attribution="Star Wars, 1977"]
+----
+Learn about the Force, Luke.
+----
+++++
+
+Please note however that this syntax does not support Mau code in the attribution, so for example you can't use styles.
+
+== Admonitions
+
+Mau supports admonitions, special blocks that are meant to be rendered with an icon and a title like warnings, tips, or similar things.
+
+The arguments of the block are `[admonition, CLASS, ICON, LABEL]`.
+
+. Mau source
+[source]
+++++
+[admonition, source, "fab fa-github", "Source code"]
+----
+This is my admonition
+----
+++++
+
+. HTML output
+[source,html]
+----
+<div class="admonition source">
+  <i class="fab fa-github"/>
+  <div class="content">
+    <div class="title">Source code</div>
+    <div>
+      <p>This is my admonition</p>
+    </div>
+  </div>
+</div>
+----
+
+[mau]
+++++
+[admonition, source, "fab fa-github", "Source code"]
+----
+This is my admonition
+----
+++++
+
+---
+
+== Block conditions
+
+You can conditionally render a block according to the result of a test. The test is expressed in the form `CONDITION:VARIABLE:[VALUE]` and is passed to the block through the attribute `condition`.
+
+. Mau source
+[source]
+++++
+:render:yes
+
+[aside, condition="if:render:yes"]
+----
+This will be rendered
+----
+
+[aside, condition="if:render:no"]
+----
+This will not be rendered
+----
+++++
+
+[mau]
+++++
+:render:yes
+
+[aside, condition="if:render:yes"]
+----
+This will be rendered
+----
+
+[aside, condition="if:render:no"]
+----
+This will not be rendered
+----
+++++
+
+---
+
+You can use boolean values leaving out the `VALUE` part
+
+[source, callouts="|"]
+++++
+:render:
+
+[aside, condition="if:render:"]
+----
+This will be rendered
+----
+
+:!render:
+
+[aside, condition="if:render:"]
+----
+This will not be rendered
+----
+++++
+
+[mau]
+++++
+:render:
+
+[aside, condition="if:render:"]
+----
+This will be rendered
+----
+
+:!render:
+
+[aside, condition="if:render:"]
+----
+This will not be rendered
+----
+++++
+
+---
+
+You can reverse the condition using `ifnot`
+
+[source, callouts="|"]
+++++
+:render:
+
+[aside, condition="ifnot:render:"]
+----
+This will not be rendered
+----
+++++
+
+[mau]
+++++
+:render:
+
+[aside, condition="ifnot:render:"]
+----
+This will not be rendered
+----
+++++
+
+== Block classes
+
+You can add custom classes to a block using the attribute `classes`, which is a comma separated list of names. These classes will be then rendered according to the output format. For example, in HTML these will become CSS classes.
+
+[source]
+++++
+[aside, classes="myclass1,myclass2"]
+----
+This is a block of type `aside` and a title
+----
+++++
+
+. HTML output
+[source,html]
+----
+<div class="aside myclass1 myclass2 ">
+  <div class="content">
+    <p>This is a block of type <code>aside</code> and a title</p>
+  </div>
+</div>
+----
+
+
+== Including content
+
+As mentioned in the chapter about basic syntax, Mau '#include' directive can be used at any point (at the beginning of the line), and this means that the content of the block can be generated including the content of an external file.
+
+. Mau source
+[source]
+++++
+[aside]
+----
+::\#include:/path/to/important_aside.mau
+----
+++++
+
+This might be very useful for `source` blocks (see the dedicated chapter)
+
+. Mau source
+[source]
+++++
+[source, python]
+----
+::\#include:/path/to/myscript.py
+----
+++++

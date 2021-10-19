@@ -1,0 +1,241 @@
+:pelican.title:Block engines and custom definitions
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-block-engines-and-custom-definitions
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:13
+:pelican.image:pycabook/card
+
+[quote]
+----
+- “Impact minus twenty seconds, guys. . . ” said the computer.
+
+- “Then turn the bloody engines back on!” bawled Zaphod.
+
+- “OK, sure thing, guys,” said the computer.
+----
+Douglas Adams, _The Hitchhiker's Guide to the Galaxy_ (1979)
+
+So far we saw how Mau treats standard blocks, the built-in types `quote`, `admonition`, and `source`, and how to render blocks conditionally. Blocks have another advanced feature called `engine` and custom blocks can be easily defined to simplify their usage. As we will see at the end of the chapter we already used those features in disguise.
+
+== Block engines
+
+In Mau blocks, an `engine` is the code that processes content (both the primary and the secondary) and attributes to create the values eventually passed to the Jinja template.
+
+When a block doesn't define a specific engine the `default` one is used, which processes the content as Mau code and adds it to the current document. Mau currently defines three other engines: `raw`, `mau`, and `source`.
+
+=== Default
+
+The engine `default` processes the content of the block as Mau code using the variables defined previously in the document. It adds the headers found in the block to the global TOC and the footnotes to the list of the document footnotes.
+
+This engine is used when no other engine is defined explicitly and is useful every time we need to customise the way the content is rendered in the final format but we want to keep the content as part of the document.
+
+=== Raw
+
+The engine `raw` is useful every time we want to include text in the output format directly, as this engine doesn't process the content at all. For example, if we are converting the Mau source in HTML and we want to add custom HTML code we can do it with
+
+. Mau source
+[source]
+++++
+[aside, engine=raw]
+----
+<div>This is a custom div written directly in HTML</div>
+----
+++++
+
+Please note that while the content of the block is not processed by Mau it is still rendered as any other block. See the following chapters about templates to find out how to include custom content without any wrapper.
+
+=== Mau
+
+As we saw previously, the engine `default` processes the content as Mau code. The engine `mau` does the same, but treats it as isolated content, without loading the variables defined in the main document, and without adding headers and footnotes to the relative lists.
+
+Using a command `::toc:` in a block rendered by the engine `mau`, for example, will include only the headers defined in the block itself.
+
+. Mau source
+[source,callouts="|"]
+----
+= Main section
+
+== Secondary section
+
+== Another secondary section
+
+=== A very specific section
+
+::toc:
+----
+
+[mau,engine=mau]
+----
+= Main section
+
+== Secondary section
+
+== Another secondary section
+
+=== A very specific section
+
+::toc:
+----
+
+As you probably noticed, this example comes straight from the chapter about headers, because I made extensive use of this feature there to avoid the command `::toc:` inside the block to display the table of contents of the document that I am writing instead of the block it is run in.
+
+=== Source
+
+The powerful engine that processes source blocks is aptly called `source` (to discover exactly how source blocks use it behind the scenes see the following section about block definition). This engine scans the primary content for callouts and looks for their optional definitions in the secondary content, then it processes the content without callouts with Pygments using the `language` provided in the attributes.
+
+As soon as we introduce templates, the engine `source` will be useful to create custom blocks that can behave like the built-in one but can be rendered in different ways.
+
+== Custom block definitions
+
+As we saw in previous chapters and in the previous sections, blocks have many attributes that you can set on them. In the future chapters about templates we will also see how you can create and use custom attributes.
+
+It might quickly become verbose to set the same parameters over and over to control the way recurring items are rendered, so Mau provides a way to define blocks through the command `defblock`.
+
+. Mau source
+[source,callouts="|"]
+++++
+::defblock:python, aside, engine=source, language=python
+
+[python]
+----
+a = 5
+----
+++++
+
+. HTML output
+[source,html]
+----
+<div class="aside">
+  <div class="content">
+    <div class="highlight">
+      <pre>
+	<span/>
+	<span class="n">a</span>
+	<span class="o">=</span>
+	<span class="mi">5</span>
+      </pre>
+    </div>
+  </div>
+----
+
+---
+
+The syntax of a block definition is
+
+. Mau source
+[source,callouts="|"]
+----
+::defblock:ALIAS, BLOCKTYPE, ATTRIBUTE1, ATTRIBUTE2, ...
+----
+
+where `ALIAS` is the name you will use in your Mau document with `[ALIAS]` and `BLOCKTYPE` is the actual block type that corresponds to that alias.
+
+The attributes can have a default value or not. If they have no value they need to be specified when using the alias. For example the following definition
+
+[source,callouts="|"]
+----
+::defblock:mysource, aside, language, engine=source
+----
+
+defines `mysource` as an alias for the block type `aside`, and requires the attribute `language` to be provided. The attribute `engine`, instead, has a default value and can be omitted. So, the following two blocks are valid
+
+[source,callouts="|"]
+++++
+[mysource, python]
+----
+a = 5
+----
+
+[mysource, python, engine=raw]
+----
+a = 5
+----
+++++
+
+while omitting a value for `language` will result in a syntax error
+
+[source,callouts="|"]
+++++
+// This block is not valid
+[mysource]
+----
+a = 5
+----
+++++
+
+---
+
+Block definitions are not recursive, so it is perfectly fine to write a definition like
+
+. Mau source
+[source,callouts="|"]
+----
+::defblock:myblock, myblock
+----
+
+A block like `[myblock]` will then be rendered using the block type `myblock`. While this definition is redundant and ultimately useless, it is no if we augment it with attributes
+
+. Mau source
+[source,callouts="|"]
+----
+::defblock:myblock, myblock, engine=raw, classes="myclass1,myclass2"
+----
+
+== Predefined blocks
+
+Mau defines three type of blocks out of the box: `source`, `admonition`, and `quote`.
+
+To grant backward compatibility with Mau 1.x these block definition have been however implemented directly in the Python code, but blocks with very similar properties could be defined using the command `blockdef`
+
+=== Source
+
+The block type `source` can be defined as
+
+. Mau source
+[source,callouts="|"]
+++++
+::defblock:source, source, language, engine=source
+++++
+
+As you see this block definition would make `language` a required attribute, while the current `source` block allow you to omit it in favour of the default value `text`. This is not the same thing as 
+
+. Mau source
+[source,callouts="|"]
+++++
+::defblock:source, source, language=text, engine=source
+++++
+
+because that would require you to specify the attribute language with a name as in
+
+. Mau source
+[source,callouts="|"]
+++++
+[source, language=python]
+++++
+
+There is no current way in Mau to create a block that behaves like that with `defblock`.
+
+=== Admonition
+
+The block type `admonition` is defined as
+
+. Mau source
+[source,callouts="|"]
+++++
+::defblock:admonition, admonition, class, icon, label
+++++
+
+which means that all arguments, `class`, `icon`, and `label` are mandatory and shall be provided when the block is called
+
+=== Quote
+
+Quotes in Mau 2.x expect to find the attribution in the secondary content. To keep backward compatibility with Mau 1.x, however, they also accept the old attribute `attribution`, which is by default `None`.
+
+As happened for `source`, there is currently no way to define this behaviour in pure Mau. The nearest version could be
+
+. Mau source
+[source,callouts="|"]
+++++
+::defblock:quote, quote, attribution=""
+++++

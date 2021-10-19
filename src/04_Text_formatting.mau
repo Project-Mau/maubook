@@ -1,0 +1,175 @@
+:pelican.title:Text formatting
+:pelican.date:2021-04-23 10:00:00 +0100
+:pelican.modified:2021-08-20 16:00:00 +0100
+:pelican.slug:maubook-text-formatting
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:4
+:pelican.image:pycabook/card
+
+[quote]
+----
+Leafing through the pages, he saw the book was printed in two colours. There seemed to be no pictures, but there were large, beautiful capital letters at the beginning of the chapters. 
+----
+Michael Ende, _The Neverending Story_ (1979)
+
+== Basic styles
+
+Inside paragraphs (and in other elements that support it) you can use text formatting which allows you to give text a certain style.
+
+The basic forms of text formatting are _stars_, _underscores_, and _ticks_.
+
+. Mau source
+[source]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text
+
+Backticks are used for `verbatim` text.
+----
+
+[mau]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text
+
+Backticks are used for `verbatim` text.
+----
+
+---
+
+Text styles can be used together but backticks have a very strong behaviour in Mau
+
+. Mau source
+[source]
+----
+You can have _*strong and empashized*_ text.
+
+You can also apply styles to _*`verbatim`*_.
+
+But verbatim will `_*preserve*_` them.
+----
+
+[mau]
+----
+You can have _*strong and empashized*_ text.
+
+You can also apply styles to _*`verbatim`*_.
+
+But verbatim will `_*preserve*_` them.
+----
+
+---
+
+Styles can be applied to only part of a word and do not need spaces
+
+. Mau source
+[source]
+----
+*S*trategic *H*azard *I*ntervention *E*spionage *L*ogistics *D*irectorate
+
+It is completely _counter_intuitive.
+
+There are too many `if`s in this function.
+----
+
+[mau]
+----
+*S*trategic *H*azard *I*ntervention *E*spionage *L*ogistics *D*irectorate
+
+It is completely _counter_intuitive.
+
+There are too many `if`s in this function.
+----
+
+Using a single style marker doesn't trigger any effect, if you need to use two of them in the sentence, though, you have to escape at least one
+
+. Mau source
+[source]
+----
+You can use _single *markers.
+
+But you \_need\_ to escape pairs.
+
+Even though you can escape \_only one_ of the two.
+
+If you have \_more than two\_ it's better to just \_escape\_ all of them.
+
+Oh, this is valid for `verbatim as well.
+----
+
+[mau]
+----
+You can use _single *markers.
+
+But you \_need\_ to escape pairs.
+
+Even though you can escape \_only one_ of the two.
+
+If you have \_more than two\_ it's better to just \_escape\_ all of them.
+
+Oh, this is valid for `verbatim as well.
+----
+
+=== Text classes
+
+You can assign specific classes to part of the text. These can or can't be meaningful depending on the output format. If the output is HTML, those will become CSS classes.
+
+To give text a class use the macro `class`. Macros have not been introduced yet, see the relative chapter for more information about how they manage arguments.
+
+. Mau source
+[source]
+----
+This is [class]("text wrapped", myclass) in a class.
+----
+
+Since the rendering would depend on the CSS style used on the website at the moment, I will show the HTML output only
+
+. HTML output
+[source,html]
+----
+<p>This is <span class="myclass">text wrapped</span> in a class.</p>
+----
+
+---
+
+You can specify multiple classes providing them in a comma-separated string
+
+. Mau source
+[source]
+----
+This is [class]("text wrapped", "myclass1,myclass2") in multiple classes.
+----
+
+Resulting in
+
+. HTML output
+[source,html]
+----
+<p>This is <span class="myclass1 myclass2">text wrapped</span> in multiple classes.</p>
+----
+
+Please note that the text passed to the macro `class` can contain Mau code like styles.
+
+. Mau source
+[source]
+----
+This is [class]("*text with styles* _wrapped_", "myclass") in a class.
+----
+
+=== Deprecated syntax
+
+Older versions of Mau provided another syntax for classes that is now deprecated: ``.
+
+. Mau source
+[source]
+----
+This is [myclass]#text wrapped# in a class.
+----
+
+This still works in the current version of Mau but will be removed in the future.
+
+TODO: Look into custom macros
+
+::footnotes:
