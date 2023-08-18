@@ -1,0 +1,186 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Variables
+:pelican.date:2021-10-19 11:00:00 +0100
+:pelican.slug:maubook-variables
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:7
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Variables
+----
+
+[quote]
+----
+It was wrong to have a third party present when I confronted you. It introduced one variable too many. It is a mistake that must be paid for, I suppose.
+----
+Isaac Asimov, "Second Foundation" (1953)
+
+Mau supports variables of two types: strings and booleans. You can define variables at any point in a Mau file with the syntax `:NAME:VALUE` and then insert the value using the syntax `{NAME}`. For example
+
+. Mau source
+[source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+----
+
+[rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+----
+
+---
+
+Variables can be used in several contexts. In paragraphs, headers, and footnotes they are useful to place constant strings that are repeated over and over and might need to be changed. Variables are replaced very early in the Mau translation process, so they can contain Mau code.
+
+. Mau source
+[source]
+----
+:answer:*42*
+:wikipedia_link:[link]("https://en.wikipedia.org/wiki/42_(number)")
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+
+You can learn more about it here {wikipedia_link}
+----
+
+[rendered]
+----
+:answer:*42*
+:wikipedia_link:[link]("https://en.wikipedia.org/wiki/42_(number)")
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+
+You can learn more about it here {wikipedia_link}
+----
+
+Variables can also be used in block definitions, see the chapter about blocks for more information.
+
+---
+
+You can prevent variable replacement escaping the curly braces
+
+. Mau source
+[source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is \{answer\}
+----
+
+[rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is \{answer\}
+----
+
+---
+
+As curly braces are used a lot in programming languages, Mau automatically escapes them when they are included in verbatim text
+
+. Mau source
+[source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is `{answer}`
+----
+
+[rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is `{answer}`
+----
+
+== Boolean variables
+
+Variables without a value will automatically become booleans. The default value is true, which will become `True` when printed
+
+[source,callouts="|"]
+----
+:flag:
+
+The flag is {flag}.
+----
+
+[rendered]
+----
+:flag:
+
+The flag is {flag}.
+----
+
+You can create a false boolean variable negating it with an exclamation mark
+
+. Mau source
+[source,callouts="|"]
+----
+:!flag:
+
+The flag is {flag}.
+----
+
+[rendered]
+----
+:!flag:
+
+The flag is {flag}.
+----
+
+When printed, boolean variables will be either `True` or `False`, which might not be very effective. They are however useful as flags in conditional blocks, see the chapter about blocks for more information.
+
+== Namespaces
+
+Variables can be created under a specific namespace using a dotted syntax
+
+. Mau source
+[source,callouts="|"]
+----
+:value:5
+:module.value:6
+
+The values are {value} and {module.value}.
+----
+
+[rendered]
+----
+:value:5
+:module.value:6
+
+The values are {value} and {module.value}.
+----
+
+---
+
+Mau's configuration values are available under the `mau` namespace (see the section about configuration for more information).
+
+Namespaces are useful to communicate with external tools. For example, the Pelican metadata of this page are specified as
+
+. Mau source
+[source,callouts="|"]
+----
+:pelican.title:Variables
+:pelican.slug:maubook-variables
+:pelican.series:Mau - A template-based markup language
+----
+
+which allows the Mau reader plugin to extract them and pass them to Pelican.
+
+::footnotes:

@@ -1,0 +1,121 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Images
+:pelican.date:2021-10-19 12:00:00 +0100
+:pelican.slug:maubook-images
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:09
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Images
+----
+
+[quote]
+----
+Strange images appeared and vanished, flickering at the extreme limits of visibility - vast faces, enormous hands, and things Garion could not name. The turret itself trembled as the two dreadful old men ripped open the fabric of reality itself to grasp weapons of imagination or delusion.
+----
+David Eddings, "Magician's Gambit" (1983)
+
+You can include images in Mau documents, both as stand-alone elements and inline, mixed with text.
+
+== Stand-alone images
+
+Images can be included in the document with the command `<<`
+
+. Mau source
+[source]
+----
+<< image:https://via.placeholder.com/150
+----
+
+[condition="if:mau.output_format:html"]
+%%%%
+[rendered]
+----
+<< image:https://via.placeholder.com/150
+----
+%%%%
+
+---
+
+You can add a caption to the image using a title
+
+. Mau source
+[source]
+----
+. This is the caption
+<< image:https://via.placeholder.com/150
+----
+
+. HTML output
+[source,html]
+----
+<div class="imageblock">
+  <div class="content">
+    <img src="https://via.placeholder.com/150"/>
+    <div class="title">This is the caption</div>
+  </div>
+</div>
+----
+
+[condition="if:mau.output_format:html"]
+%%%%
+[rendered]
+----
+. This is the caption
+<< image:https://via.placeholder.com/150
+----
+%%%%
+
+---
+
+You can also specify the alternate text with the attribute `alt_text`
+
+. Mau source
+[source]
+----
+[alt_text="Description of the image"]
+<< image:https://via.placeholder.com/150
+----
+
+. HTML output
+[source,html]
+----
+<div class="imageblock">
+  <div class="content">
+    <img src="https://via.placeholder.com/150" alt="Description of the image"/>
+  </div>
+</div>
+----
+
+[condition="if:mau.output_format:html"]
+%%%%
+[rendered]
+----
+[alt_text="Description of the image"]
+<< image:https://via.placeholder.com/150
+----
+%%%%
+
+== Inline images
+
+Images can be added inline with the macro `image`
+
+. Mau source
+[source]
+----
+This is a paragraph with an image [image](https://via.placeholder.com/30,alt_text="A placeholder")
+----
+
+[condition="if:mau.output_format:html"]
+%%%%
+[rendered]
+----
+This is a paragraph with an image [image](https://via.placeholder.com/30,alt_text="A placeholder")
+----
+%%%%
+
+::footnotes:

@@ -1,0 +1,167 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Lists and footnotes
+:pelican.date:2021-10-19 11:30:00 +0100
+:pelican.slug:maubook-lists-and-footnotes
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:08
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Lists and footnotes
+----
+
+[quote]
+----
+- “Most people will tell you they know their weaknesses. When asked, they tell you, ‘Well, for one thing I’m overgenerous.’ Come on, then; list yours if you must. That’s what innkeepers are for.”
+
+- “Well, for one thing I’m overgenerous, especially to innkeepers.”
+----
+David Gemmell, "Legend" (1984)
+
+== Lists
+
+Mau supports the creation of lists. You can create unordered lists using one or more characters `*` according to the level of the element
+
+. Mau source
+[source]
+----
+* List item
+** Nested list item
+*** Nested list item
+* List item
+** Another nested list item
+* List item
+----
+
+[rendered]
+----
+* List item
+** Nested list item
+*** Nested list item
+* List item
+** Another nested list item
+* List item
+----
+
+and use the character `#` to create an ordered list
+
+. Mau source
+[source]
+----
+# Step 1
+# Step 2
+## Step 2a
+## Step 2b
+# Step 3
+----
+
+[rendered]
+----
+# Step 1
+# Step 2
+## Step 2a
+## Step 2b
+# Step 3
+----
+
+---
+
+You can mix ordered and unordered lists
+
+. Mau source
+[source]
+----
+* List item
+** Nested list item
+### Ordered item 1
+### Ordered item 2
+### Ordered item 3
+* List item
+----
+
+[rendered]
+----
+* List item
+** Nested list item
+### Ordered item 1
+### Ordered item 2
+### Ordered item 3
+* List item
+----
+
+---
+
+All spaces before or after the initial characters are ignored.
+
+. Mau source
+[source]
+----
+* List item
+  ** Nested list item
+    *** Nested list item
+*   List item
+  **    Another nested list item (indented)
+*   List item
+----
+
+[rendered]
+----
+* List item
+  ** Nested list item
+    *** Nested list item
+*   List item
+  **    Another nested list item (indented)
+*   List item
+----
+
+== Footnotes
+
+You can insert a footnote including a definition and a reference. A definition contains the text of the footnote and is created with a block of type `footnote` (see chapter about blocks) and giving it a name
+
+. Mau source
+[source]
+%%%%
+[footnote, thename]
+----
+This is the text of the footnote.
+----
+%%%%
+
+Then you need to reference the footnote in a paragraph using the macro `footnote` and the name
+
+. Mau source
+[source]
+%%%%
+This is a paragraph with a note[footnote](thename).
+%%%%
+
+Mau doesn't automatically include the definition of the footnote in the output. This has to be done with the command `::footnotes:`
+
+[source, callouts="|"]
+%%%%
+This is a paragraph with a note[footnote](thename).
+
+[footnote, thename]
+----
+This is the text of the footnote.
+----
+
+::footnotes:
+%%%%
+
+[rendered, engine=mau]
+%%%%
+This is a paragraph with a note[footnote](thename).
+
+[footnote, thename]
+----
+This is the text of the footnote.
+----
+
+::footnotes:
+%%%%
+
+::footnotes:

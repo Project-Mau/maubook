@@ -1,0 +1,96 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Introduction
+:pelican.date:2021-10-19 08:00:00 +0100
+:pelican.slug:maubook-introduction
+:pelican.series:Mau - A template-based markup language
+:pelican.series_info:Mau is a lightweight markup language heavily inspired by AsciiDoc that makes is very easy to write blog posts or books. The main goal of Mau is to provide a customisable markup language, reusing the good parts of AsciiDoc and providing a pure Python 3 implementation.
+:pelican.series_index:1
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Introduction
+----
+
+[quote]
+----
+A beginning is the time for taking the most delicate care that the balances are correct.
+----
+Frank Herbert, _Dune_ (1965)
+
+Mau is a lightweight markup language heavily inspired by Markdown and AsciiDoc that makes it a breeze to write blog posts or books. If you already know Markdown or AsciiDoc you already know which type of software Mau is, and you will quickly learn its syntax.
+
+The main goal of Mau, however, is to provide a _customisable_ markup language. While Mau's syntax is fixed by its implementation, its output is created through user-provided templates. This strategy gives the user great flexibility with no added complexity.
+
+I currently use Mau to write posts for my blog [link](https://www.thedigitalcatonline.com,"The Digital Cat") and to write books like [link](https://leanpub.com/clean-architectures-in-python, "Clean Architectures in Python"). This documentation is also written using Mau. So, as you can see, the system is production-ready, and you can start using it today.
+
+== The story so far
+
+Markdown is a great format, and I used it for all the posts in my blog since I started writing. Pelican, which is the static site generator that I use, supports Markdown out of the box, so it was extremely easy to start using it, and overall I had an enjoyable experience.
+
+When the idea of a book about the clean architecture began to take shape in my mind, a quick survey of the platforms for self-publishing led me to LeanPub, which provides a good toolchain based on their Markdown dialect called [link]("http://markua.com/", "Markua"). Being so similar to Markdown, the transition was seamless for me, and I could publish the first edition of the book without any issues.
+
+In the meanwhile, my activity on the blog increased, and I started to feel the need to add features to my articles that weren't easily created with Markdown, such as adding a file name and callouts to the code blocks or adding admonitions. Sure, such things can be added using raw HTML, but that popped the bubble of the simple markup syntax, so I wasn't happy with that solution.
+
+The same problems arose when I started working on the second version of the book, with some additional concerns. Since the book is freely available, I wanted to use the same source code to generate a website and be able to reuse the same features both in the resulting HTML and in the PDF.
+
+I couldn't find a good way to create tips and warnings using Markdown. Recently, Python Markdown added a feature that allows specifying the file name for the source code, but the resulting HTML cannot easily be changed, making it difficult to achieve the graphical output I wanted through CSS. So, I started looking into other projects.
+
+I tried [link]("https://pandoc.org/", "Pandoc"), and a week spent trying to learn again that black magic called TeX was enough for me to decide that the system wasn't what I needed. My relationship with TeX/LaTeX has always been stormy: while I admire the system, the ingenuity, and [link](https://yakshav.es/the-patron-saint-of-yakshaves/
+, "the one-man show effort") behind TeX, the final result is a convoluted beast that is difficult to tame. It is also terribly undocumented!
+
+The third system that I found was [link]("https://asciidoc-py.github.io/", "AsciiDoc"), which started as a Python project, abandoned for a while and eventually resurrected by Dan Allen with [link]("https://asciidoctor.org/", "Asciidoctor"). AsciiDoc has a lot of features and I consider it superior to Markdown, but Asciidoctor is a Ruby program, and this made it difficult for me to use it. In addition, the standard output of Asciidoctor is a nice single HTML page but again customising it is a pain. I eventually created the site of the book using it, but adding my Google Analytics code and a `sitemap.xml` to the HTML wasn't trivial, not to mention customising the look of elements such as admonitions.
+
+In the end, I wasn't completely happy with Asciidoctor, and once again I started looking around to see if there was something that matched my requirements.
+
+=== What I was looking for
+
+In a nutshell, this is what I was hoping to find:
+
+* A simple markup syntax [Markdown, Markua, Asciidoctor]
+* A stand-alone implementation that I can run locally [Markdown, Asciidoctor]
+* A Python implementation that can be used from Pelican [Markdown]
+* Support for admonitions and callouts [Asciidoctor]
+* PDF output [Asciidoctor]
+* Highly configurable HTML output []
+
+As you can see none of the systems could tick all the boxes, and all of them are missing a way to easily change the output of the rendering.
+
+=== What I did
+
+Since no existing tool was matching my requirements I did what people like me do when they lack a tool. I wrote it myself!
+
+I have been studying compilers all my life, even though I can by no means be called an expert. I have a [link]("https://www.thedigitalcatonline.com/blog/2017/05/09/a-game-of-tokens-write-an-interpreter-in-python-with-tdd-part-1/", "series of posts") on my blog where I write an interpreter in Python, based on the [link](https://ruslanspivak.com/lsbasi-part1/, "amazing work of Ruslan Spivak"), so I thought that I might have at least tried to create a Python interpreter for Asciidoctor's syntax since the original AsciiDoc code was left unmaintained (apparently development started again later).
+
+After one month I had a working tool that I successfully connected with Pelican and used to render some posts that I had already written in Markdown. I don't consider the project revolutionary, but I can honestly say that the day I saw Mau working for the first time is one of the best days of my career as a software developer. At that point, Mau had already slightly diverged from the original idea, though.
+
+While initially I was aiming to an implementation of AsciiDoctor's syntax, and retained a great deal of it, I took the opportunity to try a different path when it came to rendering. Having already successfully used Jinja2 in other contexts, I had this idea of using Jinja templates to render Mau's output, so that the user could either use the standard one or provide their own and thus easily customise the final result.
+
+I later wrote a visitor (a rendering class) that converts Mau's input into AsciiDoctor or Markua, and even though it doesn't cover all the features of the two languages, it allowed me to use Mau to rewrite my book and publish it online while using the Markua output to feed Leanpub's processing chain that produces the PDF.
+
+== Where we are now
+
+The short story is that Mau works, and as I already mentioned is used for both my blog and my books. Mau's features are
+
+* A simple markup syntax
+* A stand-alone implementation that you can run locally on any system that supports Python3
+* A plugin for Pelican that allows you to use Mau to write blog posts and website pages
+* Full support for a good range of standard HTML features (paragraphs, lists, headers, ...) and for some advanced ones such as admonitions, code callouts, includes, and footnotes.
+* Extremely configurable output using Jinja2 templates
+* Stand-alone PDF creation (since version 3)
+
+I learned a lot writing Mau, and I'm happy that the whole idea proved worth the time I invested. I'd love to know that other people found it useful, so in this manual I will show you how to install and use Mau for your projects.
+
+Thanks for giving Mau a try!
+
+== How to contribute
+
+Feel free to send PRs to fix this book should you find typos or any other mistake. Contributions are more than welcome!
+
+The whole book is released under Creative Commons Attribution 4.0 International (CC BY 4.0).
+
+::footnotes:
+
+

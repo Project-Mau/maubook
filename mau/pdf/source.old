@@ -1,0 +1,4 @@
+\begin{lstlisting}{% if language and language != "text" and language != "nginx" %}[language={{language}}]{% endif %}
+{{ code }}
+\end{lstlisting}
+

@@ -1,0 +1,1736 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Elements and nodes
+:pelican.date:2021-10-19 15:00:00 +0100
+:pelican.slug:maubook-mau-elements-and-nodes
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:15
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Elements and nodes
+----
+
+[quote]
+----
+Zane noted how artistically the elements of both carpet and machine had been integrated to make the device unidentifiable; this was a symbolic example, not a literal one. It had also been hastily done, for Luna had been home only a few hours.
+----
+Piers Anthony, _On a Pale Horse_ (1983)
+
+This chapter contains the full documentation of all Mau elements. For each element you will find:
+
+* A recap of the syntax.
+** The scope of the node can be `inline` or `page`. `inline` nodes appear in paragraphs, mixed with normal text, while `page` nodes have to appear on separate lines of the document.
+** The type of the node is a string that uniquely identifies it in Mau.
+* A short description.
+* The names of the templates that the `JinjaVisitor` class uses to render it in order of priority (without the format extension).
+* The documentation about the fields passed to the Jinja template with the type and a short description
+** `BOOLEAN`: a Python boolean that can be used directly in Jinja conditional statements.
+** `INTEGER`: a Python integer.
+** `LIST[TYPE]`: a list of values of the given `TYPE`.
+** `STRING`: a Python string that contains pure text.
+** `TARGET`: the target format. For example when rendering in HTML a field of type `TARGET` will insert some HTML.
+** `VALUE1 | VALUE2 | VALUE3`: the value can only be one of the listed ones.
+** `SPECIAL`: usually a more complex Python datatype like a dictionary or a list of tuples. See the description of the node for more details.
+** The fields `args`, `kwargs`, and `tags` have always the same type: a list of strings for `args` and `tags`, a dictionary for `kwargs`.
+** A template receives always the field `type` that contains the type of the node.
+* The default HTML and LaTeX templates. Sometimes a format doesn't specify a certain template, and this situation will be marked as `EMPTY`. Sometimes templates contain explicit newlines `\n`, which has been left to clarify that a new line is created of that the templates terminates with an empty line.
+* Some examples.
+
+To simplify the use of this chapter elements are listed in alphabetical order instead of being grouped per topic like in the rest of the book.
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Block
+
+This element represents a generic block.
+
+*Syntax*
+
+Type: `page`
+
+.Mau source
+[source]
+++++
+[BLOCKTYPE]
+----
+CONTENT
+----
+++++
+
+*Templates*
+
+* `block-{engine}-{blocktype}`
+* `block-{engine}`
+* `block-{blocktype}`
+* `block`
+
+*Fields*
+
+* `blocktype (STRING)`: the type of this block
+* `content (TARGET)`: the primary content (Mau text between fences)
+* `secondary_content (TARGET)`: the secondary content (Mau text just below the closing fence
+* `classes (LIST[STRING])`: a list of classes assigned to this block
+* `title (STRING)`: a title specified before this block
+* `engine (STRING)`: the engine that Mau used to process the block
+* `preprocessor (STRING)`: the preprocessor (currently not in use)
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<div class="{{ blocktype }}{% if classes %} {{ classes }}{% endif %}">
+  {% if title %}<div class="title">{{ title }}</div>{% endif %}
+  <div class="content">{{ content }}</div>
+</div>
+----
+
+.LaTeX
+[source, latex]
+----
+{{ content }}\n
+----
+
+.Markua
+[source, latex]
+----
+{{ content }}
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+[aside, classes="custom,centred"]
+----
+This is the primary content of a block of type `aside` and with two classes `custom` and `centred`.
+----
+This is the secondary content
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Callout
+
+This element renders a callout attached to each line of code.
+
+See: Source (block)
+
+*Templates*
+
+* `callout`
+
+*Fields*
+
+* `marker (STRING)`: the label of this callout
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<span class="callout">{{ marker }}</span>
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, latex]
+----
+EMPTY
+----
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Callout entry
+
+This element renders an element in the list of callouts. This list is usually presented at the end of a source block to show the text associated with each callout.
+
+See: Source (block), Callout
+
+*Templates*
+
+* `callouts_entry`
+
+*Fields*
+
+* `marker (STRING)`: the label of this callout
+* `value (STRING)`: the text associated with this callout
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<tr>
+<td><span class="callout">{{ marker }}</span></td>
+<td>{{ value }}</td>
+</tr>
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, latex]
+----
+EMPTY
+----
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Caret (style)
+
+This style renders the text between two carets according to the template. The default template renders the text in superscript.
+
+*Syntax*
+
+Scope: `inline`
+Type: `style`
+
+.Mau source
+[source]
+++++
+^TEXT^
+++++
+
+*Templates*
+
+* `caret`
+
+*Fields*
+
+* `value (STRING)`: the style type (`caret`)
+* `content (TARGET)`: the content of the node
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<sup>{{ content }}</sup>
+----
+
+.LaTeX
+[source, latex]
+----
+\textsuperscript{ {{-content-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+^{{ content }}^
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This text is super^script^.
+++++
+
+.Rendered
+[rendered]
+++++
+This text is super^script^.
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Class (macro)
+
+This macro attaches one of more classes to a piece of text. At the moment, the default LaTeX output doesn't use classes.
+
+*Syntax*
+
+Scope: `inline`
+Type: `class`
+
+.Mau source
+[source]
+++++
+[class](text, "class1,class2,...")
+++++
+
+*Templates*
+
+* `class`
+
+*Fields*
+
+* `classes [LIST(STRING)]`: the list of classes
+* `content (TARGET)`: the content of the node
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<span class="{{ classes | join(' ') }}">{{ content }}</span>
+----
+
+.LaTeX
+[source, latex]
+----
+{{content}}
+----
+
+.Markua
+[source, html+jinja]
+----
+{{ content }}
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This text is [class]("coloured", "green") thanks to a class.
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Content
+
+This element is a very generic content loader, which has a specific implementation only for the type `image` (see "Image (content)"). It accepts arguments and consumes a title, so it can be used to achieve custom effects without involving blocks, whose syntax is more invasive.
+
+*Syntax*
+
+Scope: `page`
+Type: `content`
+
+.Mau source
+[source]
+++++
+<< TYPE:ARGS,KWARGS,TAGS
+++++
+
+*Templates*
+
+* `content-{content_type}`
+* `content`
+
+*Fields*
+
+* `content_type (STRING)`: the type of this content
+* `title (TARGET)`: an optional title for the content
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+EMPTY
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, latex]
+----
+EMPTY
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+++++
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Document
+
+This element is created automatically by Mau and wraps the whole document.
+
+*Syntax*
+
+Type: `page`
+
+*Templates*
+
+* `document`
+
+*Fields*
+
+* `content (TARGET)`: the content of the document
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<html>
+  <head></head>
+  <body>{{ content }}</body>
+</html>
+----
+
+.LaTeX
+[source, latex]
+----
+{{ content }}
+----
+
+.Markua
+[source, latex]
+----
+{{ content }}
+----
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Footnote (block)
+
+This block defines the content of a footnote and has to be paired with a macro `footnote` with the same name. Footnotes have a definition (the text of the footnote) and a reference (usually the number of the footnote in a paragraph). When footnotes are inserted in the document, the content of each footnote in the list is represented by this element. Since LaTeX manages footnotes automatically, the default template in that case is empty.
+
+*Syntax*
+
+Scope: `page`
+Type: `footnotes_entry`
+
+.Mau source
+[source]
+++++
+[footnote, NAME]
+----
+CONTENT
+----
+++++
+
+*Templates*
+
+* `footnotes_entry`
+
+*Fields*
+
+* `content (TARGET)`
+* `number (STRING)`: The number of this footnote
+* `reference_anchor (STRING)`: The anchor to the footnote reference
+* `definition_anchor (STRING)`: The anchor to the footnote definition
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<div id="{{ definition_anchor }}">
+  <a href="#{{ reference_anchor }}">{{ number }}</a> {{ content }}
+</div>
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, html+jinja]
+----
+[^footnote_{{ reference_anchor }}]: {{ content }}
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+[footnote, mynote]
+----
+This is the body of the note called `mynote`. It will be referenced somewhere in the text through the macro `footnote`.
+----
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Footnote (macro)
+
+This element defines the reference to a footnote. It has to be paired with a block `footnote` that defines the content of the footnote.
+
+Footnote macros and blocks are collected and processed as a whole, which is why this node can provide the content.
+
+The anchors to the reference and the definition are unique strings in the document that can be used to set up internal links for formats like HTML that do not provide this service out of the box like LaTeX does.
+
+*Syntax*
+
+Scope: `inline`
+Type: `footnote`
+
+.Mau source
+[source]
+----
+[footnote](NAME)
+----
+
+*Templates*
+
+* `footnote`
+
+*Fields*
+
+* `content (TARGET)`: The content of the footnote defined by the companion block
+* `number (STRING)`: The number of this footnote
+* `reference_anchor (STRING)`: The anchor to this reference
+* `definition_anchor (STRING)`: The anchor to the definition
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<sup>
+[<a id="{{ reference_anchor }}" href="#{{ definition_anchor }}">{{ number }}</a>]
+</sup>
+----
+
+.LaTeX
+[source, latex]
+----
+\footnote{ {{-content-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+[^footnote_{{ reference_anchor }}]
+----
+
+*Examples*
+
+.Mau source
+[source]
+----
+This paragraph contains a footnote[footnote](mynote). It also contains other sentences.
+----
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Footnotes (command)
+
+This command inserts the list of footnote definitions. Since LaTeX automatically puts footnotes at the bottom of each page, the default template in that case is empty.
+
+*Syntax*
+
+Scope: `page`
+Type: `command_footnotes`
+
+.Mau source
+[source,callouts="|"]
+++++
+::footnotes:ARGS, KWARGS, TAGS
+++++
+
+*Templates*
+
+* `footnotes`
+
+*Fields*
+
+* `entries (LIST[TARGET])`: this is the list of footnotes, each being the rendering of a footnote entry.
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<div id="_footnotes">{{ entries }}</div>
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, html+jinja]
+----
+{{ entries }}
+----
+
+*Examples*
+
+.Mau source
+[source,callouts="|"]
+++++
+::footnotes:
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Header
+
+This element renders a section header and stores it in the ToC.
+
+*Syntax*
+
+Scope: `page`
+Type: `header`
+
+.Mau source
+[source]
+++++
+= Header level 1
+== Header level 2
+=== Header level 3
+[...]
+++++
+
+*Templates*
+
+* `header{level}`
+* `header`
+
+*Fields*
+
+`value (STRING)`: the text of the header
+`level (INTEGER)`: the level of the header, 1 being the highest.
+`anchor (STRING)`: the anchor of the header if the template wants to set up cross-references between it and the ToC
+`args`
+`kwargs`
+`tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<h{{ level }} id="{{ anchor }}">{{ value }}</h{{ level }}>
+----
+
+.LaTeX
+[source, latex]
+----
+\{{command}}{ {{-value-}} }
+\n
+----
+
+.Markua
+[source, latex]
+----
+{{ '#' * level }} {{ value }}
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+= An important section
+
+== A less important one
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Horizontal rule
+
+This element inserts a horizontal rule. The rule can be optionally given arguments for further customisation.
+
+*Syntax*
+
+Scope: `page`
+Type: `horizontal_rule`
+
+.Mau source
+[source]
+++++
+---
+++++
+
+.Mau source
+[source]
+++++
+---:ARGS,KWARGS,TAGS
+++++
+
+*Templates*
+
+* `horizontal_rule`
+
+*Fields*
+
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<hr>
+----
+
+.LaTeX
+[source, latex]
+----
+\rule{\textwidth}{0.5pt}
+\n
+----
+
+.Markua
+[source, latex]
+----
+* * *
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+---
+++++
+
+.Rendered source
+[rendered]
+++++
+---
+++++
+
+.Mau source
+[source]
+++++
+[break]
+---
+++++
+
+.Mau source (template)
+[source]
+++++
+{% if 'break' in args %}
+\pagebreak
+{% else %}
+\vspace{24pt}\noindent\hfil\rule{0.5\textwidth}{.4pt}\vspace{24pt}\hfil
+{% endif %}
+++++
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Image (content)
+
+This element inserts an image int he document. The image is inserted as a page element, for images included in paragraphs see "Image (macro)".
+
+*Syntax*
+
+Type: `page`
+
+.Mau source
+[source]
+++++
+<< image:URI, ALT_TEXT, CLASSES, ARGS, KWARGS, TAGS
+
+++++
+
+*Templates*
+
+* `content_image`
+
+*Fields*
+
+* `uri (STRING)`: the URI of the image file
+* `alt_text (STRING)`: alternative text to show if the image cannot be loaded
+* `classes (LIST[STRING])`: list of classes to append to the target element
+* `title (STRING)`: title (caption) of the image
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<div class="imageblock">
+<div class="content">
+<img src="{{ uri }}"{% if alt_text %} alt="{{ alt_text }}"{% endif %} />
+{% if title %}<div class="title">{{ title }}</div>{% endif %}
+</div></div>
+----
+
+.LaTeX
+[source, latex]
+----
+\begin{figure}[h]
+{% if title %}\caption{ {{-title-}} }{% endif %}
+\centering
+\includegraphics[width=\textwidth]{ {{-uri-}} }
+\end{figure}
+\n
+----
+
+.Markua
+[source, latex]
+----
+{% if alt_text %}{alt: "{{ alt_text }}"}\n{% endif %}![{{ title }}]({{ uri }})
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+<< image:../images/cover.jpg, "The cover of the book", "centered", 
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Image (macro)
+
+Through this element, Mau inserts an image in a paragraph.
+
+*Syntax*
+
+Scope: `inline`
+Type: `image`
+
+.Mau source
+[source]
+++++
+[image](URI, ALT_TEXT, WIDTH, HEIGHT)
+++++
+
+*Templates*
+
+* `inline_image`
+
+*Fields*
+
+* `uri (STRING)`: the URI of the image in a format understood by the target processor.
+* `alt_text (STRING)`: the alternative text used if the image cannot be loaded.
+* `width (STRING)`: The width of the image
+* `height (STRING)`: The height of the image
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<span class="image">
+<img src="{{ uri }}"{%if alt_text %} alt="{{ alt_text }}"{% endif %}>
+</span>
+----
+
+.LaTeX
+[source, latex]
+----
+\includegraphics{ {{-uri-}} }
+----
+
+.Markua
+[source, latex]
+----
+![{{ alt_text }}]({{ uri }})
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This paragraph contains a little emoji [image](TODO).
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== List
+
+This element renders a list of items. The list can be ordered or unordered, and items can be nested. Each item in the template is either a single item (rendered with the relative template) or a sublist (rendered with the same template as the whole list).
+
+*Syntax*
+
+Scope: `page`
+Type: `list`
+
+.Mau source
+[source]
+++++
+* Unordered list item
+** Unordered list item of level 2
+*** Unordered list item of level 3
+   *** Spaces are ignored before list item symbols
+   *** So you are free to use them or not
+[...]
+# Ordered list item
+## Ordered list item of level 2
+### Ordered list item of level 3
+[...]
+++++
+
+*Templates*
+
+* `list`
+
+*Fields*
+
+* `ordered (BOOLEAN)`: whether the list is ordered or not
+* `items (CONTENT)`: a list containing either items or sublists
+* `main_node (BOOLEAN)`: whether this is the main list of a sublist
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<{% if ordered %}ol{% else %}ul{% endif %}{% if kwargs.start %}start={{ kwargs.start }}{% endif %}>
+{{ items }}
+</{% if ordered %}ol{% else %}ul{% endif %}>
+----
+
+.LaTeX
+[source, latex]
+----
+{% if not main_node %}\n{% endif %}
+{% if ordered %}\begin{enumerate}{% else %}\begin{itemize}{% endif %}
+
+{{ items }}
+{% if ordered %}\end{enumerate}{% else %}\end{itemize}{% endif %}
+{% if main_node %}\n\n{% endif %}"
+----
+
+.Markua
+[source, latex]
+----
+{{ items }}{% if main_node %}\n{% endif %}
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+* This is an unordered list
+* That contains an ordered list
+## The ordered list
+## Is a sublist, though
+* Lists can have
+** Many levels
+*** As you would expect
+++++
+
+.Rendered source
+[rendered]
+++++
+* This is an unordered list
+* That contains an ordered list
+## The ordered list
+## Is a sublist, though
+* Lists can have
+** Many levels
+*** As you would expect
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+== List item
+
+This element renders a single item in a list (see `List`).
+
+*Templates*
+
+* `list_item`
+
+*Fields*
+
+* `level (INTEGER)`: The level of nesting (1 is the first level).
+* `content (target)`: the content of this item
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<li>{{ content }}</li>
+----
+
+.LaTeX
+[source, latex]
+----
+\item {{ content }}
+\n"
+----
+
+.Markua
+[source, latex]
+----
+{% if not main_node %}
+{% endif %}{{ ' ' * level }}* {{ content }}
+----
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Link (macro)
+
+This element represents a hypermedia link to a URL.
+
+*Syntax*
+
+Scope: `inline`
+Type: `link`
+
+.Mau source
+[source]
+++++
+[link](TARGET, TEXT)
+++++
+
+*Templates*
+
+* `link`
+
+*Fields*
+
+* `target (STRING)`: The target URL
+* `text (STRING)`: The text of the link
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<a href="{{ target }}">{{ text }}</a>
+----
+
+.LaTeX
+[source, latex]
+----
+\href{ {{-target-}} }{ {{-text-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+{% if text!=target %}[{{ text }}]({{ target }}){% else %}<{{ target }}>{% endif %}
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+A lot of articles can be found on [link]("en.wikipedia.org/", "Wikipedia").
+++++
+
+.Rendered source
+[rendered]
+++++
+A lot of articles can be found on [link]("en.wikipedia.org/", "Wikipedia").
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Paragraph
+
+This element represents a paragraph of text. Individual paragraphs must be separated by an empty line. Paragraphs can be given arguments to further customise them.
+
+*Syntax*
+
+Scope: `page`
+Type: `paragraph`
+
+.Mau source
+[source]
+++++
+Any line of text that doesn't match another page element.
+++++
+
+.Mau source
+[source]
+++++
+[ARGS, KWARGS, TAGS]
+This is a paragraph with arguments.
+++++
+
+*Templates*
+
+* `paragraph`
+
+*Fields*
+
+* `content (TARGET)`: the content of the paragraph
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<p>{{ content }}</p>
+----
+
+.LaTeX
+[source, latex]
+----
+{{ content }}
+\n\n
+----
+
+.Markua
+[source, latex]
+----
+{{ content }}\n
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This is a paragraph.
+
+This is another paragraph.
+++++
+
+.Rendered source
+[rendered]
+++++
+This is a paragraph.
+
+This is another paragraph.
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Source (block)
+
+This element is used to include source code. The primary content of the block is interpreted verbatim aside from "callouts" that are labels that can be attached to lines of the text and that can be referenced later in the document.
+
+The block supports highlighting of the source code through Pygments and the standard components of blocks like titles, unnamed and named arguments, and tags.
+
+There are three elements rendered by templates: the block itself, the callout label attached to a line, and each callout entry (similar to what happens with foornotes).
+
+.Mau source
+[source]
+++++
+def add(a, b): 1 <-- This is the callout label
+    return a+b
+    ^
+    |
+    This is the primary content
+
+1: A function to add numbers <-- This is the callout entry
+++++
+
+Callouts are saved in two lists, `markers` and `callouts`. `markers` is a list of tuples `(linenum, text)`, where `linenum` is the number of a line, and `text` is the label assigned to that callout. `callouts` is a list of callout entries, rendered through the specific template.
+
+Code is provided as a list of tuples `(line, callout)`. The variable `line` contains the line of code in the target format (possibly highlighted) and `callout` is either the rendered form of a callout (using the relative template) or `None`.
+
+See: Callout entry, Callout
+
+*Syntax*
+
+Type: `page`
+
+.Mau source
+[source]
+++++
+[source, CALLOUTS, ARGS, KWARGS, TAGS]
+----
+CONTENT
+----
+++++
+
+*Templates*
+
+* `source-{node.blocktype}-{node.language}`
+* `source-{node.language}`
+* `source-{node.blocktype}`
+* `source`
+
+*Fields*
+
+* `language (STRING)`: the language of the code contained in this block
+* `callouts (LIST[TARGET])`: a list of callout entries
+* `markers (SPECIAL)`: list of markers (see description)
+* `highlights (LIST[INTEGER])`: list of lines that have to be highlighted
+* `delimiter (STRING)`: callouts delimiter
+* `code (SPECIAL)`: code and callouts (see description)
+* `title (STRING)`: title of this block
+* `classes (LIST[STRING])`: a list of classes assigned to this block
+* `preprocessor (STRING)`: the preprocessor (currently not in use)
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<div class="{{ blocktype }}">
+   {% if title %}<div class="title">{{ title }}</div>{% endif %}
+   <div class="content">
+     {% for line, callout in code %}{{ line }}{% if callout %} {{ callout }}{% endif %}\n{% endfor %}
+   </div>
+   {% if callouts %}
+   <div class="callouts">
+     <table>
+       <tbody>
+         {% for callout_entry in callouts %}{{ callout_entry }}{% endfor %}
+       </tbody>
+     </table>
+   </div>
+   {% endif %}
+</div>
+----
+
+.LaTeX
+[source, latex]
+----
+{{ code }}\n
+----
+
+.Markua
+[source, latex]
+----
+{% if title %}{caption: "{{ title }}"}\n{% endif %}
+``` {% if language %}{{ language }}{% endif %}
+{% for line, _ in code %}{{ line }}\n{% endfor %}
+```\n
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+[source, python]
+----
+def add(a, b):
+    return a+b
+----
+++++
+
+.Rendered source
+[rendered]
+++++
+[source, python]
+----
+def add(a, b):
+    return a+b
+----
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Star (style)
+
+This style renders the text between two stars according to the template. The default template renders the text as bold.
+
+*Syntax*
+
+Scope: `inline`
+Type: `style`
+
+.Mau source
+[source]
+++++
+*TEXT*
+++++
+
+*Templates*
+
+* `star`
+
+*Fields*
+
+* `value (STRING)`: the style type (`star`)
+* `content (TARGET)`: the content of the node
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<strong>{{ content }}</strong>
+----
+
+.LaTeX
+[source, latex]
+----
+\textbf{ {{-content-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+**{{ content }}**
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This text is *bold*.
+++++
+
+.Rendered
+[rendered]
+++++
+This text is *bold*.
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Tilde (style)
+
+This style renders the text between two tildes according to the template. The default template renders the text as subscript.
+
+*Syntax*
+
+Scope: `inline`
+Type: `style`
+
+.Mau source
+[source]
+++++
+~TEXT~
+++++
+
+*Templates*
+
+* `tilde`
+
+*Fields*
+
+* `value (STRING)`: the style type (`tilde`)
+* `content (TARGET)`: the content of the node
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<sub>{{ content }}</sub>
+----
+
+.LaTeX
+[source, latex]
+----
+\textsubscript{ {{-content-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+~{{ content }}~
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This text is sub~script~.
+++++
+
+.Rendered
+[rendered]
+++++
+This text is sub~script~.
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== TOC (command)
+
+This command renders the list of all headers (Table of Contents). The argument `exclude_tag` can be used to remove headers with that tag.
+
+*Syntax*
+
+Scope: `page`
+Type: `command_toc`
+
+.Mau source
+[source]
+++++
+::toc:ARGS, KWARGS, TAGS
+++++
+
+*Templates*
+
+* `toc`
+
+*Fields*
+
+* `entries (LIST[TARGET])`: this is the list of headers, each being the rendering of a TOC entry.
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<div>{% if entries%}<ul>{{ entries }}</ul>{% endif %}</div>
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, latex]
+----
+EMPTY
+----
+
+*Examples*
+
+.Mau source
+[source,callouts="|"]
+++++
+# Header in ToC
+
+## Subheader in ToC
+
+::toc:
+++++
+
+.Mau source
+[source,callouts="|"]
+++++
+# Header in ToC
+
+[#notoc]
+## Subheader not in ToC
+
+::toc:exclude_tag=notoc
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== ToC entry
+
+This element renders an element in the TOC.
+
+See: TOC (command)
+
+*Templates*
+
+* `toc_entry`
+
+*Fields*
+
+* `value (STRING)`: the header contained in this element
+* `anchor (STRING)`: the anchor of the header
+* `children (TARGET)`: the rendered list of children (rendered as the whole TOC)
+* `args`
+* `kwargs`
+* `tags`
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<li>
+  <a href="#{{ anchor }}">{{ value }}</a>
+  {% if children %}<ul>{{ children }}</ul>{% endif %}
+</li>
+----
+
+.LaTeX
+[source, latex]
+----
+EMPTY
+----
+
+.Markua
+[source, latex]
+----
+EMPTY
+----
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Underscore (style)
+
+This style renders the text between two underscores according to the template. The default template renders the text as italic.
+
+*Syntax*
+
+Scope: `inline`
+Type: `style`
+
+.Mau source
+[source]
+++++
+_TEXT_
+++++
+
+*Templates*
+
+* `underscore`
+
+*Fields*
+
+* `value (STRING)`: the style type (`underscore`)
+* `content (TARGET)`: the content of the node
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<em>{{ content }}</em>
+----
+
+.LaTeX
+[source, latex]
+----
+\textit{ {{-content-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+*{{ content }}*
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This text is _italic_.
+++++
+
+.Rendered
+[rendered]
+++++
+This text is _italic_.
+++++
+
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Verbatim (style)
+
+This style treats the text inside as verbatim, and is useful to render code inside paragraphs.
+
+*Syntax*
+
+Scope: `inline`
+Type: `verbatim`
+
+.Mau source
+[source]
+++++
+`TEXT`
+++++
+
+*Templates*
+
+* `verbatim`
+
+*Fields*
+
+* `value (STRING)`: the verbatim text
+
+*Default templates*
+
+.HTML
+[source, html+jinja]
+----
+<code>{{ value }}</code>
+----
+
+.LaTeX
+[source, latex]
+----
+\texttt{ {{-value-}} }
+----
+
+.Markua
+[source, html+jinja]
+----
+`{{ value }}`
+----
+
+*Examples*
+
+.Mau source
+[source]
+++++
+This paragraphs contains `verbatim text`.
+++++
+
+.Rendered
+[rendered]
+++++
+This paragraphs contains `verbatim text`.
+++++
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+
+== Macro
+
+TODO
+
+
+
+

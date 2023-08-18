@@ -1,0 +1,4 @@
+templates_directory: mau/pdf
+pelican: no
+chapter_headers: yes
+output_format: tex

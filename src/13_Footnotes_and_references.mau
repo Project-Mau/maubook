@@ -1,0 +1,189 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Footnotes and references
+:pelican.date:2021-10-19 14:00:00 +0100
+:pelican.slug:maubook-footnotes-and-references
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:13
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Footnotes and references
+----
+
+[quote]
+----
+And then I told him my story as I have written it here, omitting only any reference to my love for Dejah Thoris. He was much excited by the news of Helium's princess and seemed quite positive that she and Sola could easily have reached a point of safety from where they left me.
+----
+Edgar Rice Burroughs, "A Princess of Mars" (1912)
+
+Footnotes are extremely useful to provide optional details to parts of the text, or to mention source material like books or papers. Mau has full support for footnotes with a syntax that comes from Markua (Leanpub's Markdown dialect). Mau also expands the concept into references, that are a generalisation of footnotes.
+
+== Footnotes
+
+Footnotes in Mau work through a macro, a block type, and a command.
+
+The block type `footnote` contains the text of the footnote. The name of the footnote is a mandatory argument
+
+. Mau source
+[source]
+++++
+[footnote, mynote]
+----
+This is the text of my footnote.
+----
+++++
+
+Inside the block you can use Mau syntax, such as styles or links
+
+. Mau source
+[source]
+++++
+[footnote, mynote]
+----
+_This_ is the *text* of my footnote.
+----
+++++
+
+The macro `footnote` appears in a paragraph and represents the reference to the footnote, usually being rendered as a superscript small number. The only argument of the macro is the name of the referenced footnote.
+
+. Mau source
+[source]
+----
+There are several markup languages available nowadays[footnote](mynote).
+----
+
+The command `::footnotes:` inserts the list of footnotes and is useful for those output formats like HTML that do not include footnotes automatically.
+
+. Mau source
+[source, callouts="|"]
+++++
+There are several markup languages available nowadays[footnote](mynote).
+
+[footnote, mynote]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+
+::footnotes:
+++++
+
+[rendered]
+++++
+There are several markup languages available nowadays[footnote](mynote).
+
+[footnote, mynote]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+
+::footnotes:
+++++
+
+Please note that the way footnotes are managed can be different according to the output format. If you are producing HTML output you need to insert the command as HTML has no concept of footnotes. TeX, instead, automatically creates the list of footnotes at the bottom of each page, so in that case you don't need to render the list explicitly (see the chapter about templates).
+
+== References
+
+References are a generalisation of footnotes, and in principle they work in the same way through the macro `reference`, the block of type `reference`, and the command `references`.
+
+Unlike footnotes that have just a name, though, references have a type, a name, and a category. The command `references` can be used to print them out selectively.
+
+So, for example, a reference of type `links` with name `markup` is defined as
+
+. Mau source
+[source, callouts="|"]
+++++
+There are many markup languages[reference](links, markup).
+
+[reference, links, markup]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+++++
+
+If you include a category you need to specify it only in the macro
+
+. Mau source
+[source, callouts="|"]
+++++
+There are many markup languages[reference](links, markup, wikipedia).
+
+[reference, links, markup]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+++++
+
+The command `references` requires the type, and optionally accepts the category and the name
+
+. Mau source
+[source, callouts="|"]
+++++
+::references:links
+
+::references:links,wikipedia
+
+::references:links,wikipedia,markup
+++++
+
+Each reference is uniquely identified by the tuple `(type, name)`, and the category can act as a subtype.
+
+Footnotes can be considered references with the type `footnote` and no category. The code
+
+. Mau source
+[source, callouts="|"]
+++++
+There are several markup languages available nowadays[footnote](mynote).
+
+[footnote, mynote]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+
+::footnotes:
+++++
+
+is equivalent to
+
+. Mau source
+[source, callouts="|"]
+++++
+There are several markup languages available nowadays[reference](footnote, mynote).
+
+[reference, footnote, mynote]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+
+::references:footnote
+++++
+
+Keep in mind, however, that footnotes and references are rendered with different templates. In particular, output formats like TeX have a native support for footnotes but don't know anything about references.
+
+::footnotes:

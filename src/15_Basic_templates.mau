@@ -1,0 +1,199 @@
+[condition="if:mau.pelican:"]
+----
+:pelican.title:Basic templates
+:pelican.date:2021-10-19 14:30:00 +0100
+:pelican.slug:maubook-basic_templates
+:pelican.series:Mau - A template-based markup language
+:pelican.series_index:14
+:pelican.image:maubook/card
+----
+
+[condition="if:mau.chapter_headers:"]
+----
+= Basic templates
+----
+
+[quote]
+----
+'That's the idea,' replied Norton. 'This may be an indexed catalogue for 3-D images—templates—solid blueprints, if you like to call them that.'
+----
+Arthur C. Clarke, "Rendezvous with Rama" (1973)
+
+So far, Mau provides features similar to Markdown, Asciidoc, and other markup languages. The real power of Mau, however relies in its use of templates to render the output of the syntax.
+
+Everything you saw in the previous chapters is rendered as described thanks to the default Jinja templates provided by the visitors, but such templates can be easily customised to provide the output you prefer.
+
+== A simple example
+
+To start off on our journey with templates let's have a look a the simplest ones. You know that the Mau provides styles like
+
+. Mau source
+[source]
+----
+Stars identify *strong* text.
+----
+
+This piece of text is processed by Mau and the following Abstract Syntax Tree (AST) is created
+
+. Abstract Syntax Tree
+[source, yaml]
+----
+data:
+  args: []
+  content:
+  - data:
+      args: []
+      content:
+        data:
+          content:
+          - data:
+              type: text
+              value: 'Stars identify '
+          - data:
+              content:
+                data:
+                  content:
+                  - data:
+                      type: text
+                      value: strong
+                  type: sentence
+              type: style
+              value: star
+          - data:
+              type: text
+              value: ' text.'
+          type: sentence
+      kwargs: {}
+      tags: []
+      type: paragraph
+  kwargs: {}
+  tags: []
+  type: document
+----
+
+You can always visualise the AST using the output format `dump` on the command line
+
+[source]
+----
+mau -f dump -i input.mau -o -
+----
+
+The AST is then processed by the chosen visitor, that will render each node. In this case the nodes are of type `text`, `sentence`, `style`, `paragraph`, and `document`.
+
+The `style` node in the previous AST is
+
+[source, yaml]
+----
+- data:
+  content:
+    [...]
+  type: style
+  value: star
+----
+
+and the default HTML template for it is
+
+[source, python]
+----
+star.html: '<strong>{{ content }}</strong>'
+----
+
+The output of the whole text will be
+
+. HTML output
+[source,html]
+----
+<p>Stars identify <strong>strong</strong> text.</p>
+----
+
+where you can see the template `star.html` in action.
+
+If we changed the template to
+
+[source, yaml]
+----
+star.html: '<span class="italic">{{ content }}</span>'
+----
+
+the result would be
+
+. HTML output
+[source,html]
+----
+<p>Stars identify <span class="italic">strong</span> text.</p>
+----
+
+As you can see the names of the templates include an extension even though they are defined in a Python dictionary. This is done as templates can be provided as stand-alone files as well, and keeping a consistent naming simplifies their management.
+
+== Template names
+
+Each element of a Mau text is rendered using a specific template. The template can be unique for the element (e.g. `underscore.html` for the style `underscore`) or be selected among several options.
+
+For example, blocks templates take into account the engine and the type. The block
+
+. Mau source
+[source]
+++++
+[aside]
+----
+This is a block of type `aside`
+----
+++++
+
+will be rendered in HTML with the first of the following templates that is available:
+
+* `block-default-aside.html`
+* `block-default.html`
+* `block-aside.html`
+* `block.html`
+
+You will find a detailed list of templates in the description of each node in the relative chapter. The list of templates for each node is decided by the visitor, so different visitors can provide different options.
+
+== How to define templates
+
+Mau templates can be provided as files (one per template) or though a YAML configuration file.
+
+=== Configuration file
+
+Mau templates can be defined in the YAML configuration file using the key `custom_templates`. For example
+
+[source, yaml]
+----
+---
+target_format: html
+custom_templates:
+  underscore.html: '<span class="bold">{{ content }}</span>'
+  star.html: '<span class="italic">{{ content }}</span>'
+----
+
+This is a good solution for simple templates, but it might quickly become unmanageable if your templates include a lot of Jinja operators.
+
+=== Individual files
+
+You can store templates in individual files inside a directory and pass the latter to Mau through the configuration file with the key `templates_directory`.
+
+[source, yaml]
+----
+---
+ target_format: html
+ templates_directory: templates
+----
+
+Each template is stored in a file with the appropriate name and contains only the code of the template, e.g.
+
+.templates/underscore.html
+[source, html+jinja]
+----
+<span class="bold">{{ content }}</span>
+----
+
+This is a good solution for complex templates, as it doesn't require to quote the text. You can also benefit from syntax highlighting in your editor while writing the template.
+
+== Templates syntax
+
+Mau provides a base visitor class `BaseVisitor` that produces the YAML AST I showed previously. Mau also provides a `JinjaVisitor` class that uses the powerful template engine [link]("https://jinja.palletsprojects.com/en/3.0.x/", "Jinja").
+
+The current visitor plugins are created as subclasses of `JinjaVisitor` but nothing stops you from creating a custom visitor that uses another engine.
+
+The variables available to each Jinja template can be found in the description of each node in the next chapter.
+
