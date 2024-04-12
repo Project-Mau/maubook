@@ -1,54 +1,54 @@
+:pelican.title:Install and Run Mau
+
 [condition="if:mau.pelican:"]
 ----
-:pelican.title:Install and run Mau
-:pelican.date:2021-10-19 08:30:00 +0100
-:pelican.slug:maubook-install-and-run-mau
-:pelican.series:Mau - A template-based markup language
-:pelican.series_index:2
-:pelican.image:maubook/card
+:pelican.series:maubook
+:pelican.series_index:1
+:pelican.template:doc
 ----
 
-[condition="if:mau.chapter_headers:"]
-----
-= Install and run Mau
-----
+[id=install-and-run-mau]
+= {pelican.title}
 
-[quote]
+[*quote]
 ----
-“I’ll tell you. I’m going to install a visiplate right over my desk. Right on the wall over there, see!”
+I’ll tell you. I’m going to install a visiplate right over my desk. Right on the wall over there, see!
 ----
-Isaac Asimov, "I, Robot" (1950)
+Isaac Asimov, _I, Robot_ (1950)
 
-In this chapter I will show you how to install Mau both as a stand-alone tool and as a plugin for Pelican. The only requirements are a working Python3 installation and a virtual environment.
 
-While Python comes preinstalled in several operating systems these days, you can find detailed instructions on how to install it on the Python official website. Virtual environments are covered in the official documentation, but you might want to also explore tools to manage them, like pyenv etc. These are however not mandatory to run Mau.
+This chapter details how to install Mau both as a stand-alone tool and as a plugin for Pelican. The only requirements are a working Python3 installation and a virtual environment.
+
+While Python comes preinstalled in several operating systems these days, you can find detailed instructions on how to install it on the Python official website. Virtual environments are covered in the official documentation, but you might want to also explore tools to manage them, like [link](https://github.com/pyenv/pyenv,pyenv). However, these are not mandatory to run Mau.
 
 == Install Mau as a stand-alone tool
 
 Mau is available [link]("https://pypi.org/project/mau/", "on PyPI") and to install it you just need to run
 
-[source]
+[*source]
 ----
 pip install mau
 ----
 
 At this point you should have the command line tool `mau` available. You can test it with
 
-[source]
+[*source]
 ----
 mau --version
 ----
 
 You can get help directly on the command line running
 
-[source]
+[*source]
 ----
 mau --help
 ----
 
-You will notice in the help text that the option `-f` is used to specify the output format, and that the only available output is `dump`, which prints out the Abstract Syntax Tree. To render Mau source code you need a visitor plugin, and at the moment the available ones are the [link]("https://pypi.org/project/mau_html_visitor/", "HTML visitor") and the [link]("https://pypi.org/project/mau_tex_visitor/", "TeXvisitor"). You can install only one of them or both.
+The option `-f` is used to specify the output format, and the only output available out of the box is `yaml`, which prints out the Abstract Syntax Tree using YAML. To render Mau source code you need a _visitor plugin_.
 
-[source]
+At the moment there are two plugins available: the [link]("https://pypi.org/project/mau_html_visitor/", "HTML visitor") and the [link]("https://pypi.org/project/mau_tex_visitor/", "TeX visitor"). You can install only one of them or both.
+
+[*source]
 ----
 pip install mau-html-visitor
 pip install mau-tex-visitor
@@ -60,16 +60,16 @@ Now, if you run `mau --help` you will see the new output format available to the
 
 The simplest command line for Mau is
 
-[source]
+[*source]
 ----
 mau -f FORMAT -i INPUT
 ----
 
-that reads the Mau source file `INPUT` and converts it into the desired format saving the output in a file called `INPUT.${ext}`, where `${ext}` is a suitable extension that depends on the chosen format. If the input file has the extension `.mau` that will be automatically removed.
+that reads the Mau source file `INPUT` and converts it into the desired format saving the output in a file called `INPUT.EXT`, where `EXT` is a suitable extension that depends on the chosen format. If the input file has the extension `.mau` that will be automatically removed.
 
 If you want to specify the output format and the name of the output file you can use the two options `-f` and `-o`
 
-[source]
+[*source]
 ----
 mau -f FORMAT -i INPUT -o OUTPUT
 ----
@@ -80,7 +80,7 @@ where `FORMAT` is one of the output formats that Mau supports, and both `INPUT` 
 
 Make sure you installed the HTML visitor and create the file `test.mau` in the current directory with this content
 
-[source]
+[*source]
 ----
 = A test
 
@@ -89,20 +89,20 @@ This is a test for the Mau markup processor.
 
 Now you can run
 
-[source]
+[*source]
 ----
 mau -f html -i test.mau -o test.html
 ----
 
 That will parse the content of `test.mau` and render it as HTML into `test.html`. The content of that file is
 
-[source,html]
+[*source,html]
 ----
 <html>
   <head>
   </head>
   <body>
-    <h1 id="a-test">A test</h1>
+    <h1 id="a-test-aae2">A test</h1>
     <p>This is a test for the Mau markup processor.</p>
   </body>
 </html>
@@ -112,7 +112,7 @@ That will parse the content of `test.mau` and render it as HTML into `test.html`
 
 You can now open the output file with your browser
 
-[source]
+[*source]
 ----
 firefox test.html
 ----
@@ -123,156 +123,33 @@ and enjoy your first document created with Mau.
 
 Mau supports a configuration file written in YAML that can be loaded with the option `-c`
 
-[source]
+[*source]
 ----
 mau -c config.yml -f html -i test.mau -o test.html
 ----
 
-Each value defined in the config file is stored as a variable under the namespace `mau`, and can be used in the Mau source. See the section about variables to know more about this.
+[condition="if:mau.website:"]
+----
+Each value defined in the config file is stored as a variable under the namespace `mau`, and can be used in the Mau source. A complete description of the configuration file can be found in [link](\{filename}20_Configuration.mau, "Configuration"). You can learn more about variables in Mau documents in [link](\{filename}08_Variables.mau, "Variables").
+----
+
+[condition="ifnot:mau.website:"]
+----
+Each value defined in the config file is stored as a variable under the namespace `mau`, and can be used in the Mau source. A complete description of the configuration file can be found in [header](configuration). You can learn more about variables in Mau documents in [header](variables).
+----
 
 == Using Mau programmatically
 
-You can use Mau programmatically in your Python code. You fist need to import `Mau` and the function to load the visitor plugins
-
-[source, python]
+[condition="if:mau.website:"]
 ----
-from mau import Mau, load_visitors
+You can use Mau programmatically in your Python code. See [link](\{filename}19_Python_interface.mau, "Python interface") to know more about the API.
 ----
 
-The object `Mau` has the following constructor
-
-[source, python]
+[condition="ifnot:mau.website:"]
 ----
-class Mau:
-    def __init__(
-        self,
-        input_file_name,
-        visitor_class,
-        config=None,
-        custom_templates=None,
-        templates_directory=None,
-        full_document=False,
-    ):
+You can use Mau programmatically in your Python code. See [header](python-interface) to know more about the API.
 ----
 
-* `input_file_name` is used by Mau when a syntax error is found. Mau tries to point out where the syntax error is and it includes the name of the file.
-* `visitor_class` is the Python class that implements the conversion into the target format.
-* `config` is a dictionary containing the configuration.
-* `custom_templates` is a dictionary containing custom templates.
-* `templates_directory` is a directory that contains a file for each template you want to customise.
-* `full_document` tells Mau if the output is a fragment or if it has to be wrapped in a document using the specific template (which might add header and footer, for example).
-
-To initialise it you need to load the visitor plugins and to select the one corresponding to the output format you want.
-
-[source, python]
-----
-visitor_classes = load_visitors()
-visitor_class = visitors["html"]
-----
-
-Then you might customise the configuration and the templates
-
-[source, python]
-----
-config = {
-    "some_var": 42
-}
-
-custom_templates = {
-    "header.html": '<h{{ level }} id="{{ anchor }}">{{ value }}</h{{ level }}>',
-}
-templates_directory = "/some/templates/dir"
-----
-
-As you can see from the prototype, all these values are optional. At this point you can initialise the object `Mau`
-
-[source, python]
-----
-mau = Mau(
-    "/some/source/path",
-    visitor_class=visitor_class,
-    config=config,
-    custom_templates=custom_templates,
-    templates_directory=templates_directory,
-)
-----
-
-You can then call the lexer, the parser, and the visitor on some Mau text contained in a string
-
-[source, python]
-----
-text = "Some Mau text contained in a string"
-lexer = self._mau.run_lexer(text)
-parser = self._mau.run_parser(lexer.tokens)
-content = self._mau.process(parser.nodes, parser.environment)
-----
-
-Last, some visitors contain a function to transform the output, for example to tidy it up, so you might want to call it
-
-[source, python]
-----
-if visitor_class.transform:
-   content = visitor_class.transform(content)
-----
-
-The code of the whole example is then
-
-[source, python]
-----
-from mau import Mau, load_visitors
-
-visitor_classes = load_visitors()
-visitor_class = visitors["html"]
-
-config = {
-    "some_var": 42
-}
-
-custom_templates = {
-    "header.html": '<h{{ level }} id="{{ anchor }}">{{ value }}</h{{ level }}>',
-}
-templates_directory = "/some/templates/dir"
-
-mau = Mau(
-    "/some/source/path",
-    visitor_class=visitor_class,
-    config=config,
-    custom_templates=custom_templates,
-    templates_directory=templates_directory,
-)
-
-text = "Some Mau text contained in a string"
-lexer = self._mau.run_lexer(text)
-parser = self._mau.run_parser(lexer.tokens)
-content = self._mau.process(parser.nodes, parser.environment)
-
-if visitor_class.transform:
-   content = visitor_class.transform(content)
-----
-
-== Using Mau in Pelican
-
-You can use Mau to write posts and pages in Pelican. First you need to install the plugin that enables it
-
-[source]
-----
-pip install pelican-mau-reader
-----
-
-You can see the updated documentation about the plugin on [link]("https://github.com/pelican-plugins/mau-reader", "the project page") but overall you just need to follow the instructions in this paragraph.
-
-The basic usage of the plugin is simple. Every file in your content directory that ends with `.mau` will be processed by it, and you need to specify metadata using Mau's variables under the namespace `pelican`. For example
-
-[source]
-----
-:pelican.title:This is a post written with Mau
-:pelican.date:2021-02-17 13:00:00
-:pelican.modified:2021-02-17 14:00:00
-:pelican.category:tests
-:pelican.tags:foo, bar, foobar
-:pelican.summary:I have a lot to write
-----
-
-The syntax `:name:value` is used by Mau to create variables and you can learn more about it in the dedicated chapter.
+That chapter also details how to use Mau to write posts and pages in [link](https://docs.getpelican.com/en/latest/, Pelican) through a specific plugin.
 
 ::footnotes:

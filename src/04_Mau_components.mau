@@ -1,0 +1,149 @@
+:pelican.title:Mau Components
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:4
+:pelican.template:doc
+----
+
+[id=mau-components]
+= {pelican.title}
+
+[*quote]
+----
+The electric mechanism, within its compellingly authentic-style gray pelt, gurgled and blew bubbles, its vidlenses glassy, its metal jaws locked together. This had always amazed him, these “disease” circuits built into false animals; the construct which he now held on his lap had been put together in such a fashion that when a primary component misfired, the whole thing appeared-not broken-but organically ill.
+----
+Philip K. Dick, _Do Androids Dream of Electric Sheep?_ (1968)
+
+
+Mau syntax contains several components. Some of these can be found on a single line of a page, while some can be found inside a block of text. In the previous section we already saw that a *paragraph* is one of the page components, but the full list is
+
+[condition="if:mau.visitor.format:html"]
+----
+* *Horizontal rule*: a line that contains three hyphens `---`
+* *Single line comment*: a line preceded by the characters `//`
+* *Multi line comment*: any block of lines surrounded by the comment fence `////`
+* *Variable definition*: a line that begins with a name surrounded by colons, e.g. `:var_name:`
+* *Command*: a line that begins with a command name in the form `::command_name:`
+* *Title*: a line that begins with a dot, e.g. `.Title`
+* *Arguments*: a line that is completely surrounded by square brackets, e.g. `[arguments]`
+* *Header*: a line preceded by one or more symbols `=`
+* *Block*: any group of lines surrounded by a block fence of four identical characters, e.g. `----`
+* *Content*: one or more URIs preceded by `<<`
+* *List*: a sequence of lines each one of them preceded by one or more symbols `#` or `*`
+* *Paragraph*: any block of text preceded by an empty line
+
+Inside paragraphs you can instead have the following special syntax
+
+* *Styled text*: any sequence of words surrounded by `_underscores_`, `*stars*`, `~tildes~`, or `^carets^`
+* *Verbatim text*: any sequence of words surrounded by `\`backticks\``
+* *Macros*: functions that come in the form `[name](arguments)`
+----
+
+[condition="if:mau.visitor.format:tex"]
+----
+* *Horizontal rule*: a line that contains three hyphens
+* *Single line comment*: a line preceded by the characters `//`
+* *Multi line comment*: any block of lines surrounded by the comment fence `////`
+* *Variable definition*: a line that begins with a name surrounded by colons, e.g. `:var_name:`
+* *Command*: a line that begins with a command name in the form `::command_name:`
+* *Title*: a line that begins with a dot, e.g. `.Title`
+* *Arguments*: a line that is completely surrounded by square brackets, e.g. `[arguments]`
+* *Header*: a line preceded by one or more symbols `=`
+* *Block*: any group of lines surrounded by a block fence of four identical characters, e.g. `++++`
+* *Content*: one or more URIs preceded by `<<`
+* *List*: a sequence of lines each one of them preceded by one or more symbols `#` or `*`
+* *Paragraph*: any block of text preceded by an empty line
+
+Inside paragraphs you can instead have the following special syntax
+
+* *Styled text*: any sequence of words surrounded by `_underscores_`, `*stars*`, `~tildes~`, or `^carets^`
+* *Verbatim text*: any sequence of words surrounded by backticks
+* *Macros*: functions that come in the form `[name](arguments)`
+----
+
+Finally, there are some components that are created automatically, such as callouts and list entries, which will be introduced together with other components.
+
+== Components and rendering
+
+[condition="if:mau.visitor.format:html"]
+----
+As in other markup languages like Markdown, each Mau component has a default rendering. For example, the syntax `_some text_` will be rendered in HTML as `&lt;em&gt;some text&lt;/em&gt;`, but the real power of Mau is that any component can be connected to a custom template that changes the rendering. For example, I might decide that `_some text_` should be rendered as `&lt;span class="red"&gt;SOME TEXT&lt;/span&gt;`.
+
+Moreover, components can use different templates based on arguments or on the parent node that contains them. For example, I might decide that `_some text_` should be rendered as `&lt;em&gt;some text&lt;/em&gt;` in normal paragraphs and as `&lt;span class="red"&gt;SOME TEXT&lt;/span&gt;` in a quote.
+----
+
+[condition="if:mau.visitor.format:tex"]
+----
+As in other markup languages like Markdown, each Mau component has a default rendering. For example, the syntax `_some text_` will be rendered in HTML as `<em>some text</em>`, but the real power of Mau is that any component can be connected to a custom template that changes the rendering. For example, I might decide that `_some text_` should be rendered as `<span class="red">SOME TEXT</span>`.
+
+Moreover, components can use different templates based on arguments or on the parent node that contains them. For example, I might decide that `_some text_` should be rendered as `<em>some text</em>` in normal paragraphs and as `<span class="red">SOME TEXT</span>` in a quote.
+----
+
+The template engine will be explained in depth in the second part of the documentation.
+
+== Arguments
+
+Some Mau components accept arguments, which are not too different from standard function arguments in programming languages. The most important thing to remember is that Mau values are always strings, so arguments do not really have types.
+
+Arguments can appear between round brackets `()`, square brackets `[]`, or directly after a command, depending on the component.
+
+* Macros receive arguments between round brackets: e.g. `[macro](argument1, argument2, ...)`.
+* Commands receive some arguments directly after the final colon: e.g. `::command:argument1, argument2, ...`.
+* Horizontal rules, commands, headers, blocks, content, lists, and paragraphs receive arguments on a separate line, surrounded by square brackets, e.g. `[argument1, argument2, ...]`.
+
+In the next chapters there will be plenty of examples to show how to pass arguments and to clarify why commands can receive them in two different ways.
+
+=== Named and unnamed arguments
+
+Arguments can be *unnamed* or *named*. An unnamed argument has just a value, for example `html`, while a named one has a key and a value linked by an equal sign, like `language=html`. There can't be a space between the key and the value, so an argument like `language = html` is invalid.
+
+Multiple arguments are separated by commas, optionally followed by one or more spaces. So, `source,html` and `source, html` are both valid, and the same is valid for named arguments, as `source,language=html` and `source, language=html` are equally accepted by the parser.
+
+Unnamed arguments can never follow named ones, so the syntax `language=html, source` is invalid.
+
+If an argument contains one or more spaces or commas you need to surround it with quotes, e.g. `attribution="J.R.R. Tolkien"` or `classes="class1,class2"`. If arguments are surrounded by round or square bracket, you have to use quotes whenever the value contains the closing bracket. E.g. `(attribution="The (real) author")`. If you need to pass quotes as value of an argument you need to escape them, e.g. `attribution="The so-called \"author\""`.
+
+=== Tags
+
+Tags are special arguments prefixed by `#`. Whenever Mau finds an unnamed argument that starts with `#` it will strip the prefix and collect the argument in a separate list called `tags`. Tags are useful to categorise elements and apply special formatting.
+
+For example the arguments list `source, #custom, red, language=html` will internally be parsed as
+
+[*source]
+----
+Unnamed arguments: source, red
+Named arguments: language=html
+Tags: custom
+----
+
+Please note that the parsed name of the tag doesn't contain the hash mark `#`.
+
+=== Subtype
+
+The first unnamed argument whose value starts with `*` is interpreted as the subtype of the component and plays an important role in the choice of the rendering template, as will be clarified later in the documentation. For example, the syntax `*ctype1, arg1, arg2` will be parsed as
+
+[*source]
+----
+Unnamed arguments: arg1, arg2
+Named arguments: 
+Tags:
+Subtype: ctype1
+----
+
+You don't need to specify the subtype, but you should have maximum one of them. If you specify multiple ones Mau will at the moment keep only the first one. For example, the syntax `[*ctype1, *ctpe2, arg1, arg2]` will be parsed as the previous one and subtype `ctype2` will be lost.
+
+=== Arguments and rendering
+
+[condition="if:mau.website:"]
+----
+When a component is parsed, it is transformed into a node that is then passed to the rendering engine. Each node, whatever the component, has its arguments stored in the attributes `args`, `kwargs`, `tags`, and `subtypes`. See [link](\{filename}16_Basic_templates.mau, "Basic templates") and [link](\{filename}18_List_of_components.mau, "List of components") for more information.
+----
+
+[condition="ifnot:mau.website:"]
+----
+When a component is parsed, it is transformed into a node that is then passed to the rendering engine. Each node, whatever the component, has its arguments stored in the attributes `args`, `kwargs`, `tags`, and `subtypes`. See [header](basic-templates) and [header](list-of-components) for more information.
+----
+
+::footnotes:

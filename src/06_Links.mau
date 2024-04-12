@@ -1,0 +1,140 @@
+:pelican.title:Links
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:4
+:pelican.template:doc
+----
+
+[id=links]
+= {pelican.title}
+
+[*quote]
+----
+I had to nod. I was not unaware of the weakness of that link in my chain of speculations. Still, there were so many unknowns... I could offer alternatives, such as Random then did, but guesses prove nothing.
+----
+Roger Zelazny, _The Chronicles of Amber - Sign of the Unicorn_ (1975)
+
+Since markup languages are mostly used to write hyperlinked documents, links play a big part in the syntax. In Mau, links are created with the macro `link`.
+
+. Mau source
+[*source]
+----
+The source code can be found at [link](https://github.com/Project-Mau/mau).
+----
+
+[*rendered]
+----
+The source code can be found at [link](https://github.com/Project-Mau/mau).
+----
+
+[condition="if:mau.website:"]
+----
+The values between round brackets are arguments (see [link](\{filename}04_Mau_components.mau, "Mau components")).
+----
+
+[condition="ifnot:mau.website:"]
+----
+The values between round brackets are arguments (see [header](mau-components)).
+----
+
+== Add text to the link
+
+You can add optional text to the link that will replace the URL in the rendered text
+
+. Mau source
+[*source]
+----
+The source code can be found
+on [link](https://github.com/Project-Mau/mau, GitHub).
+----
+
+[*rendered]
+----
+The source code can be found on [link](https://github.com/Project-Mau/mau, GitHub).
+----
+
+== Using spaces and quotes
+
+If the title contains spaces or the closing parenthesis `)` you need to wrap it between double quotes
+
+. Mau source
+[*source]
+----
+The source code can be found
+on [link](https://github.com/Project-Mau/mau, "the GitHub page").
+----
+
+[*rendered]
+----
+The source code can be found on [link](https://github.com/Project-Mau/mau, "the GitHub page").
+----
+
+---
+
+Should you need to add quotes to the title you will have to escape them
+
+. Mau source
+[*source]
+----
+The main [link](https://github.com/Project-Mau/mau, "\"repository\"").
+----
+
+[*rendered]
+----
+The main [link](https://github.com/Project-Mau/mau, "\"repository\"").
+----
+
+---
+
+The same rules are valid for the URL
+
+. Mau source
+[*source]
+----
+A [link]("https://example.org/?q=[a b]","URL with special characters").
+----
+
+[*rendered]
+----
+A [link]("https://example.org/?q=[a b]","URL with special characters").
+----
+
+== Mailto links
+
+Mailto links can be created with the `mailto` macro, which works like the `link` macro described above.
+
+. Mau source
+[*source]
+----
+Get in touch at [mailto](info@example.com).
+----
+
+[*rendered]
+----
+Get in touch at [mailto](info@example.com).
+----
+
+== Rich text
+
+The text added to a link is rendered using Mau, so you can include styles or other macros, as long as the output makes sense in the target format. To avoid clashes between Mau syntax and arguments syntax, if you have rich text it is recommended to explicitly mark it as a named `text` argument.
+
+. Mau source
+[*source]
+----
+The source code can be found
+on [link]("https://github.com/Project-Mau/mau", text="*GitHub*").
+----
+
+[*rendered]
+----
+The source code can be found
+on [link]("https://github.com/Project-Mau/mau", text="*GitHub*").
+----
+
+In this case, the syntax `[link]("https://github.com/Project-Mau/mau", "*GitHub*")` would be interpreted as a link with subtype `GitHub` because of the leading `*`.
+
+As for rich text, remember that Mau doesn't understand output formats, it merely uses templates. So, while it is possible in Mau to insert a link as a text for a link, that doesn't make sense in HTML or TeX.
+
+::footnotes:

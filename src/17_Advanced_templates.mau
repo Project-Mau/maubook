@@ -1,0 +1,179 @@
+:pelican.title:Advanced Templates
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:17
+:pelican.template:doc
+----
+
+[id=advanced-templates]
+= {pelican.title}
+
+[*quote]
+----
+"In some ways you're so advanced, and yet when it comes to making a decision, you're still a child. I can't decide for you, Charlie. The answer can't be found in books — or be solved by bringing it to other people."
+----
+Daniel Keyes, _Flowers for Algernon_ (1959)
+
+Examples of templates, using the parent, using tags.
+
+
+== Template names
+
+Each component of a Mau document is transformed into a node of the AST, and each node is rendered using a template. For each node, Mau creates a list of several templates and tries to locate them. The first matching template will be loaded and used to render the node. Templates have a specific extension that depends on the output format (`.html` for HTML, `.tex` for TeX, and so on).
+
+The names of possible templates are created considering several parts: the node templates, the node subtype, the node tags, the parent node, and the visitor prefixes, with the following schema:
+
+`{prefix}.{parent_type}.{parent_position}.{node_template}.{node_subtype}.{node_tag}`
+
+and the Python that creates the list of possible template names is
+
+[*source, python]
+----
+templates = [
+    f"{prefix}{parent_type}{node_template}{node_subtype}{node_tag}"
+    for prefix in prefixes
+    for parent_type in parent_types
+    for node_template in node_templates
+    for node_subtype in node_subtypes
+    for node_tag in node_tags
+]
+----
+
+=== Node templates
+
+When Mau parses the text `*important*`, it generates a node with type `style` and value `star`. Such a node has two possible templates
+
+* `style.star`
+* `style`
+
+While the first is specific for the style `star`, the second one is shared with styles `underscore`, `caret`, and `tilde`. This means that for HTML output you can create the file `style.html` that serves all styles, and then the file `style.star.html` to customise that specific style. As Mau provides default templates, you can clearly define only the latter.
+
+The list of templates used for a specific node depends on the type of node and will be documented in the relative section.
+
+=== Node subtype
+
+As some nodes can have a subtype the list of templates takes that into account. For each node template, Mau first tests if there is a more specific one that includes the subtype, so the list of templates is
+
+* `{node_template1}.{node_subtype}`
+* `{node_template1}`
+* `{node_template2}.{node_subtype}`
+* `{node_template2}`
+* ...
+* `{node_type}.{node_subtype}`
+* `{node_type}`
+
+where `node_template1`, `node_template2`, and so on are specific to the type of node.
+
+For example, when Mau renders the text
+
+[source]
+----
+[*important]
+This is an important paragraph
+----
+
+the list of possible templates is
+
+* `paragraph.important`
+* `paragraph`
+
+=== Node tags
+
+Each tag assigned to the node is used to find specialised templates appending the tag at the end of the template name, so the list is
+
+* `{node_template1}.{tag1}`
+* `{node_template1}.{tag2}`
+* `{node_template1}`
+* `{node_template2}.{tag1}`
+* `{node_template2}.{tag2}`
+* `{node_template2}`
+* ...
+* `{node_type}.{tag1}`
+* `{node_type}.{tag2}`
+* `{node_type}`
+
+For example, when Mau renders the text
+
+[source]
+----
+[#tag1, #tag2]
+This is an important paragraph
+----
+
+the list of possible templates is
+
+* `paragraph.tag1`
+* `paragraph.tag2`
+* `paragraph`
+
+=== Parent node
+
+Each node is connected with the node that contains it, so the template can be chosen depending on the parent node type, the parent node subtype, or the position that the node has in the parent. For each template `TEMPLATE` the following variants are tested
+
+* `{parent.node_type}.{parent.subtype}.{parent_position}.TEMPLATE`
+* `{parent.node_type}.{parent.subtype}.TEMPLATE`
+* `{parent.node_type}.{parent_position}.TEMPLATE`
+* `{parent.node_type}.TEMPLATE`
+* `TEMPLATE`
+
+The value `parent_position` is currently used only for blocks, and can be `primary` for primary content and `secondary` for secondary content.
+
+For example, consider the following document. A paragraph with subtype `important` as primary content of a block with subtype `aside`
+
+[source]
+++++
+[*aside]
+----
+[*important]
+This is an important paragraph
+----
+++++
+
+the list of possible templates is
+
+* `block.aside.primary.paragraph.important`
+* `block.aside.primary.paragraph`
+* `block.aside.paragraph.important`
+* `block.aside.paragraph`
+* `block.primary.paragraph.important`
+* `block.primary.paragraph`
+* `block.paragraph.important`
+* `block.paragraph`
+* `paragraph.important`
+* `paragraph`
+
+=== Visitor prefixes
+
+When Mau renders a document it can be assigned a list of prefixes, used to identify templates. This is useful when the same parsed material has to be rendered in different ways at the same time. For example, the table of contents might be rendered using certain templates in the main area of an HTML page, but using different ones in the navigation bar.
+
+The list of all templates is tested using each one of the prefixes, including the empty one. For example, if Mau is given the prefixes `prefix1` and `prefix2` the document
+
+[source]
+++++
+[*aside]
+----
+[*important]
+This is an important paragraph
+----
+++++
+
+corresponds to the templates
+
+* `prefix1.block.aside.primary.paragraph.important`
+* `prefix1.block.aside.primary.paragraph`
+* `prefix1.block.aside.paragraph.important`
+* ...
+* `prefix1.paragraph`
+* `prefix2.block.aside.primary.paragraph.important`
+* `prefix2.block.aside.primary.paragraph`
+* `prefix2.block.aside.paragraph.important`
+* ...
+* `prefix2.paragraph`
+* `block.aside.primary.paragraph.important`
+* `block.aside.primary.paragraph`
+* `block.aside.paragraph.important`
+* ...
+* `paragraph`
+

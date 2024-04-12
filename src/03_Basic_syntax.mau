@@ -1,109 +1,85 @@
+:pelican.title:Basic Syntax
+
 [condition="if:mau.pelican:"]
 ----
-:pelican.title:Basic syntax
-:pelican.date:2021-10-19 09:00:00 +0100
-:pelican.slug:maubook-basic-syntax
-:pelican.series:Mau - A template-based markup language
+:pelican.series:maubook
 :pelican.series_index:3
-:pelican.image:maubook/card
+:pelican.template:doc
 ----
 
-[condition="if:mau.chapter_headers:"]
-----
-= Basic syntax
-----
+[id=basic-syntax]
+= {pelican.title}
 
-[quote]
+[*quote]
 ----
 Some of the newer ones are having trouble because they never really mastered some basic techniques, but they’re working hard and improving.
 ----
-Orson Scott Card, "Ender's Game" (1985)
+Orson Scott Card, _Ender's Game_ (1985)
 
-This and the following chapters will give you an overview of the basic syntax for paragraphs, styles, and inline elements like links and images. If you are familiar with either Markdown or Asciidoctor none of these will be a surprise to you, but I will describe everything assuming the reader doesn't know any markup language.
 
-I will assume you followed the instructions in the previous chapter and know how to run Mau in a stand-alone fashion, or that you are running it in Pelican. Either way, I will refer to generic input and output, meaning respectively the Mau source and the final result. Unless explicitly stated, the rest of the book will use the HTML output format.
+This and the following chapters will give you an overview of the basic syntax for paragraphs, styles, and other inline elements like links and images. If you are familiar with either Markdown or Asciidoctor none of these will be a surprise to you, but this documentation will describe everything assuming the reader doesn't know any markup language.
 
-I will show the source code in a block like this
+The documentation will refer to generic input and output, meaning respectively the Mau source and the final result.
+
+== Typographic conventions
+
+The source code in a block will be shown like this
 
 . Mau source
-[source]
+[*source]
 ----
 This is Mau source code
 ----
 
+[condition="if:mau.visitor.format:html"]
+%%%%
 If useful, the resulting HTML code will be shown in a block like this
 
 . HTML output
-[source,html]
+[*source,html]
 ----
 <p>The resulting HTML code</p>
 ----
 
-[condition="if:mau.output_format:html"]
-----
 The rendered version of the resulting HTML will be shown with an aside like
-----
+%%%%
 
-[condition="if:mau.output_format:tex"]
+[condition="if:mau.visitor.format:tex"]
 ----
 As this book is formatted using LaTeX, the rendered version won't use the HTML code but its LaTeX counterpart. The rendered version will be shown with an aside like
 ----
 
-[rendered]
+[*rendered]
 ----
 This is the rendered output
 ----
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 ----
-Please keep in mind that the resulting HTML I will show is rendered using this website's CSS, so some of the styles might differ when you open your output file with your browser.
-----
-
-When showing the HTML output I will skip the boilerplate to keep examples compact and readable. When you see a block with the resulting HTML like
-
-. HTML output
-[source,html]
-----
-<p>The resulting HTML code</p>
+Please keep in mind that the rendered version of the code in this documentation is rendered using this website's CSS, so some of the styles might differ when you open your output file with your browser.
 ----
 
-the full output is actually
-
-. HTML output
-[source,html]
-----
-<html>
-  <head>
-  </head>
-  <body>
-    <p>The resulting HTML code</p>
-  </body>
-</html>
-----
-
-Finally, remember that both Markdown and Asciidoctor have a fixed rendering, while the output in Mau is ruled by templates. What you see in the output HTML and in the rendered boxes is the result of Mau's default templates, but those can be overridden at any time, as we will see in a later chapter.
-
-At the end of this book you will find a description of the attributes each element available in Mau exposes to the template engine.
+Remember that both Markdown and Asciidoctor have a fixed rendering, while the output in Mau is ruled by templates. In the first chapters what you will see in the rendered boxes is the result of Mau's default templates, but those can be overridden at any time, as detailed by later chapters.
 
 == Paragraphs
 
 The simplest element in Mau is a line of text that forms a paragraph
 
 . Mau source
-[source]
+[*source]
 ----
 This is a line of text.
 ----
 
-[rendered]
+[*rendered]
 ----
 This is a line of text.
 ----
 
-Adjacent lines of text are automatically joined into a single paragraph, so both
+Adjacent lines of text are automatically joined into a single paragraph. For example
 
 . Mau source
-[source]
+[*source]
 ----
 This is a sentence. And another sentence.
 ----
@@ -111,7 +87,7 @@ This is a sentence. And another sentence.
 and 
 
 . Mau source
-[source]
+[*source]
 ----
 This is a sentence.
 And another sentence.
@@ -119,7 +95,7 @@ And another sentence.
 
 will both be rendered as
 
-[rendered]
+[*rendered]
 ----
 This is a sentence.
 And another sentence.
@@ -128,7 +104,7 @@ And another sentence.
 To separate paragraphs you need to insert one or more empty lines. For example
 
 . Mau source
-[source]
+[*source]
 ----
 This is a sentence.
 
@@ -138,7 +114,7 @@ And another sentence.
 and 
 
 . Mau source
-[source]
+[*source]
 ----
 This is a sentence.
 
@@ -149,7 +125,7 @@ And another sentence.
 
 will both be rendered as
 
-[rendered]
+[*rendered]
 ----
 This is a sentence.
 
@@ -158,10 +134,10 @@ And another sentence.
 
 == Comments
 
-Mau supports both single-line and multi-line comments. A single line comment uses double slashes
+Mau supports single-line and multi-line comments. A single line comment uses double slashes
 
 . Mau source
-[source]
+[*source]
 ----
 This is a sentence.
 
@@ -170,7 +146,7 @@ And another sentence.
 // This is a comment and won't be rendered
 ----
 
-[rendered]
+[*rendered]
 ----
 This is a sentence.
 
@@ -179,10 +155,10 @@ And another sentence.
 // This is a comment and won't be rendered
 ----
 
-Multi-line comments are surrounded by four slashes on a separate line
+while multi-line comments are surrounded by four slashes on a separate line
 
 . Mau source
-[source]
+[*source]
 ----
 This is a sentence.
 
@@ -197,7 +173,7 @@ little more readable
 ////
 ----
 
-[rendered]
+[*rendered]
 ----
 This is a sentence.
 
@@ -211,47 +187,18 @@ for fun and to be a
 little more readable
 ////
 ----
-
-== Arguments
-
-As we will see later, some advanced commands in Mau accept arguments, which are not too different from standard function arguments in programming languages. The most important thing to remember is that Mau values are always strings, so arguments do not really have types.
-
-Arguments can appear between round brackets `()`, square brackets `[]`, or directly after a command, depending on the context. This will be clearly specified in each section when arguments are discussed.
-
-Arguments can be *unnamed* or *named*. An unnamed argument has just a value, for example `html`, while a named one has a key and a value linked by an equal sign, like `language=html`. There can't be a space between the key and the value, so an argument like `language = html` is invalid.
-
-Multiple arguments are separated by commas, optionally followed by one or more spaces. So, `source,html` and `source, html` are both valid, and the same is valid for named arguments, as `source,language=html` and `source, language=html` are equally accepted by the parser.
-
-In the documentation, arguments will be given uppercase (e.g. `TYPE`), and named ones will followed by an equal sign (e.g. `LANGUAGE=`).
-You can avoid specifying the key if you pass argument values respecting the order provided in the documentation. So, if in a certain context you have to provide `TYPE, LANGUAGE=` you can either give `source, html` or `source, language=html`. Unnamed arguments can never follow named ones.
-
-If an argument contains one or more spaces or commas you need to surround it with quotes, e.g. `attribution="J.R.R. Tolkien"` or `classes="class1,class2"`.
-
-If the arguments are surrounded by braces you should use quotes also whenever the value contains the closing bracket. E.g. `(attribution="The (real) author")`. Here, the `)` after `real` would be considered the closing bracket if not surrounded by quotes.
-
-If you need to pass quotes as value of an argument you need to escape them, e.g. `attribution="The so-called \"author\""`.
-
-=== Tags
-
-Tags are special arguments prefixed by `#`. Whenever Mau finds an unnamed argument that starts with `#` it will strip the prefix and collect the argument in a separate list called `tags` (see the chapter about the node format). Tags are useful to categorise elements and apply special formatting.
-
-For example the arguments list `source, language=html, #custom` contains the tag `custom` (plase note the missing `#`).
-
-== Macros
-
-Mau allows you to run functions called "macros". Macros always come in the form `[NAME](ARGUMENTS)` where `NAME` is the name of the macro and `ARGUMENTS` is a string formatted as described in the previous section. Built-in macros will be described in the following chapters.
 
 == Include other files
 
-So far Mau has a basic support for including other files through the directive `#include`. Directives are special commands that are processed before the Mau code is properly parsed
+You can include other files through the directive `#include`. Directives are special commands that are processed before the Mau code is properly parsed
 
 . Mau source
-[source]
+[*source]
 ----
 \::#include:/path/to/file.mau
 ----
 
-Since the inclusion happens during the very first stages of the processing, you can also include files inside blocks (see the dedicated chapter).
+Since the inclusion happens during the very first stages of the processing, you can include files anywhere in the document. The directive, however, cannot be surrounded by other text. Therefore, you cannot include the content of a file in the middle of a paragraph or in a header.
 
 ::footnotes:
 

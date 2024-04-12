@@ -1,0 +1,73 @@
+:pelican.title:Configuration
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:20
+:pelican.template:doc
+----
+
+[id=configuration]
+= {pelican.title}
+
+[*quote]
+----
+Roger, of course, was not a normal human being. His muscular system was content with prolonged overloads in almost any configuration it could bend into at all.
+----
+Frederik Pohl, _Man Plus_ (1976)
+
+
+Currently, Mau supports the following configuration variables
+
+== `mau.parser`
+
+`mau.parser.block_definitions`
+
+Custom block definitions that we want to create through configuration instead of using `::defblock:`.
+
+`mau.parser.header_anchor_function`
+
+A function that creates a unique anchor for headers. The prototype is `def header_anchor(text:str, level:str) -> str`, where `text` is the content of the header and `level` is the depth level.
+
+`mau.parser.content_wrapper`
+
+The node to use to wrap the content. The default value is `ContainerNode`.
+
+== `mau.visitor`
+
+`mau.visitor.class`
+
+The Python class that implements the visitor interface and provided by a plugin.
+
+`mau.visitor.prefixes`
+
+The template prefixes that should be used.
+
+`mau.visitor.template_providers`
+
+The template providers plugin we want to load. Mau autodetects template plugins but doesn't automatically load them. They need to be explicitly activated.
+
+`mau.visitor.templates_directory`
+
+[condition="if:mau.website:"]
+----
+The directory that contains template files, saved either with a flat or a nested structure. See [link](\{filename}16_Basic_templates.mau, "Basic templates").
+----
+
+[condition="ifnot:mau.website:"]
+----
+The directory that contains template files, saved either with a flat or a nested structure. See [header](basic-templates).
+----
+
+`mau.visitor.custom_templates`
+
+[condition="if:mau.website:"]
+----
+Custom templates that we want to define through configuration. See [link](\{filename}16_Basic_templates.mau, "Basic templates").
+----
+
+[condition="ifnot:mau.website:"]
+----
+Custom templates that we want to define through configuration. See [header](basic-templates).
+----
+

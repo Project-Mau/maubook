@@ -1,0 +1,246 @@
+:pelican.title:Variables
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:8
+:pelican.template:doc
+----
+
+[id=variables]
+= {pelican.title}
+
+[*quote]
+----
+It was wrong to have a third party present when I confronted you. It introduced one variable too many. It is a mistake that must be paid for, I suppose.
+----
+Isaac Asimov, _Second Foundation_ (1953)
+
+Mau supports variables of two types: strings and booleans. You can define variables at any point in a Mau document with the syntax `:NAME:VALUE` and then insert the value using the syntax `{NAME}`. For example
+
+. Mau source
+[*source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+----
+
+[*rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+----
+
+---
+
+Variables can be used in several contexts. In paragraphs, headers, and footnotes they are useful to place constant strings that are repeated over and over and might need to be changed. Variables are replaced very early in the Mau translation process, so they can contain Mau code.
+
+. Mau source
+[*source]
+----
+:answer:*42*
+:wikipedia_link:[link]("https://en.wikipedia.org/wiki/42_(number)")
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+
+You can learn more about it here {wikipedia_link}
+----
+
+[*rendered]
+----
+:answer:*42*
+:wikipedia_link:[link]("https://en.wikipedia.org/wiki/42_(number)")
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+
+You can learn more about it here {wikipedia_link}
+----
+
+Variables without a value are simply empty strings.
+
+. Mau source
+[*source, callouts="|"]
+----
+:answer:
+
+The answer is {answer}.
+----
+
+[*rendered]
+----
+:answer:
+
+The answer is {answer}.
+----
+
+[condition="if:mau.website:"]
+----
+Variables can also be used in block definitions, see [link](\{filename}13_Blocks.mau, "Blocks").
+----
+
+[condition="ifnot:mau.website:"]
+----
+Variables can also be used in block definitions, see [header](blocks).
+----
+
+=== Preventing replacement
+
+You can prevent variable replacement escaping the curly braces
+
+. Mau source
+[*source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is \{answer\}
+----
+
+[*rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is \{answer\}
+----
+
+As curly braces are used a lot in programming languages, Mau automatically escapes them when they are included in verbatim text
+
+. Mau source
+[*source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is `{answer}`
+----
+
+[*rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is `{answer}`
+----
+
+== Boolean variables
+
+[condition="if:mau.website:"]
+----
+Variables can have boolean values and be used as flags in conditional rendering (see [link](\{filename}13_Blocks.mau, "Blocks")). To create a boolean you need to use a `+` or `-` in front of the variable name, which will assig respectively a true or false value. The name of the variable will not contain the initial symbol.
+----
+
+[condition="ifnot:mau.website:"]
+----
+Variables can have boolean values and be used as flags in conditional rendering (see [header](blocks)). To create a boolean you need to use a `+` or `-` in front of the variable name, which will assig respectively a true or false value. The name of the variable will not contain the initial symbol.
+----
+
+[*source,callouts="|"]
+----
+:+trueflag:
+:-falseflag:
+----
+
+When printed, boolean flags are empty strings.
+
+. Mau source
+[*source,callouts="|"]
+----
+:+trueflag:
+:-falseflag:
+
+The first flag is {trueflag}. The second flag is {falseflag}.
+----
+
+[*rendered]
+----
+:+trueflag:
+:-falseflag:
+
+The first flag is {trueflag}. The second flag is {falseflag}.
+----
+
+=== Conditional macro
+
+Boolean variables are extremely useful for conditional blocks and conditional macros.
+
+A paragraph can conditionally render some text using the macro `[if](variable, value_if_true, value_if_false)`. If the value of `variable` is true the text will be the rendering of `value_if_true`, otherwise it will be `value_if_false`.
+
+. Mau source
+[*source,callouts="|"]
+----
+:+trueflag:
+:-falseflag:
+
+The value of the true flag is [if](trueflag, TRUE, FALSE).
+
+The value of the false flag is [if](falseflag, TRUE, FALSE).
+----
+
+[*rendered]
+----
+:+trueflag:
+:-falseflag:
+
+The value of the true flag is [if](trueflag, TRUE, FALSE).
+
+The value of the false flag is [if](falseflag, TRUE, FALSE).
+----
+
+As always with macros, `value_if_true` and `value_if_false` can contain rich text.
+
+. Mau source
+[*source,callouts="|"]
+----
+:+trueflag:
+
+The value of the true flag is [if](trueflag, true="*TRUE*", false="_FALSE_").
+----
+
+[*rendered]
+----
+:+trueflag:
+
+The value of the true flag is [if](trueflag, true="*TRUE*", false="_FALSE_").
+----
+
+If you need to conditionally render big chunks of text, however, you should consider using conditional blocks.
+
+== Namespaces
+
+Variables can be created under a specific namespace using a dotted syntax
+
+. Mau source
+[*source,callouts="|"]
+----
+:value:5
+:module.value:6
+
+The values are {value} and {module.value}.
+----
+
+[*rendered]
+----
+:value:5
+:module.value:6
+
+The values are {value} and {module.value}.
+----
+
+[condition="if:mau.website:"]
+----
+Mau's configuration values are available under the `mau` namespace (see [link](\{filename}20_Configuration.mau, "Configuration")).
+----
+
+[condition="ifnot:mau.website:"]
+----
+Mau's configuration values are available under the `mau` namespace (see [header](configuration)).
+----
+
+::footnotes:

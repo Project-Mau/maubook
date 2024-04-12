@@ -1,0 +1,95 @@
+:pelican.title:Python Interface
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:19
+:pelican.template:doc
+----
+
+[id=python-interface]
+= {pelican.title}
+
+[*quote]
+----
+"If you have any questions, your PDA can port into the Henry Hudson information system and use the AI interface to assist you; just use your stylus to write the question or speak it into your PDA's microphone."
+----
+John Scalzi, _Old Man's War_ (2005)
+
+Mau can be used inside any Python project through the object `Mau`. The following sketches the steps you need to go through. The best way to see that in action is in the code of the [link](https://github.com/pelican-plugins/mau-reader, "Pelican Mau reader plugin").
+
+[*source, python]
+----
+from mau import Mau, load_visitors
+from mau.environment.environment import Environment
+from mau.errors import MauErrorException, print_error
+
+visitor_classes = load_visitors()
+visitors = {i.format_code: i for i in visitor_classes}
+
+self.environment = Environment()
+
+config = {} # This is a Python dictionary containing the configuration
+output_format = "html" # This depends on the output that you want to create
+
+if output_format not in visitors:
+    raise OutputFormatNotSupported(output_format)
+
+visitor_class = visitors[output_format]
+self.environment.setvar("mau.visitor.class", visitor_class)
+self.environment.setvar("mau.visitor.format", output_format)
+
+mau = Mau(
+    source_path, # The source file
+    self.environment,
+)
+
+try:
+    with pelican_open(source_path) as text:
+        mau.run_lexer(text)
+
+    mau.run_parser(mau.lexer.tokens)
+
+    content = mau.run_visitor(mau.parser.output["content"])
+
+    if visitor_class.transform:
+        content = visitor_class.transform(content)
+
+except MauErrorException as exception:
+    ... # Manage exception
+----
+
+== Using Mau in Pelican
+
+You can use Mau to write posts and pages in Pelican. First you need to install the plugin that enables it
+
+[*source]
+----
+pip install pelican-mau-reader
+----
+
+You can see the updated documentation about the plugin on [link]("https://github.com/pelican-plugins/mau-reader", "the project page") but overall you just need to follow the instructions in this paragraph.
+
+The basic usage of the plugin is simple. Every file in your content directory that ends with `.mau` will be processed by it, and you need to specify metadata using Mau's variables under the namespace `pelican`. For example
+
+[*source]
+----
+:pelican.title:This is a post written with Mau
+:pelican.date:2021-02-17 13:00:00
+:pelican.modified:2021-02-17 14:00:00
+:pelican.category:tests
+:pelican.tags:foo, bar, foobar
+:pelican.summary:I have a lot to write
+----
+
+[condition="if:mau.website:"]
+----
+See [link](\{filename}08_Variables.mau, "Variables") to learn more about Mau variables.
+----
+
+[condition="ifnot:mau.website:"]
+----
+See [header](variables) to learn more about Mau variables.
+----
+
+::footnotes:

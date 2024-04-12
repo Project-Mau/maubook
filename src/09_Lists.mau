@@ -1,32 +1,29 @@
+:pelican.title:Lists
+
 [condition="if:mau.pelican:"]
 ----
-:pelican.title:Lists and footnotes
-:pelican.date:2021-10-19 11:30:00 +0100
-:pelican.slug:maubook-lists-and-footnotes
-:pelican.series:Mau - A template-based markup language
-:pelican.series_index:08
-:pelican.image:maubook/card
+:pelican.series:maubook
+:pelican.series_index:9
+:pelican.template:doc
 ----
 
-[condition="if:mau.chapter_headers:"]
-----
-= Lists and footnotes
-----
+[id=lists]
+= {pelican.title}
 
-[quote]
+[*quote]
 ----
 - “Most people will tell you they know their weaknesses. When asked, they tell you, ‘Well, for one thing I’m overgenerous.’ Come on, then; list yours if you must. That’s what innkeepers are for.”
 
 - “Well, for one thing I’m overgenerous, especially to innkeepers.”
 ----
-David Gemmell, "Legend" (1984)
+David Gemmell, _Legend_ (1984)
 
-== Lists
+== Unordered lists
 
 Mau supports the creation of lists. You can create unordered lists using one or more characters `*` according to the level of the element
 
 . Mau source
-[source]
+[*source]
 ----
 * List item
 ** Nested list item
@@ -36,7 +33,7 @@ Mau supports the creation of lists. You can create unordered lists using one or 
 * List item
 ----
 
-[rendered]
+[*rendered]
 ----
 * List item
 ** Nested list item
@@ -46,10 +43,12 @@ Mau supports the creation of lists. You can create unordered lists using one or 
 * List item
 ----
 
-and use the character `#` to create an ordered list
+== Ordered lists
+
+You can use the character `#` to create an ordered list
 
 . Mau source
-[source]
+[*source]
 ----
 # Step 1
 # Step 2
@@ -58,7 +57,7 @@ and use the character `#` to create an ordered list
 # Step 3
 ----
 
-[rendered]
+[*rendered]
 ----
 # Step 1
 # Step 2
@@ -67,12 +66,12 @@ and use the character `#` to create an ordered list
 # Step 3
 ----
 
----
+== Mixed lists
 
 You can mix ordered and unordered lists
 
 . Mau source
-[source]
+[*source]
 ----
 * List item
 ** Nested list item
@@ -82,7 +81,7 @@ You can mix ordered and unordered lists
 * List item
 ----
 
-[rendered]
+[*rendered]
 ----
 * List item
 ** Nested list item
@@ -97,7 +96,7 @@ You can mix ordered and unordered lists
 All spaces before or after the initial characters are ignored.
 
 . Mau source
-[source]
+[*source]
 ----
 * List item
   ** Nested list item
@@ -107,7 +106,7 @@ All spaces before or after the initial characters are ignored.
 *   List item
 ----
 
-[rendered]
+[*rendered]
 ----
 * List item
   ** Nested list item
@@ -117,51 +116,68 @@ All spaces before or after the initial characters are ignored.
 *   List item
 ----
 
-== Footnotes
+== Starting index
 
-You can insert a footnote including a definition and a reference. A definition contains the text of the footnote and is created with a block of type `footnote` (see chapter about blocks) and giving it a name
-
-. Mau source
-[source]
-%%%%
-[footnote, thename]
-----
-This is the text of the footnote.
-----
-%%%%
-
-Then you need to reference the footnote in a paragraph using the macro `footnote` and the name
+For ordered lists, the default starting index is 1, but this can be changed setting an attribute.
 
 . Mau source
-[source]
-%%%%
-This is a paragraph with a note[footnote](thename).
-%%%%
-
-Mau doesn't automatically include the definition of the footnote in the output. This has to be done with the command `::footnotes:`
-
-[source, callouts="|"]
-%%%%
-This is a paragraph with a note[footnote](thename).
-
-[footnote, thename]
+[*source]
 ----
-This is the text of the footnote.
+[start=42]
+# Step 1
+# Step 2
+## Step 2a
+## Step 2b
+# Step 3
 ----
 
-::footnotes:
-%%%%
-
-[rendered, engine=mau]
-%%%%
-This is a paragraph with a note[footnote](thename).
-
-[footnote, thename]
+[*rendered]
 ----
-This is the text of the footnote.
+[start=42]
+# Step 1
+# Step 2
+## Step 2a
+## Step 2b
+# Step 3
 ----
 
-::footnotes:
-%%%%
+Sometimes, it's useful to have lists split in multiple sections, and have each section continue automatically from the previous one. This can be done setting `start=auto`
+
+. Mau source
+[*source]
+----
+# Step 1
+# Step 2
+
+This is a paragraph that interrupts the list
+
+[start=auto]
+# Step 3
+# Step 4
+
+This is another paragraph that interrupts the list
+
+[start=auto]
+# Step 5
+# Step 6
+----
+
+[*rendered]
+----
+# Step 1
+# Step 2
+
+This is a paragraph that interrupts the list
+
+[start=auto]
+# Step 3
+# Step 4
+
+This is another paragraph that interrupts the list
+
+[start=auto]
+# Step 5
+# Step 6
+----
 
 ::footnotes:

@@ -1,35 +1,32 @@
+:pelican.title:Code Blocks
+
 [condition="if:mau.pelican:"]
 ----
-:pelican.title:Source code blocks
-:pelican.date:2021-10-19 13:30:00 +0100
-:pelican.slug:maubook-source-code-blocks
-:pelican.series:Mau - A template-based markup language
-:pelican.series_index:12
-:pelican.image:maubook/card
+:pelican.series:maubook
+:pelican.series_index:11
+:pelican.template:doc
 ----
 
-[condition="if:mau.chapter_headers:"]
-----
-= Source code blocks
-----
+[id=code-blocks]
+= {pelican.title}
 
-[quote]
+[*quote]
 ----
 The older authorities seemed rather more helpful than the newer ones, and Armitage concluded that the code of the manuscript was one of great antiquity, no doubt handed down through a long line of mystical experimenters.
 ----
-H.P. Lovecraft, "The Dunwich Horror" (1929)
+H.P. Lovecraft, _The Dunwich Horror_ (1929)
 
 For programmers, one of the most useful features of a markup language is source code blocks. Mau provides full support to source code highlighting, and allows you to highlight single lines and add callouts to the code to mark specific steps of the process or to add explanations.
 
 == Basic source blocks
 
-Verbatim paragraphs and source code can be printed using blocks of type `source`
+Verbatim paragraphs and source code can be printed using `[*source]` and surrounding the code with a fence of four hyphens `----`
 
 . Mau source
-[source]
+[*source]
 ++++
 . Source code
-[source]
+[*source]
 ----
 This is all verbatim.
 
@@ -39,10 +36,10 @@ This is all verbatim.
 ----
 ++++
 
-[rendered]
+[*rendered]
 ++++
 . Source code
-[source]
+[*source]
 ----
 This is all verbatim.
 
@@ -52,22 +49,12 @@ This is all verbatim.
 ----
 ++++
 
-You can specify the language of the source code, that can be used by highlighting tools.
-
-[condition="if:mau.output_format:html"]
-----
-Highlighting in HTML is provided by [link](https://pygments.org/,Pygments). On the official website you can find the list of [link](https://pygments.org/languages/,"supported languages").
-----
-
-[condition="if:mau.output_format:tex"]
-----
-Highlighting for TeX is not provided by default inside Mau. This book has been highlighted using [link]("https://ctan.org/pkg/minted?lang=en","minted").
-----
+You can specify the language of the source code immediately after `*source`
 
 . Mau source
-[source]
+[*source]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level):
     """
@@ -80,9 +67,9 @@ def header_anchor(text, level):
 ----
 ++++
 
-[rendered]
+[*rendered]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level):
     """
@@ -94,15 +81,25 @@ def header_anchor(text, level):
     )  # pragma: no cover
 ----
 ++++
+
+[condition="if:mau.visitor.format:html"]
+----
+Highlighting for the HTML output format is provided by [link](https://pygments.org/,Pygments). On the official website you can find the list of [link](https://pygments.org/languages/,"supported languages").
+----
+
+[condition="if:mau.visitor.format:tex"]
+----
+Highlighting for TeX output format is not provided by default inside Mau. Templates make it easy to use third-party tools, however. For example, this book has been highlighted using [link]("https://ctan.org/pkg/minted?lang=en","minted").
+----
 
 == Callouts
 
 Source blocks support callouts, that allow you to add notes to specific lines of code. Callouts are added at the end of the line between colons (e.g. `:1:`) the relative text is added to the secondary content of the block
 
 . Mau source
-[source, callouts="|"]
+[*source, callouts="|"]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::1:
     return "h{}-{}-{}".format(
@@ -113,11 +110,11 @@ def header_anchor(text, level)::1:
 2: Some memory-related wizardry
 ++++
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 %%%%
-[rendered]
+[*rendered]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::1:
     return "h{}-{}-{}".format(
@@ -127,51 +124,9 @@ def header_anchor(text, level)::1:
 1: The name of the function
 2: Some memory-related wizardry
 ++++
-
-Callouts are rendered in HTML with `span` tags and the relative text is rendered in a table
-
-. Mau source
-[source, callouts="|"]
-++++
-[source,python]
-----
-a=5:1:
-----
-1: A simple assignment
-++++
-
-. HTML output
-[source, html]
-----
-<div class="source">
-  <div class="content">
-    <div class="highlight">
-      <pre>
-	<span/>
-	<span class="n">a</span>
-	<span class="o">=</span>
-	<span class="mi">5</span>
-	<span class="callout">1</span>:@:
-      </pre>
-    </div>
-  </div>
-  <div class="callouts">
-    <table>:@:
-      <tbody>:@:
-	<tr>:@:
-	  <td>:@:
-	    <span class="callout">1</span>:@:
-	  </td>:@:
-	  <td>A simple assignment</td>:@:
-	</tr>:@:
-      </tbody>:@:
-    </table>:@:
-  </div>
-</div>
-----
 %%%%
 
-[condition="if:mau.output_format:tex"]
+[condition="if:mau.visitor.format:tex"]
 %%%%
 Callouts are not supported by the TeX package `minted`, so they are not rendered in this PDF.
 %%%%
@@ -179,9 +134,9 @@ Callouts are not supported by the TeX package `minted`, so they are not rendered
 The default delimiter for callouts is a colon `:`, but if that clashes with the syntax of your language you can pick a different one with the attribute `callouts`
 
 . Mau source
-[source]
+[*source]
 ++++
-[source, python, callouts="|"]
+[*source, python, callouts="|"]
 ----
 def header_anchor(text, level):|1|
     return "h{}-{}-{}".format(
@@ -192,11 +147,11 @@ def header_anchor(text, level):|1|
 2: Some memory-related wizardry
 ++++
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 %%%%
-[rendered]
+[*rendered]
 ++++
-[source,python,callouts="|"]
+[*source,python,callouts="|"]
 ----
 def header_anchor(text, level):|1|
     return "h{}-{}-{}".format(
@@ -213,9 +168,9 @@ def header_anchor(text, level):|1|
 Callouts names are just strings, not manipulated by Mau, so you can use them out of order
 
 . Mau source
-[source,callouts="|"]
+[*source,callouts="|"]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::1:
     return "h{}-{}-{}".format(:3:
@@ -227,11 +182,11 @@ def header_anchor(text, level)::1:
 3: This is the return value
 ++++
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 %%%%
-[rendered]
+[*rendered]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::1:
     return "h{}-{}-{}".format(:3:
@@ -247,9 +202,9 @@ def header_anchor(text, level)::1:
 Callouts are not limited to digits, you can use non-numeric labels
 
 . Mau source
-[source,callouts="|"]
+[*source,callouts="|"]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::step1:
     return "h{}-{}-{}".format(:step3:
@@ -261,11 +216,11 @@ def header_anchor(text, level)::step1:
 3: This is the return value
 ++++
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 %%%%
-[rendered]
+[*rendered]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::step1:
     return "h{}-{}-{}".format(:step3:
@@ -281,9 +236,9 @@ def header_anchor(text, level)::step1:
 Callouts do not need to have a definition
 
 . Mau source
-[source,callouts="|"]
+[*source,callouts="|"]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::1:
     return "h{}-{}-{}".format(
@@ -292,11 +247,11 @@ def header_anchor(text, level)::1:
 ----
 ++++
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 %%%%
-[rendered]
+[*rendered]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::1:
     return "h{}-{}-{}".format(
@@ -313,9 +268,9 @@ And you can reference them in the text using `[class](1, "callout")`, and render
 You can highlight lines using a callout with the special name `@`
 
 . Mau source
-[source,highlight='#',callouts='|']
+[*source,highlight='#',callouts='|']
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::@:
     return "h{}-{}-{}".format(
@@ -324,11 +279,11 @@ def header_anchor(text, level)::@:
 ----
 ++++
 
-[condition="if:mau.output_format:html"]
+[condition="if:mau.visitor.format:html"]
 %%%%
-[rendered]
+[*rendered]
 ++++
-[source,python]
+[*source,python]
 ----
 def header_anchor(text, level)::@:
     return "h{}-{}-{}".format(
@@ -340,9 +295,9 @@ def header_anchor(text, level)::@:
 Should you prefer to list the lines you want to highlight you can use Pygments directly, passing the configuration value `hl_lines` under the namespace `pygments`
 
 . Mau source
-[source]
+[*source]
 ++++
-[source,python,pygments.hl_lines="1,3"]
+[*source,python,pygments.hl_lines="1,3"]
 ----
 def header_anchor(text, level):
     return "h{}-{}-{}".format(
@@ -351,9 +306,9 @@ def header_anchor(text, level):
 ----
 ++++
 
-[rendered]
+[*rendered]
 ++++
-[source,python,pygments.hl_lines="1,3"]
+[*source,python,pygments.hl_lines="1,3"]
 ----
 def header_anchor(text, level):
     return "h{}-{}-{}".format(
@@ -362,5 +317,45 @@ def header_anchor(text, level):
 ----
 ++++
 %%%%
+
+== Titles
+
+Code blocks can have titles, created before the block by a line starting with a dot 
+
+. Mau source
+[*source, python]
+++++
+. Header anchor function
+[*source]
+----
+def header_anchor(text, level):
+    """
+    A simple Python function
+    """
+
+    return "h{}-{}-{}".format(
+        level, quote(text.lower())[:20], str(id(text))[:8]
+    )  # pragma: no cover
+----
+++++
+
+[condition="if:mau.visitor.format:html"]
+----
+[*rendered]
+++++
+. Header anchor function
+[*source, python]
+%%%%
+def header_anchor(text, level):
+    """
+    A simple Python function
+    """
+
+    return "h{}-{}-{}".format(
+        level, quote(text.lower())[:20], str(id(text))[:8]
+    )  # pragma: no cover
+%%%%
+++++
+----
 
 ::footnotes:

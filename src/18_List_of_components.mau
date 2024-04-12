@@ -1,0 +1,1151 @@
+:pelican.title:List of Components
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:18
+:pelican.template:doc
+----
+
+[id=list-of-components]
+= {pelican.title}
+
+[*quote]
+----
+The financial records were fairly simple — the purchase of this or that trivial toy or bit of trumpery jewelry; lists of presents given and received; a somewhat more meticulous listing of jewels of genuine value, inheritances, or gifts.
+----
+Lois McMaster Bujold, _The Curse of Chalion_ (2001)
+
+
+This chapter contains the full documentation of all Mau components. For each one of them you will find:
+
+[condition="if:mau.website:"]
+----
+* *Description*: a simple description of the component.
+* *Scope*: whether the node can be found in a `paragraph` or in a `document`.
+* *See*: a list of related nodes.
+* *Syntax*: a description of the syntax used to create the component.
+* *Templates*: the node templates for this component. See [link](\{filename}16_Basic_templates.mau, "Basic templates") to learn about templates.
+* *Fields*: the variables passed to the Jinja template.
+----
+
+[condition="ifnot:mau.website:"]
+----
+* *Description*: a simple description of the component.
+* *Scope*: whether the node can be found in a `paragraph` or in a `document`.
+* *See*: a list of related nodes.
+* *Syntax*: a description of the syntax used to create the component.
+* *Templates*: the node templates for this component. See [header](basic-templates) to learn about templates.
+* *Fields*: the variables passed to the Jinja template.
+----
+
+Fields have a name, a type, and a description. Type is one of
+
+* `bool`: a Python boolean that can be used directly in Jinja conditional statements.
+* `int`: a Python integer.
+* `list[type]`: a list of values of the given type.
+* `str`: a Python string that contains pure text.
+* `TARGET`: text in the target format. For example when rendering in HTML a field of type `TARGET` will insert some HTML.
+* `VALUE1 | VALUE2 | VALUE3`: the value can only be one of the listed ones.
+* `SPECIAL`: usually a more complex Python datatype like a dictionary or a list of tuples. See the description of the node for more details.
+
+Every node receives the following fields, which won't be repeated for each component
+
+* `parent: NODE = None` The parent node.
+* `parent_position: primary | secondary = None` The position of the node in the parent.
+* `children: list[NODE] = []` The list of children nodes.
+* `subtype: str = None` The subtype of the node.
+* `args: list[str] = []` The unnamed arguments.
+* `kwargs: dict[str] = {}` The named arguments.
+* `tags: list[str] = []` The tags.
+
+To simplify the use of this chapter, nodes are listed in alphabetical order instead of being grouped per topic like in the rest of the book.
+
+Not all components in this list can be directly created in Mau documents. Some, like callouts or ToC entries, are created automatically as part of other components. However, such nodes will be present in the AST, and thus can be styled using templates.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=block]
+== Block
+
+*Description*:
+
+This node represents a generic block. Blocks can isolate text and process it in several different ways depending on the `engine`. Blocks capture the text between fences into `primary_content` and the paragraph immediately after the closing fence (adjacent to it) into `secondary_content`.
+
+The block syntax is shared with more specific components like [header](block-source), [header](block-footnote).
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}13_Blocks.mau, "Blocks")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](blocks)
+----
+
+*Scope*: `document`
+
+*See*: [header](block-source), [header](block-footnote).
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+. Optional title
+[OPTIONAL ARGUMENTS]
+----
+CONTENT
+----
+++++
+
+Fences are made of any 4 identical characters.
+
+*Templates*:
+
+* `block.{engine}`
+* `block`
+
+*Fields*
+
+* `classes: list[string] = []` A list of classes assigned to this block.
+* `title: str = None` A title specified before this block.
+* `engine: str = None` The engine that Mau used to process the block.
+* `preprocessor: str = None` The preprocessor that Mau used for this block.
+* `content: TARGET`: the primary content (Mau text between fences).
+* `secondary_content: TARGET`: the secondary content (Mau text just below the closing fence.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=callout]
+== Callout
+
+*Description*:
+
+This node renders a callout attached to each line of code.
+
+This node cannot be created in isolation, it is generated automatically by source blocks.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}11_Code_blocks.mau", "Code blocks")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](code-blocks)
+----
+
+*See*: [header](block-source)
+
+*Templates*
+
+* `callout`
+
+*Fields*
+
+* `marker: str` The label of this callout.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=callout-entry]
+== Callout entry
+
+*Description*:
+
+This node renders an entry in the list of callouts. This list is usually presented at the end of a source block to show the text associated with each callout.
+
+This node cannot be created in isolation, it is generated automatically by source blocks.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}11_Code_blocks.mau", "Code blocks")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](code-blocks)
+----
+
+*See*: [header](block-source)
+
+*Templates*
+
+* `callouts_entry`
+
+*Fields*
+
+* `marker: str` The label of this callout.
+* `value: str` The text associated with this callout.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=style-caret]
+== Caret (style)
+
+*Description*:
+
+This style renders the text between two carets according to the template. The default template renders the text in superscript.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}05_Text_formatting.mau, "Text formatting")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](text-formatting)
+----
+
+*See*: [header](style-star), [header](style-tilde), [header](style-underscore)
+
+*Scope*: `paragraph`
+
+*Syntax* `^TEXT^`
+
+*Templates*
+
+* `style.caret`
+
+*Fields*
+
+* `value: str = caret` The style type.
+* `content: TARGET` The content of the node.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=macro-class]
+== Class (macro)
+
+*Description*:
+
+This macro attaches one of more classes to a piece of text. At the moment, the default LaTeX output doesn't use classes.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}05_Text_formatting.mau, "Text formatting")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](text-formatting)
+----
+
+*Scope*: `paragraph`
+
+*Syntax*: `[class](text, "class1,class2,...")`
+
+*Templates*
+
+* `macro.class`
+
+*Fields*
+
+* `classes: list(str)` The list of classes.
+* `content: TARGET` The content of the node.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=container]
+== Container
+
+*Description*:
+
+This node is used to wrap the whole document and provide a wrapper template. This is the default value of the variable `mau.parser.content_wrapper`.
+
+*Scope*: `document`
+
+*Templates*
+
+* `container`
+
+*Fields*
+
+* `content: TARGET` The content of the container.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=content]
+== Content
+
+*Description*:
+
+This node is a very generic content loader, which has a specific implementation only for the type `image`. It accepts arguments and consumes a title, so it can be used to achieve custom effects without involving blocks, whose syntax is more invasive.
+
+*See*: [header](content-image)
+
+*Scope*:`document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+. Optional title
+[OPTIONAL ARGUMENTS]
+<< TYPE:URI
+++++
+
+*Templates*
+
+* `content-{content_type}`
+* `content`
+
+*Fields*
+
+* `content_type: str` The type of this content.
+* `title: TARGET` An optional title for the content.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=document]
+== Document
+
+*Description*:
+
+This node is used to wrap the whole document and provide a wrapper template. You can use this node passing `DocumentNode` through the variable `mau.parser.content_wrapper`.
+
+*Scope*: `document`
+
+*Templates*
+
+* `document`
+
+*Fields*
+
+* `content: TARGET` The content of the document.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=block-footnote]
+== Footnote (block)
+
+*Description*:
+
+This block defines the content of a footnote and has to be paired with a macro `footnote` with the same name. Footnotes have a definition (the text of the footnote) and a mention (usually the number of the footnote in a paragraph). When footnotes are inserted in the document, the content of each footnote in the list is represented by this node. Since LaTeX manages footnotes automatically, the default template in that case is empty.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}12_Footnotes.mau, "Footnotes")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](footnotes)
+----
+
+*See*: [header](macro-footnote), [header](command-footnotes)
+
+*Scope*: `document`
+
+*Syntax*
+
+.Mau source
+[*source]
+++++
+[footnote, NAME]
+----
+CONTENT
+----
+++++
+
+*Templates*
+
+* `footnotes_entry`
+
+*Fields*
+
+* `content: TARGET` The content of the footnote.
+* `number: str` The number of this footnote.
+* `reference_anchor: str` The anchor to the footnote mention.
+* `definition_anchor: str` The anchor to the footnote definition.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=macro-footnote]
+== Footnote (macro)
+
+*Description*:
+
+This node defines the mention to a footnote. It has to be paired with a block `footnote` (see [header](block-footnote)) that defines the content of the footnote. Footnote macros and blocks are collected and processed as a whole, which is why this node can provide the content. The anchors to the mention and the definition are unique strings in the document that can be used to set up internal links for formats like HTML that do not provide this service out of the box like LaTeX does.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}12_Footnotes.mau, "Footnotes")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](footnotes)
+----
+
+*See*: [header](block-footnote), [header](command-footnotes)
+
+*Scope*: `paragraph`
+
+*Syntax*: `[footnote](NAME)`
+
+*Templates*
+
+* `macro.footnote`
+
+*Fields*
+
+* `content: TARGET` The content of the footnote defined by the companion block.
+* `number: str` The number of this footnote.
+* `reference_anchor: str` The anchor to the mention.
+* `definition_anchor: str` The anchor to the definition.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=command-footnotes]
+== Footnotes (command)
+
+*Description*:
+
+This command inserts the list of footnote definitions. Since LaTeX automatically puts footnotes at the bottom of each page, the default template in that case is empty.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}12_Footnotes.mau, "Footnotes")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](footnotes)
+----
+
+*See*: [header](block-footnote), [header](macro-footnote)
+
+*Scope*: `document`
+
+*Syntax*:
+
+[*source]
+++++
+[OPTIONAL ARGUMENTS]
+::footnotes:
+++++
+
+*Templates*
+
+* `footnotes`
+
+*Fields*
+
+* `entries: list(TARGET)` This is the list of footnotes, each being the rendering of a footnote entry.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=header]
+== Header
+
+*Description*:
+
+This node renders a header. Each header is automatically stored in the ToC. A header can be given an `id` that is then linked using a macro `header`.
+
+Headers are given an anchor created using a default function. The function can be replaced using the variable `mau.parser.header_anchor_function`, and the individual anchor of a header can be overwritten with the keyword `anchor`.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}07_Headers.mau, "Headers")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](headers)
+----
+
+*See*: [header](command-toc), [header](toc-entry), [header](macro-header)
+
+*Scope*: `document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+[OPTIONAL ARGUMENTS]
+= Header
+++++
+
+*Templates*
+
+* `header`
+
+*Fields*
+
+* `value: TARGET` The text of the header.
+* `level: int` The level of the header, 1 being the highest.
+* `anchor: str` The anchor of the header if the template wants to set up cross-references between it and the ToC.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=macro-header]
+== Header (macro)
+
+*Description*:
+
+This node represents an link to a header in the same document. The macro requires the ID of a header, and accepts an optional text. If the text is not provided, the text of the linked header will be used.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}07_Headers.mau, "Headers")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](headers)
+----
+
+*See*: [header](header)
+
+*Scope*: `paragraph`
+
+*Syntax*: `[header](ID, TEXT)`
+
+*Templates*
+
+* `macro.header`
+
+*Fields*
+
+* `header: dict`
+** `anchor: str` The anchor of the connected header.
+** `value: TARGET` The text of the header.
+** `level: int` The level of the header, 1 being the highest.
+* `content: TARGET` The text of the link if specified, otherwise the text of the header.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=horizontal-rule]
+== Horizontal rule
+
+*Description*:
+
+This node inserts a horizontal rule.
+
+*Scope*: `document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+[OPTIONAL ARGUMENTS]
+---
+++++
+
+*Templates*
+
+* `horizontal_rule`
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=content-image]
+== Image (content)
+
+*Description*:
+
+This node inserts an image in the document. The image is inserted as a document node, if you want to include images in paragraphs use the macro `image`.
+
+You can pass alternate text through the keyword `alt_text` and classes through `classes`.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}10_Images.mau, "Images")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](images)
+----
+
+*See*: [header](content), [header](macro-image)
+
+*Scope*: `document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+. Optional title
+[OPTIONAL ARGUMENTS]
+<< image:URI
+++++
+
+*Templates*
+
+* `content_image`
+
+*Fields*
+
+* `uri: str` The URI of the image file.
+* `alt_text: str` Alternative text to show if the image cannot be loaded.
+* `classes: list[str]` List of classes to append to the target node.
+* `title: str` Title (caption) of the image.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=macro-image]
+== Image (macro)
+
+*Description*:
+
+Through this node, Mau inserts an image in a paragraph. The macro accepts alternate text, width and height.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}10_Images.mau, "Images")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](images)
+----
+
+*Scope*: `paragraph`
+
+*Syntax*: `[image](URI, ALT_TEXT, WIDTH, HEIGHT)`
+
+*Templates*
+
+* `macro.image`
+
+*Fields*
+
+* `uri: str` The URI of the image in a format understood by the target processor.
+* `alt_text: str` The alternative text used if the image cannot be loaded.
+* `width: str` The width of the image.
+* `height: str` The height of the image.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=list]
+== List
+
+*Description*:
+
+This node renders a list of items. The list can be ordered or unordered, and items can be nested. Each item in the template is either a single item (rendered with the relative template) or a sublist (rendered with the same template as the whole list).
+
+This node is created automatically when a list item is found in the document. The node is also used for nested list items.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}09_Lists.mau, "Lists")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](lists)
+----
+
+*See*: [header](list-item)
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+[OPTIONAL ARGUMENTS]
+* List items
+++++
+
+*Templates*
+
+* `list`
+
+*Fields*
+
+* `ordered: bool` Whether the list is ordered or not.
+* `items: TARGET` The list items.
+* `main_node: bool` Whether this is the main list of a sublist.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=list-item]
+== List item
+
+*Description*:
+
+This node renders a single item in a list.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}09_Lists.mau, "Lists")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](lists)
+----
+
+*See*: [header](list)
+
+*Scope*: `document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+* Unordered node level 1
+** Unordered node level 2
+...
+# Ordered node level 1
+## Ordered node level 2
+++++
+
+A list item is always contained in a list node.
+
+*Templates*
+
+* `list_item`
+
+*Fields*
+
+* `level: int` The level of nesting (1 is the first level).
+* `content: TARGET` The content of this item (which might be a sublist).
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=macro-link]
+== Link (macro)
+
+*Description*:
+
+This node represents a hypermedia link to a URL. The macro accepts a `target` (a URL) and optional `text`. If the text is not provided, the target is used instead.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}06_Links.mau, "Links")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](links)
+----
+
+*See*: [header](macro-mailto)
+
+*Scope*: `paragraph`
+
+*Syntax*: `[link](TARGET, TEXT)`
+
+*Templates*
+
+* `macro.link`
+
+*Fields*
+
+* `target: str` The target URL.
+* `text: TARGET` The text of the link.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=macro-mailto]
+== Mailto (macro)
+
+*Description*:
+
+This node represents an email link. The macro is a wrapper around [header](macro-link), but the output URI is prefixed by `mailto:`.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}06_Links.mau, "Links")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](links)
+----
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=paragraph]
+== Paragraph
+
+*Description*:
+
+This node represents a paragraph of text. Individual paragraphs must be separated by an empty line. Paragraphs can be given arguments to further customise them.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}03_Basic_syntax.mau, "Basic syntax")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](basic-syntax)
+----
+
+*Scope*: `document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+. Optional title
+[OPTIONAL ARGUMENTS]
+Any line of text that doesn't match another page node.
+++++
+
+*Templates*
+
+* `paragraph`
+
+*Fields*
+
+* `content: TARGET`: the content of the paragraph
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=block-source]
+== Source (block)
+
+*Description*:
+
+This node is used to include source code. The primary content of the block is interpreted verbatim aside from callouts that are labels that can be attached to lines of the text and that can be referenced later in the document.
+
+The block supports highlighting of the source code through Pygments and the standard components of blocks like titles, unnamed and named arguments, and tags.
+
+You can pass the keywords `callouts`, `highlights`, and `language`.
+
+There are three nodes rendered by templates: the block itself, the callout label attached to a line, and each callout entry.
+
+Callouts are saved in two lists, `markers` and `callouts`. `markers` is a list of tuples `(linenum, text)`, where `linenum` is the number of a line, and `text` is the label assigned to that callout. `callouts` is a list of callout entries, rendered through the specific template.
+
+Code is provided as a list of tuples `(line, callout)`. The variable `line` contains the line of code in the target format (possibly highlighted) and `callout` is either the rendered form of a callout (using the relative template) or `None`.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}11_Code_blocks.mau", "Code blocks")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](code-blocks)
+----
+
+*See*: [header](block), [header](callout), [header](callout-entry)
+
+*Scope*: `document`
+
+*Syntax*
+
+.Mau source
+[*source]
+++++
+[*source, LANGUAGE]
+----
+CONTENT
+----
+++++
+
+*Templates*
+
+* `source.{language}`
+* `source`
+
+*Fields*
+
+* `language: str` The language of the code contained in this block
+* `callouts: list[TARGET]` A list of callout entries
+* `markers: list[SPECIAL]` List of markers (see description)
+* `highlights: list[int]` List of lines that have to be highlighted
+* `delimiter: str` Callouts delimiter
+* `code: SPECIAL` Code and callouts (see description)
+* `title: str` Title of this block
+* `classes: list[str]` A list of classes assigned to this block
+* `preprocessor: str` The preprocessor (currently not in use)
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=style-star]
+== Star (style)
+
+*Description*:
+
+This style renders the text between two stars according to the template. The default template renders the text in bold.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}05_Text_formatting.mau, "Text formatting")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](text-formatting)
+----
+
+*See*: [header](style-caret), [header](style-tilde), [header](style-underscore)
+
+*Scope*: `paragraph`
+
+*Syntax* `^TEXT^`
+
+*Templates*
+
+* `style.star`
+
+*Fields*
+
+* `value: str = star` The style type.
+* `content: TARGET` The content of the node.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=style-tilde]
+== Tilde (style)
+
+*Description*:
+
+This style renders the text between two tildes according to the template. The default template renders the text as subscript.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}05_Text_formatting.mau, "Text formatting")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](text-formatting)
+----
+
+*See*: [header](style-caret), [header](style-star), [header](style-underscore)
+
+*Scope*: `paragraph`
+
+*Syntax*: `~TEXT~`
+
+*Templates*
+
+* `style.tilde`
+
+*Fields*
+
+* `value: str = tilde` The style type.
+* `content: TARGET` The content of the node
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=command-toc]
+== ToC (command)
+
+*Description*:
+
+This command renders the list of all headers (Table of Contents). The argument `exclude_tag` can be used to remove headers with that tag.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}07_Headers.mau, "Headers")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](headers)
+----
+
+*See*: [header](header), [header](toc-entry)
+
+*Scope*: `document`
+
+*Syntax*:
+
+.Mau source
+[*source]
+++++
+[OPTIONAL ARGUMENTS]
+::toc:
+++++
+
+*Templates*
+
+* `toc`
+
+*Fields*
+
+* `entries: list[TARGET]` This is the list of headers, each being the rendering of a ToC entry.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=toc-entry]
+== ToC entry
+
+*Description*:
+
+This node renders a node in the ToC.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}07_Headers.mau, "Headers")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](headers)
+----
+
+*See*: [header](header), [header](command-toc)
+
+*Templates*
+
+* `toc_entry`
+
+*Fields*
+
+* `value: str` The header contained in this node
+* `anchor: str` The anchor of the header
+* `children: TARGET` The rendered list of children (rendered as the whole ToC)
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=style-underscore]
+== Underscore (style)
+
+*Description*:
+
+This style renders the text between two underscores according to the template. The default template renders the text as italic.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}05_Text_formatting.mau, "Text formatting")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](text-formatting)
+----
+
+*See*: [header](style-caret), [header](style-star), [header](style-tilde)
+
+*Scope*: `paragraph`
+
+*Syntax*: `_TEXT_`
+
+*Templates*
+
+* `style.underscore`
+
+*Fields*
+
+* `value: str = underscore` The style type.
+* `content: TARGET` The content of the node.
+
+// -----------------------------------------------------------------------------------------------------------
+
+[break]
+---
+
+[id=verbatim]
+== Verbatim
+
+*Description*:
+
+This node treats the text inside as verbatim, and is useful to render code inside paragraphs.
+
+[condition="if:mau.website:"]
+----
+*Documentation*: [link](\{filename}05_Text_formatting.mau, "Text formatting")
+----
+
+[condition="ifnot:mau.website:"]
+----
+*Documentation*: [header](text-formatting)
+----
+
+*Scope*: `paragraph`
+
+*Syntax*: `\`TEXT\``
+
+*Templates*
+
+* `verbatim`
+
+*Fields*
+
+* `value: str` The verbatim text

@@ -1,0 +1,104 @@
+:pelican.title:Footnotes
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:12
+:pelican.template:doc
+----
+
+[id=footnotes]
+= {pelican.title}
+
+[*quote]
+----
+And then I told him my story as I have written it here, omitting only any reference to my love for Dejah Thoris. He was much excited by the news of Helium's princess and seemed quite positive that she and Sola could easily have reached a point of safety from where they left me.
+----
+Edgar Rice Burroughs, _A Princess of Mars_ (1912)
+
+Footnotes are extremely useful to provide optional details to parts of the text, or to mention source material like books or papers. Mau has full support for footnotes with a syntax that comes from Markua (Leanpub's Markdown dialect).
+
+== Footnotes
+
+The text of a footnote is defined in a way similar to code blocks, using `[*footnote, NAME]` and a fence of four hyphens `----`. `NAME` is the name of the footnote, that has to be unique in the document.
+
+. Mau source
+[*source]
+++++
+[*footnote, mynote]
+----
+This is the text of my footnote.
+----
+++++
+
+The text between the fences is parsed by Mau as a stand-alone document, which means that you can use the syntax we discussed so far.
+
+. Mau source
+[*source]
+++++
+[footnote, mynote]
+----
+_This_ is the *text* of my footnote.
+----
+++++
+
+You can create a reference to the footnote with the macro `[footnote](NAME)`, which is usually rendered as a superscript small number.
+
+. Mau source
+[*source]
+----
+There are several markup languages available nowadays[footnote](mynote).
+----
+
+The command `::footnotes:` inserts the list of footnotes and is useful for those output formats like HTML that do not include footnotes automatically.
+
+. Mau source
+[*source, callouts="|"]
+++++
+There are several markup languages available nowadays[footnote](mynote).
+
+[*footnote, mynote]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+
+---
+
+::footnotes:
+++++
+
+[*rendered, engine=mau]
+++++
+There are several markup languages available nowadays[footnote](mynote).
+
+[*footnote, mynote]
+----
+For example:
+
+* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
+* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
+* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+----
+
+---
+
+::footnotes:
+++++
+
+[condition="if:mau.website:"]
+----
+Please note that the way footnotes are managed can be different according to the output format. If you are producing HTML output you need to insert the command as HTML has no concept of footnotes. TeX, instead, automatically creates the list of footnotes at the bottom of each page, so in that case you don't need to render the list explicitly (see [link](\{filename}16_Basic_templates.mau", "Basic templates")).
+----
+
+[condition="ifnot:mau.website:"]
+----
+Please note that the way footnotes are managed can be different according to the output format. If you are producing HTML output you need to insert the command as HTML has no concept of footnotes. TeX, instead, automatically creates the list of footnotes at the bottom of each page, so in that case you don't need to render the list explicitly (see [header](basic-templates)).
+----
+
+The definition of a footnote can appear before or after the reference in the text. Both blocks and macros are collected by the parser and connected at the end of the process.
+
+::footnotes:

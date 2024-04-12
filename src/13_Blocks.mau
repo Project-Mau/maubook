@@ -1,0 +1,187 @@
+:pelican.title:Blocks
+
+[condition="if:mau.pelican:"]
+----
+:pelican.series:maubook
+:pelican.series_index:12
+:pelican.template:doc
+----
+
+[id=blocks]
+= {pelican.title}
+
+[*quote]
+----
+The chamber was lit by a wide shaft high in the further eastern wall; it slanted upwards and, far above, a small square patch of blue sky could be seen. The light of the shaft fell directly on a table in the middle of the room: a single oblong block, about two feet high, upon which was laid a great slab of white stone.
+----
+J.R.R. Tolkien, _The Lord of the Rings - The Fellowship of the Ring_ (1954)
+
+== Basic syntax
+
+Blocks, are groups of lines surrounded by a block fence of four identical characters
+
+. Mau source
+[*source]
+++++
+----
+This is a block
+----
+++++
+
+The content of the block is parsed by Mau exactly like the rest of the document, unless the block is configured in a different way. As blocks are rendered with specific templates, they are useful to create alerts, asides, and in general custom rendering of blocks of text.
+
+As you already saw in the previous chapters, the block syntax is also used by Mau to define some components like code blocks, footnotes, and references.
+
+=== Fences
+
+You can use any sequence of 4 identical characters to delimit a block, provided this doesn't clash with other syntax like the one used for headers or for comments
+
+. Mau source
+[*source]
+----
+++++
+This is a block
+++++
+
+++++
+This is another block
+++++
+----
+
+If you need to insert 4 identical characters on a line for some reasons, you have to escape the first of them
+
+. Mau source
+[*source]
+----
+These are paragraphs.
+
+\++++
+
+Just standard paragraphs.
+----
+
+[*rendered]
+----
+These are paragraphs.
+
+\++++
+
+Just standard paragraphs.
+----
+
+=== Nested blocks
+
+Blocks can contain other blocks, and Mau doesn't have any upper limit to the number of nesting levels. The only requirement is that you need to use a different character for the inner fence.
+
+. Mau source
+[*source]
+----
+++++
+This is a block
+
+%%%%
+This is another block inside the previous one
+%%%%
+++++
+----
+
+== Titles
+
+Blocks can have titles, created before the block by a line starting with a dot 
+
+. Mau source
+[*source]
+++++
+. The title
+----
+This is a block
+----
+++++
+
+The space between the dot and the title is optional
+
+. Mau source
+[*source]
+++++
+.The title
+----
+This is a block
+----
+++++
+
+== Attributes
+
+You can pass arguments to blocks with the syntax `[arguments]` on a line before the opening fence
+
+. Mau source
+[*source]
+++++
+[*btype1, arg1, arg2, #tag1, key1=value1]
+----
+This block has
+
+* Subtype: `btype1`
+* Unnamed arguments: `["arg1", "arg2"]`
+* Tags: `["tag1"]`
+* Named arguments: `{"key1": "value1"}`.
+----
+++++
+
+---
+
+You can specify title and attributes in any order.
+
+. Mau source
+[*source]
+++++
+. Title
+[arguments]
+----
+Block content
+----
+
+[arguments]
+. Title
+----
+Block content
+----
+++++
+
+Title and attributes are actually consumed by the first block that appears after them, so they don't need to be adjacent to it.
+
+. Mau source
+[*source]
+++++
+. Title
+
+[arguments]
+
+----
+Block content
+----
+++++
+
+== Secondary content
+
+[condition="if:mau.website:"]
+----
+Blocks have the concept of _secondary content_, which is any paragraph that is adjacent to the closing fence. This paragraph is included in the block metadata and used according to the type of block (see [link](\{filename}11_Code_blocks.mau", "Code blocks"), for example). The default block simply discards that content
+----
+
+[condition="ifnot:mau.website:"]
+----
+Blocks have the concept of _secondary content_, which is any paragraph that is adjacent to the closing fence. This paragraph is included in the block metadata and used according to the type of block (see [header](code-blocks), for example). The default block simply discards that content
+----
+
+. Mau source
+[*source]
+++++
+----
+Content of the block
+----
+Secondary content that won't be in the output
+
+This is not part of the block
+++++
+
+::footnotes:
