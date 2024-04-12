@@ -1,4 +1,0 @@
-templates_directory: mau/html
-pelican: no
-chapter_headers: yes
-output_format: html

@@ -1,7 +1,0 @@
-{% if 'unnumbered' in args %}
-\{{command}}*{ {{-value-}} }
-{% if 'toc' in args%}\addcontentsline{toc}{ {{-command-}} }{ {{-value-}} }{% endif %}
-{% else %}
-\{{command}}{ {{-value-}} }
-{% endif %}
-

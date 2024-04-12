@@ -1,0 +1,5 @@
+mau:
+  visitor:
+    templates_directory: mau/templates
+website: no
+output_format: tex
