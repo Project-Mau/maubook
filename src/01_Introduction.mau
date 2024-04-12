@@ -34,7 +34,7 @@ Mau's main features are
 * A plugin for Pelican that allows you to use Mau to write blog posts and website pages
 * Full support for a good range of standard HTML features (paragraphs, lists, headers, ...) and for some advanced ones such as admonitions, code callouts, includes, and footnotes.
 * Extremely configurable output using Jinja2 templates
-* Stand-alone PDF creation (since version 3)
+* PDF creation using TeX (since version 3)
 
 == Mau versions
 

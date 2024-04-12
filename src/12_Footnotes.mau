@@ -61,9 +61,9 @@ There are several markup languages available nowadays[footnote](mynote).
 ----
 For example:
 
-* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
-* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
-* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+* [link](https://en.wikipedia.org/wiki/HTML, "HTML")
+* [link](https://en.wikipedia.org/wiki/Markdown, "Markdown")
+* [link](https://en.wikipedia.org/wiki/TeX, "TeX")
 ----
 
 ---
@@ -79,9 +79,9 @@ There are several markup languages available nowadays[footnote](mynote).
 ----
 For example:
 
-* [link]("HTML", https://en.wikipedia.org/wiki/HTML)
-* [link]("Markdown", https://en.wikipedia.org/wiki/Markdown)
-* [link]("TeX", https://en.wikipedia.org/wiki/TeX)
+* [link](https://en.wikipedia.org/wiki/HTML, "HTML")
+* [link](https://en.wikipedia.org/wiki/Markdown, "Markdown")
+* [link](https://en.wikipedia.org/wiki/TeX, "TeX")
 ----
 
 ---
