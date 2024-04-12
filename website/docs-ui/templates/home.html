@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title|striptags }}{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="duik-header">
+  <!-- Navbar -->
+  <nav class="js-navbar-scroll navbar navbar-expand-lg navbar-dark bg-primary-md fixed-top flex-nowrap transition-bg-03s"
+       data-onscroll-classes="bg-primary"
+       data-offset-value="50">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">The <strong>Mau</strong> Markup Language</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse my-3 my-lg-0" id="navbarCollapse">
+        <!-- Header Links -->
+        <ul class="navbar-nav mr-lg-auto ml-lg-2 ml-xl-4">
+          <li class="js-scroll-nav nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
+            <a class="nav-link" href="#demos">Examples</a>
+          </li>
+          <li class="nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
+            <a class="nav-link" href="pages/introduction.html">Documentation</a>
+          </li>
+        </ul>
+        <!-- End Header Links -->
+
+        <!-- Header Links 2 -->
+        <ul class="navbar-nav align-items-lg-center">
+          <li class="nav-item ml-lg-3 ml-xl-5 my-2 my-lg-0">
+            <a class="btn btn-sm btn-light text-primary" href="https://github.com/Project-Mau">
+              <i class="fab fa-github mr-1"></i> Fork on GitHub
+            </a>
+          </li>
+        </ul>
+        <!-- End Header Links 2 -->
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+</header>
+<!-- End Header -->
+
+<!-- Promo Section -->
+<section class="duik-promo" style="background: url({{ SITEURL }}/theme/img/index-background.jpg) no-repeat center; background-size: cover;">
+  <div class="container duik-promo-container">
+    <div class="d-flex justify-content-center1 position-relative mh-35rem h-85vh py-11">
+      <div class="align-self-center">
+        <h1 class="text-white mb-1">The <strong>Mau</strong> Markup Language</h1>
+        <p class="lead mb-5">A simple and powerful template-based markup language</p>
+        <span class="js-scroll-nav">
+          <a class="btn btn-sm btn-light mr-2" href="#demos">Explore now</a>
+        </span>
+        <a class="btn btn-sm btn-dark" href="https://github.com/Project-Mau" target="_blank"><i class="fab fa-github mr-1"></i> Star on Github</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG BG Separator -->
+  <svg class="position-absolute bottom-0 left-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 300">
+    <path id="Path_1" fill="#fff" data-name="Path 1" d="M0,1081.586H1920v-300Z" transform="translate(0 -781.586)"/>
+  </svg>
+  <!-- SVG BG Separator -->
+
+  <!-- SVG Window -->
+  <svg class="position-absolute d-none d-lg-block" style="right: 150px; bottom: 50px; transform: rotate(-15deg); transform-origin: 50% 0;" id="revenue-graph-colour" xmlns="http://www.w3.org/2000/svg" width="362.289" height="491.499" viewBox="0 0 362.289 491.499">
+    <rect id="Rectangle_1" data-name="Rectangle 1" width="338.347" height="491.499" rx="10" transform="translate(23.941 0)" fill="#f5faff"/>
+    <path id="Rectangle_7" data-name="Rectangle 7" d="M10,0H328.347a10,10,0,0,1,10,10V31.656a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V10A10,10,0,0,1,10,0Z" transform="translate(23.941 0)" fill="#e8f1fa"/>
+    <rect id="Rectangle_8" data-name="Rectangle 8" width="284.152" height="80.962" rx="5" transform="translate(0 71.528)" fill="#e2eefa"/>
+    <rect id="Rectangle_9" data-name="Rectangle 9" width="254.039" height="7.335" transform="translate(13.521 87.197)" fill="#f9f9f9"/>
+    <rect id="Rectangle_10" data-name="Rectangle 10" width="254.039" height="7.335" transform="translate(13.521 104.671)" fill="#f9f9f9"/>
+    <rect id="Rectangle_11" data-name="Rectangle 11" width="254.039" height="7.335" transform="translate(13.521 122.151)" fill="#f9f9f9"/>
+    <rect id="Rectangle_12" data-name="Rectangle 12" width="284.152" height="80.962" rx="5" transform="translate(0 185.026)" fill="#e2eefa"/>
+    <ellipse id="Ellipse_1" data-name="Ellipse 1" cx="24.11" cy="24.11" rx="24.11" ry="24.11" transform="translate(222.192 201.394)" fill="#f9f9f9"/>
+    <rect id="Rectangle_13" data-name="Rectangle 13" width="184.984" height="23.321" transform="translate(19.418 201.394)" fill="#f9f9f9"/>
+    <rect id="Rectangle_14" data-name="Rectangle 14" width="184.984" height="8.568" transform="translate(19.418 232.62)" fill="#f9f9f9"/>
+    <rect id="Rectangle_15" data-name="Rectangle 15" width="266.883" height="131.303" rx="5" transform="translate(62.333 301.104)" fill="#e2eefa"/>
+  </svg>
+  <!-- End SVG Window -->
+</section>
+<!-- End Promo Section -->
+
+<main>
+  {{ page.content }}
+  
+  <!-- Main features -->
+  <section class="pt-5 pb-11">
+    <div class="container">
+      <div class="w-md-75 w-lg-50 mx-auto text-center mb-5">
+        <h2 class="h3 text-center">Main features</h2>
+        <p>Mau includes a lot on components that make it a breeze to create and customise content.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-5">
+          <div class="media h-100 shadow rounded p-4">
+            <i class="far fa-fw fa-dot-circle fa-3x text-warning mr-4 mt-1"></i>
+
+            <div class="media-body">
+              <h5 class="mb-1">Getting started</h5>
+              <p class="mb-0">With a basic syntax that comes from Markdown and AsciiDoc getting started is a matter of minutes.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-5">
+          <div class="media h-100 shadow rounded p-4">
+            <i class="far fa-fw fa-dot-circle fa-3x text-secondary mr-4 mt-1"></i>
+
+            <div class="media-body">
+              <h5 class="mb-1">HTML and PDF</h5>
+              <p class="mb-0">Two visitors are available out of the box to provide HTML and TeX output.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-5">
+          <div class="media h-100 shadow rounded p-4">
+            <i class="far fa-fw fa-dot-circle fa-3x text-info mr-4 mt-1"></i>
+
+            <div class="media-body">
+              <h5 class="mb-1">Templates</h5>
+              <p class="mb-0">Use Jinja to customise the output of each component. Templates have a huge amount of customisation options.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-5">
+          <div class="media h-100 shadow rounded p-4">
+            <i class="far fa-fw fa-dot-circle fa-3x text-danger mr-4 mt-1"></i>
+
+            <div class="media-body">
+              <h5 class="mb-1">Flexible API</h5>
+              <p class="mb-0">It's easy to create new visitor should you want to use different template engines.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Main features -->
+
+  <hr>
+  
+  <!-- Examples -->
+  <section id="demos" class="py-11">
+    <div class="container">
+      <header class="w-md-75 w-lg-50 mx-auto text-center mb-7">
+        <h2 class="h3 mb-3">Examples</h2>
+        <p>The following examples show the Mau syntax and the rendered version using this website theme.</p>
+      </header>
+
+      <hr class="my-7">
+
+      <!-- Lead -->
+      <div class="container">
+        <div class="container">
+          <header class="mx-auto mb-10 text-center">
+            <p>A paragraph can be given a title that can be transformed into a header.</p>
+          </header>
+        </div>
+        <div class="row align-items-center">
+          <div class="col">
+            <pre>
+. Lead paragraph
+[*lead]
+This is Lead text vulputate volutpat ex, a faucibus
+ligula laoreet eget. Duis in tempus ipsum. Mauris maximus
+condimentum arcu nec sollicitudin. Maecenas iaculis luctus
+est, at rutrum lorem auctor quis. Nam dapibus accumsan
+mauris at hendrerit.
+            </pre>
+          </div>
+          <div class="col">
+            <h3 class="h5 mb-3">Lead paragraph</h3>
+            <p class="lead">This is Lead text vulputate volutpat ex, a faucibus ligula laoreet eget. Duis in tempus ipsum. Mauris maximus condimentum arcu nec sollicitudin. Maecenas iaculis luctus est, at rutrum lorem auctor quis. Nam dapibus accumsan mauris at hendrerit.</p>
+          </div>
+        </div>
+      </div>
+      <!-- End Lead -->
+
+      <hr class="my-7">
+
+      <!-- Blockquotes -->
+      <div class="container">
+        <div class="container">
+          <header class="mx-auto mb-10 text-center">
+            <p>A block can contain primary and secondary text that can be assigned different roles.</p>
+          </header>
+        </div>
+        <div class="row align-items-center">
+          <div class="col">
+            <pre>
+[*quote]
+----
+"Maecenas aliquet nisl ut ultrices eleifend. Sed et felis
+nec arcu porttitor efficitur sed fermentum velit. Etiam
+hendrerit aliquet quam et varius. Proin sed lacinia
+nisl. Sed eu mauris fringilla, euismod elit eget,
+fermentum nunc."
+----
+User feedback
+            </pre>
+          </div>
+          <div class="col">
+            <!-- Centered -->
+            <blockquote class="text-center">
+              <p>"Maecenas aliquet nisl ut ultrices eleifend. Sed et felis nec arcu porttitor efficitur sed fermentum velit. Etiam hendrerit aliquet quam et varius. Proin sed lacinia nisl. Sed eu mauris fringilla, euismod elit eget, fermentum nunc."</p>
+              <footer class="blockquote-footer">User feedback</footer>
+            </blockquote>
+            <!-- End Centered -->
+          </div>
+        </div>
+      </div>
+      <!-- End Blockquotes -->
+
+      <hr class="my-7">
+
+      <!-- Alert Primary -->
+      <div class="container">
+        <div class="container">
+          <header class="mx-auto mb-10 text-center">
+            <p>Components can receive arguments to customise their appearance</p>
+          </header>
+        </div>
+        <div class="row align-items-center">
+          <div class="col">
+            <pre>
+[*alert, icon=peace]
+This is a primary alert — check it out!
+            </pre>
+          </div>
+          <div class="col">
+            <div class="alert alert-primary" role="alert">
+              <i class="fas fa-peace mr-2"></i> This is a primary alert — check it out!
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Alert Primary -->
+
+      <hr class="my-7">
+      
+      <!-- duik-callout Primary -->
+      <div class="container">
+        <div class="container">
+          <header class="mx-auto mb-10 text-center">
+            <p>An aside can be created either with a paragraph and a title or with a block that contains header and text.</p>
+          </header>
+        </div>
+        <div class="row align-items-center">
+          <div class="col">
+            <pre>
+. Primary
+[*callout, type=primary]
+In eu felis velit. Donec massa erat, viverra nec viverra a,
+porta et dolor. Vivamus finibus mauris non ipsum porttitor
+elementum. Aliquam erat volutpat. Praesent vel felis mauris.
+Aenean iaculis arcu pulvinar leo scelerisque placerat.
+            </pre>
+
+            <p>or</p>
+
+            <pre>
+[*callout, type=primary]
+----
+== Primary
+
+In eu felis velit. Donec massa erat, viverra nec viverra a,
+porta et dolor. Vivamus finibus mauris non ipsum porttitor
+elementum. Aliquam erat volutpat. Praesent vel felis mauris.
+Aenean iaculis arcu pulvinar leo scelerisque placerat.
+----
+            </pre>
+            
+          </div>
+          <div class="col">
+            <div class="duik-callout duik-callout-primary mb-5">
+              <h4 class="h5">Primary</h4>
+              <p class="mb-0">In eu felis velit. Donec massa erat, viverra nec viverra a, porta et dolor. Vivamus finibus mauris non ipsum porttitor elementum. Aliquam erat volutpat. Praesent vel felis mauris. Aenean iaculis arcu pulvinar leo scelerisque placerat.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End duik-callout Primary -->
+
+      <hr class="my-7">
+
+      <!-- Images -->
+      <div class="container">
+        <div class="container">
+          <header class="mx-auto mb-10 text-center">
+            <p>Including content like images is trivial, and attributes grant a high degree of customisation.</p>
+          </header>
+        </div>
+        <div class="row align-items-center">
+          <div class="col">
+            <pre>
+[shoadow, rounded-circle]
+<< image:images/img1.jpg
+            </pre>
+          </div>
+          <div class="col text-center">
+            <img class="shadow img-fluid rounded-circle mt-1" src="{{ SITEURL }}/theme/img-temp/200x200/img1.jpg" alt="image">
+          </div>
+        </div>
+      </div>
+      <!-- End Images -->
+
+    </div>
+  </section>
+  <!-- End Examples -->
+
+  <hr>
+
+  <!-- Free Download -->
+  <section class="bg-light">
+    <div class="py-11 shadow bg-white rounded mx-3 mx-lg-5 position-relative bottom-n9">
+      <div class="container">
+        <div class="text-center w-md-50 mx-auto py-5">
+          <a class="display-4 d-inline-block mb-3 text-dark" target="_blank" href="https://github.com/Project-Mau"
+             data-toggle="tooltip"
+             data-placement="top" title="Star on Github"
+             data-original-title="Star docs-ui-kit on Github" >
+            <i class="fab fa-github"></i>
+          </a>
+          <h6 class="lead font-weight-normal mb-5">Mau 4.x is production-ready and can be used out of the box to create beautiful HTML pages and PDF documents!</h6>
+          <a class="btn btn-primary shadow py-3 px-4" href="pages/introduction.html">
+            <i class="fas fa-book mr-2"></i> Read the documentation
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Free Download -->
+
+  <!-- Footer -->
+  <footer class="bg-dark pt-4">
+    <div class="container">
+      <!-- Attributions -->
+      <div class="row px-md-3 py-4">
+        <div class="col text-center mb-3 mb-md-0">
+          <small class="text-white">&copy; 2024 Leonardo Giordani - Made with <a class="text-white" href="https://htmlstream.com/templates/docs-ui-kit">Htmlstream Docs UI Kit</a> - Photo by <a href="https://unsplash.com/@agapetrn?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Agape Trn</a> on <a href="https://unsplash.com/photos/black-cat-sitting-on-rock-during-day-H-XOmJhbM3s?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></small>
+        </div>
+      </div>
+    </div>
+    <!-- End Attributions -->
+    </div>
+  </footer>
+  <!-- End Footer -->
+</main>
+{% endblock %}
+
+{% block custom_js %}
+<script src="{{ SITEURL }}/theme/js/header-fixing.js"></script>
+{% endblock %}

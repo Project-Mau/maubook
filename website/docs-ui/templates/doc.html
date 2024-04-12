@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title|striptags }}{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="duik-header">
+  <nav class="navbar navbar-dark fixed-top bg-primary flex-nowrap p-0">
+    <a class="navbar-brand bg-md-primary-darker col-md-3 col-xl-2 mr-0 py-3" href="/">The <strong>Mau</strong> Markup Language</a>
+
+    <!-- Header Links -->
+    <ul class="navbar-nav duik-header__nav small text-nowrap flex-row px-3 ml-0 ml-sm-3">
+      <li class="nav-item ml-4">
+        <a class="nav-link" href="https://github.com/Project-Mau/maubook/issues" title="Report an Issue" target="_blank"><i class="fas fa-bug mr-sm-1"></i> <span class="d-none d-lg-inline-block">Found an issue in the docs?</span></a>
+      </li>
+      <li class="nav-item ml-3 ml-sm-5">
+        <a class="btn btn-sm btn-light text-primary" href="https://github.com/Project-Mau" title="Download"><i class="fab fa-github mr-sm-1"></i> Fork on GitHub</a>
+      </li>
+    </ul>
+    <!-- End Header Links -->
+  </nav>
+</header>
+<!-- End Header -->
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-xl-2 bg-light duik-sidebar navbar-expand-md">
+      <div class="d-flex d-md-none justify-content-between mb-5">
+        <!-- Sidebar Search -->
+        <form class="col form-inline input-group-sm">
+          <input class="js-search form-control form-control-sm w-100" type="text" placeholder="Search..." data-url="{{ SITEURL }}/theme/include/json/autocomplete-data-for-documentation-search.json">
+        </form>
+        <!-- End Sidebar Search -->
+
+        <!-- Responsive Toggle Button -->
+        <button class="btn btn-link pl-0" type="button" data-toggle="collapse" data-target="#sidebar-nav" aria-controls="sidebar-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 30 30" width="30" height="30" focusable="false">
+            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/>
+          </svg>
+        </button>
+        <!-- End Responsive Toggle Button -->
+      </div>
+
+      <!-- Sidebar Nav -->
+      <div class="collapse navbar-collapse" id="sidebar-nav">
+        <div class="js-scrollbar duik-sidebar-sticky">
+          {% if page.series %}
+          <h5 class="duik-sidebar__heading">{{ page.series.name }}</h5>
+          <ul class="duik-sidebar__nav">
+            {% for p in page.series.all %}
+            <li class="duik-sidebar__item"><a class="duik-sidebar__link{% if page.title == p.title %} active{% endif %}" href="/{{ p.url }}">{{ p.title }}</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+      <!-- End Sidebar Nav -->
+    </nav>
+    <!-- End Sidebar -->
+
+    <main class="ml-md-auto col-md-9 col-xl-10 px-4 pt-0 pt-md-11">
+      <div class="row pt-3">
+        <!-- Content Nav -->
+        {{ page.mau.toc }}
+        <!-- End Content Nav -->
+
+        <!-- Content -->
+        <div class="col-xl-10 order-xl-1 duik-content border-bottom">
+          {{ page.content }}
+        </div>
+        <!-- End Content -->
+      </div>
+
+      <!-- Footer -->
+      <footer class="small py-4">
+        <div class="row">
+          <!-- Copyright -->
+          <div class="col-md-6 text-center text-dark text-md-left mb-3 mb-md-0">
+            &copy; 2024 Leonardo Giordani - Made with <a href="https://htmlstream.com/templates/docs-ui-kit">Htmlstream Docs UI Kit</a>
+          </div>
+          <!-- End Copyright -->
+        </div>
+      </footer>
+      <!-- End Footer -->
+    </main>
+  </div>
+</div>
+
+<!-- Go to Top -->
+<a class="js-go-to duik-go-to" href="javascript:;">
+  <span class="fa fa-arrow-up duik-go-to__inner"></span>
+</a>
+<!-- End Go to Top -->
+{% endblock %}

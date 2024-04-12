@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Title -->
+    <title>{{ SITENAME }}{% if self.title() %} - {% block title %}{% endblock %}{% endif %}</title>
+
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ FAVICON }}">
+
+    <!--  Meta tags -->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    {% block meta_description %}{% endblock %}
+
+    <!-- Google Fonts -->
+    <link href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/vendor/jquery-ui/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="{{ SITEURL }}/theme/vendor/prism/prism.css">
+
+    <!-- CSS Template -->
+    {% assets filters="cssmin", output="css/main.min.css", "css/theme.css", "css/layout.css", "css/custom.css", "css/pygments/default.css" %}
+    <link rel="stylesheet" href="/{{ ASSET_URL }}">
+    {% endassets %}
+
+  </head>
+  <body class="bg-white">
+
+    {% block content %}{% endblock %}
+
+    <!-- JS Global Compulsory -->
+    <script src="{{ SITEURL }}/theme/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/popper.js/dist/umd/popper.min.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- JS Implementing Plugins -->
+    <script src="{{ SITEURL }}/theme/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/jquery-ui/jquery-ui.core.min.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/jquery-ui/ui/widgets/menu.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/jquery-ui/ui/widgets/mouse.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/jquery-ui/ui/widgets/autocomplete.js"></script>
+    <script src="{{ SITEURL }}/theme/vendor/prism/prism.js"></script>
+
+    <!-- JS -->
+    <script src="{{ SITEURL }}/theme/js/main.js"></script>
+    <script src="{{ SITEURL }}/theme/js/autocomplete.js"></script>
+    <script src="{{ SITEURL }}/theme/js/custom-scrollbar.js"></script>
+
+    {% block custom_js %}{% endblock %}
+  </body>
+</html>

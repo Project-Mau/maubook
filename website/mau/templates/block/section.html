@@ -1,0 +1,11 @@
+{% if kwargs.id %}<!-- {{ kwargs.id }} -->{% endif %}
+<div {% if kwargs.id %}id="doc-{{ kwargs.id }}"{% endif %} class="mb-7">
+  <h2 class="h4">
+    {{ title }}
+    {% if kwargs.id %} <a class="js-anchor-link duik-anchorjs-link" href="#doc-{{ kwargs.id }}" aria-label="Anchor" data-anchorjs-icon="#"></a>{% endif %}
+  </h2>
+
+  {{ content }}
+</div>
+{% if kwargs.id %}<!-- End {{ kwargs.id }} -->{% endif %}
+

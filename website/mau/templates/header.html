@@ -1,0 +1,10 @@
+{% if level == 1 %}
+<div class="border-bottom mb-7">
+  <h1>{{ value }}</h1>
+</div>
+{% else %}
+<h{{ level }} id="{{ anchor }}" class="mt-6">
+  {{ value }}
+  <a class="js-anchor-link duik-anchorjs-link" href="#{{ anchor }}" aria-label="Anchor" data-anchorjs-icon="#"></a>
+</h{{ level }}>
+{% endif %}

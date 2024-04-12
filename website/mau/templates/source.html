@@ -1,0 +1,23 @@
+<div class="code mb-3 mt-1">
+  {% if title %}
+  <div class="title px-2">{{ title }}</div>
+  {% endif %}
+  <div class="content">
+    <div class="highlight">
+      <pre class="p-3">
+      {% for line, callout in code %}
+      {{ line }}{% if callout %} {{ callout }}{% endif %}{{ '\n' }}
+      {% endfor %}
+      </pre>
+    </div>
+  </div>
+  {% if callouts %}
+  <div class="callouts">
+    <table>
+      <tbody>
+        {% for callout in callouts %}{{ callout }}{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>

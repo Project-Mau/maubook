@@ -1,0 +1,13 @@
+:pelican.title:Index
+
+[condition="if:mau.pelican:"]
+----
+:pelican.template:home
+:pelican.save_as:index.html
+----
+
+[*about]
+Mau is a lightweight markup language heavily inspired by Markdown and AsciiDoc that makes it a breeze to write blog posts or books. If you already know Markdown or AsciiDoc you already know which type of software Mau is, and you will quickly learn its syntax.
+
+---
+
