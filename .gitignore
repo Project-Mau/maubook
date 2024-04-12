@@ -1,2 +1,5 @@
 # Temporary TeX files
-pdf/tmp
+*.tex
+aux
+
+

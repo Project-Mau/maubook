@@ -3,20 +3,28 @@
 # Terminate if a command fails
 set -e
 
-OUT_DIR=pdf
-TMP_DIR=${OUT_DIR}/tmp
-SRC_DIR=src
+WORK_DIR=pdf
 
-FILENAME=book
-TEX_FILE=${TMP_DIR}/${FILENAME}.tex
+SOURCE_MAU_FILE=book.mau
+OUTPUT_DIR=output
+AUX_DIR=aux
 
-if [[ ! -d ${OUT_DIR} ]]; then mkdir ${OUT_DIR}; fi
-if [[ ! -d ${TMP_DIR} ]]; then mkdir ${TMP_DIR}; fi
+SOURCE_TEX_FILE=${SOURCE_MAU_FILE/mau/tex}
 
-mau -c mau/pdf.yaml -i ${FILENAME}.mau -o ${TEX_FILE} -f tex
+if [[ ! -d ${OUTPUT_DIR} ]]; then mkdir ${OUTPUT_DIR}; fi
+if [[ ! -d ${AUX_DIR} ]]; then mkdir ${AUX_DIR}; fi
 
-pdflatex -shell-escape ${TEX_FILE}
-pdflatex -shell-escape ${TEX_FILE}
+# Build the TeX source
+cd ${WORK_DIR}
+mau --verbose -c mau/conf.yaml -i ${SOURCE_MAU_FILE} -o ${SOURCE_TEX_FILE} -f tex
 
-mv *.aux *.log *.out *.toc _minted* ${TMP_DIR}
-mv *.pdf ${OUT_DIR}
+# Build the PDF
+pdflatex -shell-escape ${SOURCE_TEX_FILE}
+pdflatex -shell-escape ${SOURCE_TEX_FILE}
+
+rm -fr ${AUX_DIR}/*
+mv *.aux *.log *.out *.toc _minted* ${AUX_DIR}
+mv *.pdf ${OUTPUT_DIR}
+
+echo
+echo "Book saved in ${WORK_DIR}/${OUTPUT_DIR}/${SOURCE_MAU_FILE/mau/pdf}"

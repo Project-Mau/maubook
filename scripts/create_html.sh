@@ -3,12 +3,24 @@
 # Terminate if a command fails
 set -e
 
-OUT_DIR=html
+# OUT_DIR=html
 SRC_DIR=src
+WEBSITE_DIR=website
+WEBSITE_SRC_DIR=${WEBSITE_DIR}/pages
+WEBSITE_CONTENT_DIR=${WEBSITE_DIR}/content/pages
+WEBSITE_OUTPUT_DIR=${WEBSITE_DIR}/output
+WEBSITE_GHPAGES_DIR=${WEBSITE_DIR}/ghpages
 
-FILENAME=book
-HTML_FILE=${OUT_DIR}/${FILENAME}.html
+# Copy the source files
+cp ${SRC_DIR}/*.mau ${WEBSITE_CONTENT_DIR}
+cp ${WEBSITE_SRC_DIR}/*.mau ${WEBSITE_CONTENT_DIR}
 
-if [[ ! -d ${OUT_DIR} ]]; then mkdir ${OUT_DIR}; fi
+# Build the website
+cd ${WEBSITE_DIR}
+make html
 
-mau -c mau/html.yaml -i ${FILENAME}.mau -o ${HTML_FILE} -f html
+if [[ ! -d ${WEBSITE_GHPAGES_DIR} ]]; then echo "The GH Pages directory doesn't exist. Skipping that phase."; exit 0; fi
+
+cp -r ${WEBSITE_OUTPUT_DIR}/* ${WEBSITE_GHPAGES_DIR}
+
+echo "HTML files copied to ${WEBSITE_GHPAGES_DIR}. You have to manually publish them."
