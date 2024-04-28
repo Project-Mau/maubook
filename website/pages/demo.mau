@@ -87,7 +87,7 @@ Variables can be defined inside and outside Mau documents and used to customise 
 Mau supports variables. The answer is {answer}.
 
 Macros can render
-[if](trueflag, text conditionally, whatever).
+[@if:trueflag:&true](text conditionally, whatever).
 ----
 ++++
 
@@ -100,7 +100,7 @@ Macros can render
 Mau supports variables. The answer is {answer}.
 
 Macros can render
-[if](trueflag, text conditionally, whatever).
+[@if:trueflag:&true](text conditionally, whatever).
 ----
 
 ::blockgroup:variables
@@ -259,7 +259,7 @@ Blocks can be used in multiple ways such as quotes.
 ====
 Anonymous
 
-[*admonition, note, "fas fa-info", "Info"]
+[*admonition, note, "fas fa-info"]
 ====
 Or admonitions, but not only.
 ====
@@ -280,7 +280,7 @@ Blocks can be used in multiple ways.
 ====
 Anonymous
 
-[*admonition, note, "fas fa-info", "Info"]
+[*admonition, note, "fas fa-info"]
 ====
 Or admonitions, but not only.
 ====
