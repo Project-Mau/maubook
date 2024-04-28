@@ -1,13 +1,13 @@
 :pelican.title:Images
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
-:pelican.series_index:10
+:pelican.series_index:8
 :pelican.template:doc
 ----
 
-[id=images]
+[id=chapter-images]
 = {pelican.title}
 
 [*quote]
@@ -28,7 +28,7 @@ Images can be included in the document with the syntax `<< image:URI`
 << image:https://via.placeholder.com/150
 ----
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ----
@@ -47,7 +47,7 @@ You can add a caption to the image using a title
 << image:https://via.placeholder.com/150
 ----
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ----
@@ -77,7 +77,7 @@ Images can be added inline with the macro `image`
 This is a paragraph with an image [image](https://via.placeholder.com/30,alt_text="A placeholder")
 ----
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ----

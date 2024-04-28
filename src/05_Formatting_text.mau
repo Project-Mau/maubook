@@ -1,0 +1,316 @@
+:pelican.title:Formatting text
+
+@if:mau.pelican:&true
+----
+:pelican.series:maubook
+:pelican.series_index:5
+:pelican.template:doc
+----
+
+[id=chapter-formatting-text]
+= {pelican.title}
+
+[*quote]
+----
+Leafing through the pages, he saw the book was printed in two colours. There seemed to be no pictures, but there were large, beautiful capital letters at the beginning of the chapters. 
+----
+Michael Ende, _The Neverending Story_ (1979)
+
+== Basic styles
+
+Inside paragraphs (and in other elements that support it) you can use text formatting which allows you to give text a certain style. Text formatting is done through symbols, enclosing a set of words between two identical symbols. Currently Mau supports
+
+* `_underscores_`
+* `*stars*`
+* `~tildes~`
+* `^carets^`
+* `\`backticks\``
+* `$dollars$`
+* `%percent%`
+
+. Mau source
+[*source]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text.
+
+Carets for ^superscript^ and tildes for ~subscript~.
+
+Backticks are used for `verbatim` text.
+
+$Dollars_and_percents$ are %used_to_escape_text%
+----
+
+[*rendered]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text.
+
+Carets for ^superscript^ and tildes for ~subscript~.
+
+Backticks are used for `verbatim` text.
+
+$Dollars_and_percents$ are %used_to_escape_text%
+----
+
+=== Mixing styles
+
+Text styles can be used together but backticks have a very strong behaviour in Mau
+
+. Mau source
+[*source]
+----
+You can have _*strong and empashized*_ text.
+
+You can also apply styles to _*`verbatim`*_.
+
+But verbatim will `_*preserve*_` them.
+----
+
+[*rendered]
+----
+You can have _*strong and empashized*_ text.
+
+You can also apply styles to _*`verbatim`*_.
+
+But verbatim will `_*preserve*_` them.
+----
+
+Styles can be applied to only part of a word and do not need spaces
+
+. Mau source
+[*source]
+----
+*S*trategic *H*azard *I*ntervention *E*spionage *L*ogistics *D*irectorate
+
+It is completely _counter_intuitive.
+
+Parts of words can be ^super^script or ~sub~script.
+
+There are too many `if`s in this function.
+----
+
+[*rendered]
+----
+*S*trategic *H*azard *I*ntervention *E*spionage *L*ogistics *D*irectorate
+
+It is completely _counter_intuitive.
+
+Parts of words can be ^super^script or ~sub~script.
+
+There are too many `if`s in this function.
+----
+
+=== Escaping
+
+Using a single style marker doesn't trigger any effect. If you need to use two of them in the sentence, though, you have to escape at least one. Or use `$` and `%`
+
+. Mau source
+[*source]
+----
+You can use _single *markers.
+
+But you \_need\_ to escape pairs.
+
+Even though you can escape \_just one_ of the two.
+
+If you have \_more than two\_ it's better to just \_escape\_ all of them.
+
+Or $you_can_just_use_dollars$ and %percents_which_escape_everything%.
+
+Actually $dollars escape %percents%$, and %percents escape $dollars$%.
+----
+
+[*rendered]
+----
+You can use _single *markers.
+
+But you \_need\_ to escape pairs.
+
+Even though you can escape \_only one_ of the two.
+
+If you have \_more than two\_ it's better to just \_escape\_ all of them.
+
+Or $you_can_just_use_dollars$ and %percents_which_escape_everything%.
+
+Actually $dollars escape %percents%$, and %percents escape $dollars$%.
+----
+
+The purpose of backticks `\`` is to format code, as you will see in the chapter about templates, while the purpose of dollar `$` and percent `%` is just to make it less complicated to represent text that has a lot of special symbols. Dollars and percents escape each other as they are pretty common symbols that you might need to use.
+
+== Text classes
+
+You can assign specific classes to part of the text using the macro `class`. The way classes are used and rendered depends on the output format. If the output is HTML, those will become CSS classes, while PDF output at the moment doesn't do anything specific.
+
+. Mau source
+[*source]
+----
+This is [class]("text wrapped", myclass) in a class.
+----
+
+The HTML output of the code above is
+
+. HTML output
+[*source,html]
+----
+<p>This is <span class="myclass">text wrapped</span> in a class.</p>
+----
+
+---
+
+You can specify multiple classes as arguments. There is no limit to the number of arguments.
+
+. Mau source
+[*source]
+----
+This is [class]("text wrapped", myclass1, myclass2) in multiple classes.
+----
+
+Resulting in
+
+. HTML output
+[*source,html]
+----
+<p>This is <span class="myclass1 myclass2">text wrapped</span> in multiple classes.</p>
+----
+
+Please note that the text passed to the macro `class` can contain Mau code such as styles.
+
+. Mau source
+[*source]
+----
+This is [class]("*text with styles* _wrapped_", "myclass") in a class.
+----
+
+== Horizontal rule
+
+You can add a separator or horizontal rule using three dashes `---` on a separate line.
+
+. Mau source
+[*source]
+----
+---
+----
+
+[*rendered]
+----
+---
+----
+
+== Links
+
+Since markup languages are mostly used to write hyperlinked documents, links play a big part in the syntax. In Mau, links are created with the macro `link`.
+
+. Mau source
+[*source]
+----
+The source code can be found at [link](https://github.com/Project-Mau/mau).
+----
+
+[*rendered]
+----
+The source code can be found at [link](https://github.com/Project-Mau/mau).
+----
+
+:basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
+:basic-syntax-header:[header](chapter-basic-syntax)
+
+The values between round brackets are arguments (see [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header)).
+
+=== Add text to the link
+
+You can add optional text to the link that will replace the URL in the rendered text
+
+. Mau source
+[*source]
+----
+The source code can be found
+on [link](https://github.com/Project-Mau/mau, GitHub).
+----
+
+[*rendered]
+----
+The source code can be found on [link](https://github.com/Project-Mau/mau, GitHub).
+----
+
+=== Using spaces and quotes
+
+If the title contains spaces or the closing parenthesis `)` you need to wrap it between double quotes
+
+. Mau source
+[*source]
+----
+The source code can be found
+on [link](https://github.com/Project-Mau/mau, "the GitHub page").
+----
+
+[*rendered]
+----
+The source code can be found on [link](https://github.com/Project-Mau/mau, "the GitHub page").
+----
+
+Should you need to add quotes to the title you will have to escape them
+
+. Mau source
+[*source]
+----
+The main [link](https://github.com/Project-Mau/mau, "\"repository\"").
+----
+
+[*rendered]
+----
+The main [link](https://github.com/Project-Mau/mau, "\"repository\"").
+----
+
+The same rules are valid for the URL
+
+. Mau source
+[*source]
+----
+A [link]("https://example.org/?q=[a b]","URL with special characters").
+----
+
+[*rendered]
+----
+A [link]("https://example.org/?q=[a b]","URL with special characters").
+----
+
+=== Mailto links
+
+Mailto links can be created with the `mailto` macro, which works like the `link` macro described above.
+
+. Mau source
+[*source]
+----
+Get in touch at [mailto](info@example.com).
+----
+
+[*rendered]
+----
+Get in touch at [mailto](info@example.com).
+----
+
+=== Rich text
+
+The text added to a link is rendered using Mau, so you can include styles or other macros, as long as the output makes sense in the target format. To avoid clashes between Mau syntax and arguments syntax, if you have rich text it is recommended to explicitly mark it as a named `text` argument.
+
+. Mau source
+[*source]
+----
+The source code can be found
+on [link]("https://github.com/Project-Mau/mau", text="*GitHub*").
+----
+
+[*rendered]
+----
+The source code can be found
+on [link]("https://github.com/Project-Mau/mau", text="*GitHub*").
+----
+
+In this case, the syntax `[link]("https://github.com/Project-Mau/mau", "*GitHub*")` would be interpreted as a link with subtype `GitHub` because of the leading `*`.
+
+As for rich text, remember that Mau doesn't understand output formats, it merely uses templates. So, while it is possible in Mau to insert a link as a text for a link, that doesn't make sense in HTML or TeX.
+
+::footnotes:

@@ -3,8 +3,6 @@
 # Terminate if a command fails
 set -e
 
-if [[ $# -lt 1 ]]; then echo "$0 COMMAND"; exit 1; fi
-
 # OUT_DIR=html
 SRC_DIR=src
 WEBSITE_DIR=website
@@ -19,4 +17,10 @@ cp ${WEBSITE_SRC_DIR}/*.mau ${WEBSITE_CONTENT_DIR}
 
 # Build the website
 cd ${WEBSITE_DIR}
-make $1
+make html
+
+if [[ ! -d ${WEBSITE_GHPAGES_DIR} ]]; then echo "The GH Pages directory doesn't exist. Skipping that phase."; exit 0; fi
+
+cp -r ${WEBSITE_OUTPUT_DIR}/* ${WEBSITE_GHPAGES_DIR}
+
+echo "HTML files copied to ${WEBSITE_GHPAGES_DIR}. You have to manually publish them."

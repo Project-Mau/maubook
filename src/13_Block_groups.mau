@@ -1,0 +1,58 @@
+:pelican.title:Block groups
+
+@if:mau.pelican:&true
+----
+:pelican.series:maubook
+:pelican.series_index:13
+:pelican.template:doc
+----
+
+[id=chapter-block-groups]
+= {pelican.title}
+
+[*quote]
+----
+She saw the pirates clustered about a great fire outside the ruins, and her heart leaped as a group emerged from the interior dragging some object she knew was Conan. They propped him against the wall, still evidently bound fast, and there ensued a long discussion, with much brandishing of weapons.
+----
+Robert E. Howard, _Shadows in the Moonlight_ (1934)
+
+
+Block groups are a simple way to link different groups so that the content can be rendered in the same template. Some examples of use might be text in a foreign language with facing translation or the side-by-side comparison between two versions of some source code.
+
+== Definition
+
+TODO blockdef!
+
+You can assign a block to a group using the arguments `[*group, NAME, POSITION]`, where `NAME` is the name of the group and `POSITION` is the position of the block in it.
+
+. Mau source
+[*source]
+++++
+[*group, facing, left]
+----
+"Wenn das so ist", sagte er mit heiserer Stimme, "dann hat Niemand mich gehört, und Niemand ist zu mir gekommen, und Niemand redet mit mir in meiner letzten Stunde."
+----
+
+[*group, facing, right]
+----
+“If that’s the case,” he said, “then Nobody has heard me and Nobody has come to me, and Nobody is speaking to me in my last hour.”
+----
+++++
+
+In this example, both blocks belong to the group `facing`, the first one in position `left` and the second in position `right`. Bear in mind that positions are just names, and do not hold any specific spatial meaning. The above example might have used positions `German` and `English` just as well.
+
+=== Rendering the group
+
+Blocks in a group are stored by Mau and removed from the document, just like it does for footnotes. The group `GROUPNAME` can be rendered with the command `::blockgroup:GROUPNAME`. For example
+
+. Mau source
+[*source]
+++++
+::blockgroup:facing
+++++
+
+would render the blocks defined above.
+
+All the blocks of the groups are then available to the template of the `blockgroup` command and can be rendered according to the need. This will be explained in depth in the chapter about templates TODO.
+
+::footnotes:

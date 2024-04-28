@@ -1,0 +1,401 @@
+:pelican.title:Basic Syntax
+
+@if:mau.pelican:&true
+----
+:pelican.series:maubook
+:pelican.series_index:4
+:pelican.template:doc
+----
+
+[id=chapter-basic-syntax]
+= {pelican.title}
+
+[*quote]
+----
+Some of the newer ones are having trouble because they never really mastered some basic techniques, but they’re working hard and improving.
+----
+Orson Scott Card, _Ender's Game_ (1985)
+
+
+This and the following chapters will give you an overview of the basic syntax for paragraphs, styles, and other inline elements like links and images. If you are familiar with either Markdown or Asciidoctor none of these will be a surprise to you, but this documentation will describe everything assuming the reader doesn't know any markup language.
+
+The documentation will refer to generic input and output, meaning respectively the Mau source and the final result.
+
+== Paragraphs
+
+The simplest element in Mau is a line of text that forms a paragraph
+
+. Mau source
+[*source]
+----
+This is a line of text.
+----
+
+[*rendered]
+----
+This is a line of text.
+----
+
+Adjacent lines of text are automatically joined into a single paragraph. For example
+
+. Mau source
+[*source]
+----
+This is a sentence. And another sentence.
+----
+
+and 
+
+. Mau source
+[*source]
+----
+This is a sentence.
+And another sentence.
+----
+
+will both be rendered as
+
+[*rendered]
+----
+This is a sentence.
+And another sentence.
+----
+
+To separate paragraphs you need to insert one or more empty lines. For example
+
+. Mau source
+[*source]
+----
+This is a sentence.
+
+And another sentence.
+----
+
+and 
+
+. Mau source
+[*source]
+----
+This is a sentence.
+
+
+
+And another sentence.
+----
+
+will both be rendered as
+
+[*rendered]
+----
+This is a sentence.
+
+And another sentence.
+----
+
+== Comments
+
+Mau supports single-line and multi-line comments. A single line comment uses double slashes
+
+. Mau source
+[*source]
+----
+This is a sentence.
+
+And another sentence.
+
+// This is a comment and won't be rendered
+----
+
+[*rendered]
+----
+This is a sentence.
+
+And another sentence.
+
+// This is a comment and won't be rendered
+----
+
+while multi-line comments are surrounded by four slashes on a separate line
+
+. Mau source
+[*source]
+----
+This is a sentence.
+
+And another sentence.
+
+////
+This is also a comment
+but it's spread on
+multiple lines
+for fun and to be a
+little more readable
+////
+----
+
+[*rendered]
+----
+This is a sentence.
+
+And another sentence.
+
+////
+This is also a comment
+but it's spread on
+multiple lines
+for fun and to be a
+little more readable
+////
+----
+
+== Include other files
+
+You can include other files through the directive `#include`. Directives are special commands that are processed before the Mau code is properly parsed
+
+. Mau source
+[*source]
+----
+\::#include:/path/to/file.mau
+----
+
+Since the inclusion happens during the very first stages of the processing, you can include files anywhere in the document. The directive, however, cannot be surrounded by other text. Therefore, you cannot include the content of a file in the middle of a paragraph or in a header.
+
+== Variables
+
+Mau supports variables of two types: strings and booleans. You can define variables at any point in a Mau document with the syntax `:NAME:VALUE` and then insert the value using the syntax `{NAME}`. For example
+
+. Mau source
+[*source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+----
+
+[*rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+----
+
+---
+
+Variables can be used in several contexts. In paragraphs, headers, and footnotes they are useful to place constant strings that are repeated over and over and might need to be changed. Variables are replaced very early in the Mau translation process, so they can contain Mau code.
+
+. Mau source
+[*source]
+----
+:answer:*42*
+:wikipedia_link:[link]("https://en.wikipedia.org/wiki/42_(number)")
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+
+You can learn more about it here {wikipedia_link}
+----
+
+[*rendered]
+----
+:answer:*42*
+:wikipedia_link:[link]("https://en.wikipedia.org/wiki/42_(number)")
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is {answer}.
+
+You can learn more about it here {wikipedia_link}
+----
+
+Variables without a value are simply empty strings.
+
+. Mau source
+[*source, callouts="|"]
+----
+:answer:
+
+The answer is {answer}.
+----
+
+[*rendered]
+----
+:answer:
+
+The answer is {answer}.
+----
+
+:blocks-link:[link](\{filename}10_Blocks.mau, "Blocks")
+:blocks-header:[header](chapter-blocks)
+
+Variables can also be used in block definitions, see [@ifeval:mau.website:&true](blocks-link, blocks-header).
+
+Last, variables can contain other variables
+
+. Mau source
+[*source, callouts="|"]
+----
+:answer:42
+:sentence:the answer is {answer}
+
+Here we go: {sentence}
+----
+
+[*rendered]
+----
+:answer:42
+:sentence:the answer is {answer}
+
+Here we go: {sentence}
+----
+
+=== Preventing replacement
+
+You can prevent variable replacement escaping the curly braces
+
+. Mau source
+[*source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is \{answer\}
+----
+
+[*rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is \{answer\}
+----
+
+As curly braces are used a lot in programming languages, Mau automatically escapes them when they are included in verbatim text
+
+. Mau source
+[*source]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is `{answer}`
+----
+
+[*rendered]
+----
+:answer:42
+
+The Answer to the Ultimate Question of Life,
+the Universe, and Everything is `{answer}`
+----
+
+=== Boolean variables
+
+:controls-link:[link](\{filename}09_Controls.mau, "Controls")
+:controls-header:[header](chapter-controls)
+
+Variables can have boolean values and be used as flags in conditional rendering (see [@ifeval:mau.website:&true](controls-link, controls-header)). To create a boolean you need to use a `+` or `-` in front of the variable name, which will assig respectively a true or false value. The name of the variable will not contain the initial symbol.
+
+[*source,callouts="|"]
+----
+:+trueflag:
+:-falseflag:
+----
+
+When printed, boolean flags are empty strings.
+
+. Mau source
+[*source,callouts="|"]
+----
+:+trueflag:
+:-falseflag:
+
+The first flag is {trueflag}. The second flag is {falseflag}.
+----
+
+[*rendered]
+----
+:+trueflag:
+:-falseflag:
+
+The first flag is {trueflag}. The second flag is {falseflag}.
+----
+
+=== Namespaces
+
+Variables can be created under a specific namespace using a dotted syntax
+
+. Mau source
+[*source,callouts="|"]
+----
+:value:5
+:module.value:6
+
+The values are {value} and {module.value}.
+----
+
+[*rendered]
+----
+:value:5
+:module.value:6
+
+The values are {value} and {module.value}.
+----
+
+:configuration-link:[link](\{filename}19_Configuration.mau, "Configuration")
+:configuration-header:[header](chapter-configuration)
+
+Mau's configuration values are available under the `mau` namespace (see [@ifeval:mau.website:&true](configuration-link, configuration-header)).
+
+== Arguments
+
+As explained in the previous chapter, several Mau commands accept arguments, either as part of their syntax like macros (`[macro](argument1, argument2, ...)`) and commands (`::command:argument1, argument2, ...`) or as a stand alone component (`[argument1, argument2, ...]`) like paragraphs and blocks do.
+
+In any of these cases, the syntax of arguments is always the same and here you'll find a detailed explanation.
+
+Arguments can be *unnamed* or *named*. An unnamed argument has just a value, for example `html`, while a named one has a key and a value linked by an equal sign, like `language=html`. There can't be a space between the key and the value, so an argument like `language = html` is invalid.
+
+Following Python's lingo, unnamed arguments are called `args` (list) while named arguments are called `kwargs` (dictionary)
+
+Multiple arguments are separated by commas, optionally followed by one or more spaces. So, `source,html` and `source, html` are both valid, and the same is valid for named arguments, as `source,language=html` and `source, language=html` are equally accepted by the parser.
+
+Unnamed arguments can never follow named ones, so the syntax `language=html, source` is invalid.
+
+If an argument contains one or more spaces or commas you need to surround it with quotes, e.g. `attribution="J.R.R. Tolkien"` or `classes="class1,class2"`. If arguments are surrounded by round or square bracket, you have to use quotes whenever the value contains the closing bracket. E.g. `(attribution="The (real) author")`. If you need to pass quotes as value of an argument you need to escape them, e.g. `attribution="The so-called \"author\""`.
+
+== Arguments for document nodes
+
+Arguments are used to pass data to nodes. In the case of macros and commands, they contain the values that are used by the logic behind those components, but for document nodes they are used to customise appearance and behaviour.
+
+In particular, document nodes support two special arguments called subtype and tags.
+
+=== Subtype
+
+The first unnamed argument whose value starts with `*` is interpreted as the subtype of the component and plays an important role in the choice of the rendering template, as will be clarified later in the documentation. For example
+
+[*source]
+----
+[*ctype1, arg1, arg2] <--------- The paragraph receives the following arguments:
+This is a paragraph of text.       * args = ["arg1", "arg2"]
+                                   * kwargs = {}
+                                   * subtype = "ctype1"
+----
+
+You don't need to specify the subtype, but you should have maximum one of them. If you specify multiple ones Mau will keep only the first one. For example, the syntax `[*ctype1, *ctype2, arg1, arg2]` will be parsed as the previous one and subtype `ctype2` will be lost.
+
+=== Tags
+
+Tags are special arguments prefixed by `#`. Whenever Mau finds an unnamed argument that starts with `#` it will strip the prefix and collect the argument in a separate list called `tags`. For example
+
+[*source]
+----
+[*source, #custom, red, language=html] <--------- The paragraph receives the following arguments:
+This is a paragraph of text.                        * args = ["red"]
+                                                    * kwargs = {"language":"html"}
+                                                    * tags = ["custom"]
+                                                    * subtype = "source"
+----
+
+Tags are useful to categorise elements to apply special formatting. Please note that the parsed name of the tag doesn't contain the hash mark `#`.
+
+::footnotes:

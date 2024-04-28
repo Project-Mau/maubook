@@ -1,0 +1,216 @@
+:pelican.title:An overview of Mau
+
+@if:mau.pelican:&true
+----
+:pelican.series:maubook
+:pelican.series_index:3
+:pelican.template:doc
+----
+
+[id=chapter-an-overview-of-mau]
+= {pelican.title}
+
+[*quote]
+----
+Gaal said finally, “Surely that is not a complete representation.”
+
+“No, not complete,” said Seldon. “I am glad you do not accept my word blindly. However, this is an approximation which will serve to demonstrate the proposition. Will you accept that?”
+
+“Subject to my later verification of the derivation of the function, yes.” Gaal was carefully avoiding a possible trap.
+----
+Isaac Asimov, _Foundation_ (1951)
+
+== How Mau processes documents
+
+Mau documents go through three major processing steps: lexing, parsing, and rendering.
+
+*Lexing* is the simplest of such steps and nothing much happens other than a simple split of the source file into tokens.
+
+*Parsing* is the core of the Mau language, where the tokens are converted into nodes of an Abstract Syntax Tree. Such nodes capture the information about part of the document (such as a paragraph, a title, an image) and contain children nodes, that ideally are the parts of the document "contained" in the node.
+
+*Rendering* is the final step in which the nodes of the AST are converted into a destination format by a visitor.
+
+There are three categories of nodes in Mau:
+
+* *Document nodes* are objects that are created on a new line of text and need to be separated from other parts of the document by at least one empty line. Examples of document nodes are paragraphs, headers, lists.
+* *Text nodes* are objects that are all part of the same block of text without newlines. Examples of text nodes are: text, styles, macros.
+* *Automatic nodes* are objects that are created automatically by Mau, usually as children of other objects. Example of automatic nodes are: titles, list entries, source code callouts.
+
+For example
+
+[*source]
+----
+= A title <---------- HEADER (document node)
+
+* Element 1 <-------- LIST (document node)
+* Element 2
+* Element 3
+
+This is some text <-- PARAGRAPH (document node)
+split on multiple     that contains text nodes
+_lines_.              (TEXT and STYLE).
+----
+
+Mau nodes can be nested. For example, when you create a list all list entries are children of the node that represents the whole list.
+
+[*source]
+----
++-------------- LIST (document node)
+|                |
+v                |
+* Element 1 <--- + LIST ENTRY (automatic node)
+* Element 2 <--- + LIST ENTRY (automatic node)
+* Element 3 <--- + LIST ENTRY (automatic node)
+----
+
+Other examples are the title (child) of a figure (parent) or the paragraphs (children) of an admonition (parent). Children are also given a specific position (or role) in the parent. For example, some text might belong to an admonition as title or as body.
+
+[*source]
+----
+. Very important fact <-- TITLE (automatic node)
+                           [belongs to BLOCK in position "title"]
+
+==== <------------------- BLOCK (document node)
+
+This is something <------ PRIMARY CONTENT (automatic node)
+you should know.           [belongs to BLOCK in position "primary"]
+
+====
+----
+
+
+The relationship between parent node and children will be clarified in the section of the book that discusses templates.
+
+== Node properties
+
+Both document and text nodes have properties that will be explained in detail in the following chapters.
+
+=== Type
+
+Mau components have a type, which is defined by the syntax used to create them, for example paragraph, title, list. The type is used to decide how to process the information in the Mau document and to select a suitable template. For example, a header will store the text value and an independent node, while a title will be attached to the next document node.
+
+[*source]
+----
+= A title <----------- Type: header
+
+This is some text. <-- Type: paragraph
+----
+
+=== Subtype
+
+Components can also have a subtype that is configured individually on each one of them. The subtype is used only to select a suitable template for the specific component.
+
+[*source]
+----
+This is some text. <---- Type: paragraph
+                         Subtype: None
+
+[*important]
+This is other text. <--- Type: paragraph
+                         Subtype: important
+----
+
+=== Tags
+
+Mau components can be tagged. Tags are not unique and they act as an additional category that can be used to target components when you want to apply templates.
+
+[*source]
+----
+[*important]
+This is other text. <--- Type: paragraph
+                         Subtype: important
+                         Tags: []
+
+[*important, #python, #rust]
+This is some text. <---- Type: paragraph
+                         Subtype: important
+                         Tags: [python, rust]
+----
+
+== Titles
+
+Document nodes support titles, which are created on a single line of text and attached to the next node that Mau encounters. For example
+
+[*source]
+----
+. Title <------------ Title attached to the following node (paragraph)
+This is some text.
+
+. Another title <---- Title attached to the following node (block)
+====
+A simple block.
+====
+----
+
+== Controls
+
+Mau can render components conditionally through control elements in a document or control macros in a paragraph
+
+[*source]
+----
+@if:condition <------ This renders the paragraph only if the condition is true
+This is some text.
+
+@if:condition <------ This renders the block only if the condition is true
+====
+A simple block.
+====
+----
+
+== Arguments
+
+Some Mau components accept arguments, which are not too different from standard function arguments in programming languages. The most important thing to remember is that Mau values are always strings, so arguments do not really have types.
+
+Arguments can appear between round brackets `()`, square brackets `[]`, or directly after a command, depending on the component.
+
+* Macros receive arguments between round brackets: e.g. `[macro](argument1, argument2, ...)`.
+* Commands receive some arguments directly after the final colon: e.g. `::command:argument1, argument2, ...`.
+* Document nodes receive arguments on a separate line, surrounded by square brackets, e.g. `[argument1, argument2, ...]`.
+
+In the next chapters there will be plenty of examples to show how to pass arguments and to clarify why commands can receive them in two different ways.
+
+When specified on a separate line, arguments are attached to the next closest document node, just like titles do. For example
+
+[*source]
+----
+[...] <-------------- Arguments attached to the following node (paragraph)
+This is some text.
+
+[...] <-------------- Arguments attached to the following node (block)
+====
+A simple block.
+====
+----
+
+Arguments, titles and controls can be created in any order, for example
+
+[*source]
+----
+@if:condition <------ Control applied to the following node (paragraph)
+. Title <------------ Title attached to the following node (paragraph)
+[...] <-------------- Arguments attached to the following node (paragraph)
+This is some text.
+
+[...] <-------------- Arguments attached to the following node (paragraph)
+. Title <------------ Title attached to the following node (paragraph)
+@if:condition <------ Control applied to the following node (paragraph)
+This is other text.
+----
+
+== Visitors
+
+Once the Mau document has been parsed into an AST, a visitor is called to transform the AST into the final output. At the moment, Mau has two visitors defined in its core, the `BaseVisitor` and the `JinjaVisitor`.
+
+The `BaseVisitor` outputs the content of the AST as YAML, which might be useful for debugging or to persist the output of the parser. The `JinjaVisitor` enables the use of Jinja templates, and defines rules to find templates in the configuration or in the file system.
+
+Mau allows visitors to be defined through plugins, so two more specialised visitors exist, `HTMLVisitor` and `TexVisitor`, which derive the `JinjaVisitor` and use Jinja templates to create respectively HTML and TeX output, and provide custom features like HTML escaping.
+
+@if:mau.visitor.format:=html
+----
+This documentation has been written using Mau, and the output has been created using the `HTMLVisitor`.
+----
+
+@if:mau.visitor.format:=tex
+----
+This documentation has been written using Mau, and the output has been created using the `TexVisitor`.
+----

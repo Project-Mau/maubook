@@ -1,13 +1,14 @@
 :pelican.title:Advanced Templates
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
-:pelican.series_index:17
+:pelican.series_index:16
+
 :pelican.template:doc
 ----
 
-[id=advanced-templates]
+[id=chapter-advanced-templates]
 = {pelican.title}
 
 [*quote]
@@ -15,8 +16,6 @@
 "In some ways you're so advanced, and yet when it comes to making a decision, you're still a child. I can't decide for you, Charlie. The answer can't be found in books — or be solved by bringing it to other people."
 ----
 Daniel Keyes, _Flowers for Algernon_ (1959)
-
-Examples of templates, using the parent, using tags.
 
 
 == Template names
@@ -27,17 +26,18 @@ The names of possible templates are created considering several parts: the node 
 
 `{prefix}.{parent_type}.{parent_position}.{node_template}.{node_subtype}.{node_tag}`
 
-and the Python that creates the list of possible template names is
+and the meta code that creates the list of possible template names is
 
 [*source, python]
 ----
 templates = [
     f"{prefix}{parent_type}{node_template}{node_subtype}{node_tag}"
-    for prefix in prefixes
-    for parent_type in parent_types
-    for node_template in node_templates
-    for node_subtype in node_subtypes
-    for node_tag in node_tags
+
+    for prefix in Visitor prefixes
+    for parent_type in Parent templates
+    for node_template in Node templates
+    for node_subtype in Node subtypes
+    for node_tag in Node tags
 ]
 ----
 
@@ -52,9 +52,9 @@ While the first is specific for the style `star`, the second one is shared with 
 
 The list of templates used for a specific node depends on the type of node and will be documented in the relative section.
 
-=== Node subtype
+=== Node subtypes
 
-As some nodes can have a subtype the list of templates takes that into account. For each node template, Mau first tests if there is a more specific one that includes the subtype, so the list of templates is
+As document nodes can have a subtype the list of templates takes that into account. For each node template, Mau first tests if there is a more specific one that includes the subtype, so the list of templates is
 
 * `{node_template1}.{node_subtype}`
 * `{node_template1}`
@@ -108,7 +108,7 @@ the list of possible templates is
 * `paragraph.tag2`
 * `paragraph`
 
-=== Parent node
+=== Parent templates
 
 Each node is connected with the node that contains it, so the template can be chosen depending on the parent node type, the parent node subtype, or the position that the node has in the parent. For each template `TEMPLATE` the following variants are tested
 
@@ -118,7 +118,13 @@ Each node is connected with the node that contains it, so the template can be ch
 * `{parent.node_type}.TEMPLATE`
 * `TEMPLATE`
 
-The value `parent_position` is currently used only for blocks, and can be `primary` for primary content and `secondary` for secondary content.
+The value `parent_position` is used by many nodes:
+
+* Nodes in the text of titles have the position `title`.
+* Nodes in the text of headers have the position `header`.
+* Nodes in the primary content of blocks have the position `primary`.
+* Nodes in the secondary content of blocks have the position `secondary`.
+* Block groups contain one or more blocks with custom positions.
 
 For example, consider the following document. A paragraph with subtype `important` as primary content of a block with subtype `aside`
 
@@ -177,3 +183,4 @@ corresponds to the templates
 * ...
 * `paragraph`
 
+::footnotes:

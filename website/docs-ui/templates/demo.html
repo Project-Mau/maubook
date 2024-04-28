@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title|striptags }}{% endblock %}
+
+{% block custom_css %}
+<!-- Pygments CSS Template -->
+{% assets filters="cssmin", output="css/pygments.min.css", "css/pygments/custom_mau.css" %}
+<link rel="stylesheet" href="/{{ ASSET_URL }}">
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="duik-header">
+  <!-- Navbar -->
+  <nav class="js-navbar-scroll navbar navbar-expand-lg navbar-dark bg-primary-md fixed-top flex-nowrap transition-bg-03s"
+       data-onscroll-classes="bg-primary"
+       data-offset-value="50">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">The <strong>Mau</strong> Markup Language</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse my-3 my-lg-0" id="navbarCollapse">
+        <!-- Header Links -->
+        <ul class="navbar-nav mr-lg-auto ml-lg-2 ml-xl-4">
+          <li class="js-scroll-nav nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
+            <a class="nav-link" href="#demos">Examples</a>
+          </li>
+          <li class="nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
+            <a class="nav-link" href="pages/introduction.html">Documentation</a>
+          </li>
+        </ul>
+        <!-- End Header Links -->
+
+        <!-- Header Links 2 -->
+        <ul class="navbar-nav align-items-lg-center">
+          <li class="nav-item ml-lg-3 ml-xl-5 my-2 my-lg-0">
+            <a class="btn btn-sm btn-light text-primary" href="https://github.com/Project-Mau">
+              <i class="fab fa-github mr-1"></i> Fork on GitHub
+            </a>
+          </li>
+        </ul>
+        <!-- End Header Links 2 -->
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+</header>
+<!-- End Header -->
+
+<!-- Promo Section -->
+<section class="duik-promo gradient-primary text-center">
+  <div class="container duik-promo-container">
+    <div class="d-flex justify-content-center position-relative mh-35rem pt-11 py-6">
+      <div class="w-md-75 w-lg-50 mt-10">
+        <h1 class="h2 text-white mb-3">A demo of the <strong>Mau</strong> Markup Language</h1>
+        <p class="font-weight-light small text-center">Some examples of what Mau can do</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG BG -->
+  <svg class="position-absolute bottom-0 left-0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 323" enable-background="new 0 0 1920 323" xml:space="preserve">
+    <polygon fill="#ffffff" style="fill-opacity: .05;" points="-0.5,322.5 -0.5,121.5 658.3,212.3 "></polygon>
+    <polygon fill="#ffffff" style="fill-opacity: .1;" points="-2,323 1920,323 1920,-1 "></polygon>
+  </svg>
+  <!-- End SVG BG -->
+
+  <!-- SVG BG Separator -->
+  <svg class="position-absolute bottom-0 left-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 300">
+    <path id="Path_1" fill="#fff" data-name="Path 1" d="M0,1081.586H1920v-300Z" transform="translate(0 -781.586)"/>
+  </svg>
+  <!-- SVG BG Separator -->
+</section>
+<!-- End Promo Section -->
+
+<main>
+
+  {{ page.content }}
+ 
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark pt-4">
+  <div class="container">
+    <!-- Attributions -->
+    <div class="row px-md-3 py-4">
+      <div class="col text-center mb-3 mb-md-0">
+        <small class="text-white">&copy; 2024 Leonardo Giordani - Made with <a class="text-white" href="https://htmlstream.com/templates/docs-ui-kit">Htmlstream Docs UI Kit</a></small>
+      </div>
+    </div>
+  </div>
+  <!-- End Attributions -->
+    </div>
+</footer>
+<!-- End Footer -->
+
+<!-- Go to Top -->
+<a class="js-go-to duik-go-to" href="javascript:;">
+  <span class="fa fa-arrow-up duik-go-to__inner"></span>
+</a>
+<!-- End Go to Top -->
+{% endblock %}
+
+{% block custom_js %}
+<script src="{{ SITEURL }}/theme/js/header-fixing.js"></script>
+{% endblock %}

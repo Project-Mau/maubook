@@ -1,13 +1,13 @@
 :pelican.title:Lists
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
-:pelican.series_index:9
+:pelican.series_index:7
 :pelican.template:doc
 ----
 
-[id=lists]
+[id=chapter-lists]
 = {pelican.title}
 
 [*quote]

@@ -1,21 +1,20 @@
 :pelican.title:Install and Run Mau
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:1
 :pelican.template:doc
 ----
 
-[id=install-and-run-mau]
+[id=chapter-install-and-run-mau]
 = {pelican.title}
 
 [*quote]
 ----
-I’ll tell you. I’m going to install a visiplate right over my desk. Right on the wall over there, see!
+"I’ll install a two-way bug so Pris, you can hear us and we can hear you, and I’ll rig up an alarm system that any of the four of us can set off. It’s obvious that the synthetic identities didn’t work out, even Garland’s."
 ----
-Isaac Asimov, _I, Robot_ (1950)
-
+Philip K. Dick, _Do Androids Dream of Electric Sheep?_ (1968)
 
 This chapter details how to install Mau both as a stand-alone tool and as a plugin for Pelican. The only requirements are a working Python3 installation and a virtual environment.
 
@@ -128,27 +127,20 @@ Mau supports a configuration file written in YAML that can be loaded with the op
 mau -c config.yml -f html -i test.mau -o test.html
 ----
 
-[condition="if:mau.website:"]
-----
-Each value defined in the config file is stored as a variable under the namespace `mau`, and can be used in the Mau source. A complete description of the configuration file can be found in [link](\{filename}20_Configuration.mau, "Configuration"). You can learn more about variables in Mau documents in [link](\{filename}08_Variables.mau, "Variables").
-----
+:configuration-link:[link](\{filename}19_Configuration.mau, "Configuration")
+:configuration-header:[header](chapter-configuration)
 
-[condition="ifnot:mau.website:"]
-----
-Each value defined in the config file is stored as a variable under the namespace `mau`, and can be used in the Mau source. A complete description of the configuration file can be found in [header](configuration). You can learn more about variables in Mau documents in [header](variables).
-----
+:basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
+:basic-syntax-header:[header](chapter-basic-syntax)
+
+Each value defined in the config file is stored as a variable and can be used in the Mau source. A complete description of the configuration file can be found in [@ifeval:mau.website:&true](configuration-link, configuration-header). You can learn more about variables in Mau documents in [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header).
 
 == Using Mau programmatically
 
-[condition="if:mau.website:"]
-----
-You can use Mau programmatically in your Python code. See [link](\{filename}19_Python_interface.mau, "Python interface") to know more about the API.
-----
+:python-interface-link:[link](\{filename}18_Python_interface.mau, "Python interface")
+:python-interface-header:[header](chapter-python-interface)
 
-[condition="ifnot:mau.website:"]
-----
-You can use Mau programmatically in your Python code. See [header](python-interface) to know more about the API.
-----
+You can use Mau programmatically in your Python code. See [@ifeval:mau.website:&true](python-interface-link, python-interface-header) to know more about the API.
 
 That chapter also details how to use Mau to write posts and pages in [link](https://docs.getpelican.com/en/latest/, Pelican) through a specific plugin.
 

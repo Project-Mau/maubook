@@ -1,0 +1,351 @@
+:pelican.title:Blocks
+
+@if:mau.pelican:&true
+----
+:pelican.series:maubook
+:pelican.series_index:10
+:pelican.template:doc
+----
+
+[id=chapter-blocks]
+= {pelican.title}
+
+[*quote]
+----
+The chamber was lit by a wide shaft high in the further eastern wall; it slanted upwards and, far above, a small square patch of blue sky could be seen. The light of the shaft fell directly on a table in the middle of the room: a single oblong block, about two feet high, upon which was laid a great slab of white stone.
+----
+J.R.R. Tolkien, _The Lord of the Rings - The Fellowship of the Ring_ (1954)
+
+== Basic syntax
+
+Blocks are groups of lines surrounded by a fence of four identical characters
+
+. Mau source
+[*source]
+++++
+----
+This is a block
+----
+++++
+
+The content of the block is parsed by Mau exactly like the rest of the document, unless the block is configured in a different way. As blocks are rendered with specific templates, they are useful to create alerts, asides, and in general custom rendering of blocks of text.
+
+To delimit a block, you can use any sequence of 4 identical characters apart from `////` which is used for multiline comments
+
+. Mau source
+[*source]
+----
+++++
+This is a block
+++++
+
+++++
+This is another block
+++++
+----
+
+If you need to insert 4 identical characters on a line for some reasons, you have to escape the first of them
+
+. Mau source
+[*source]
+----
+These are paragraphs.
+
+\++++
+
+Just standard paragraphs.
+----
+
+[*rendered]
+----
+These are paragraphs.
+
+\++++
+
+Just standard paragraphs.
+----
+
+=== Nested blocks
+
+Blocks can contain other blocks, and Mau doesn't have any upper limit to the number of nesting levels. The only requirement is that you need to use a different character for the inner fence.
+
+. Mau source
+[*source]
+----
+++++
+This is a block
+
+%%%%
+This is another block inside the previous one
+
+====
+This is a third block inside the second one
+====
+%%%%
+++++
+----
+
+=== Primary and secondary content
+
+The text contained between the block fences is called the _primary content_. If a paragraph appears directly after the closing fence, without empty lines in between, that becomes the _secondary content_.
+
+. Mau source
+[*source]
+++++
+----
+This is some text  <----------- Primary content
+split into several
+lines just for fun.
+----
+This is another paragraph  <--- Secondary content
+adjacent to the
+closing fence.
+
+----
+This is some text  <----------- Primary content
+split into several
+lines just for fun.
+----
+
+This is another paragraph  <--- This is not connected
+separated by an                 to the block.
+empty line.
+++++
+
+The secondary content is used according to the type of block. For example, quote blocks use it to capture the attribution.
+
+Primary and secondary content become children of the block node with a parent position respectively of `primary` and `secondary`.
+
+== Block subtype and arguments
+
+Being document nodes, blocks receive arguments between square brackets before the opening fence
+
+. Mau source
+[*source]
+++++
+[...] <------------- Block arguments
+----
+This is some text
+split into several
+lines just for fun.
+----
+++++
+
+As any other document node, blocks support a _subtype_, _args_, _kwargs_, and _tags_.
+
+. Mau source
+[*source]
+++++
+[*warning, important, class="log", #alternate] <------ Block arguments
+----                                                     * args = ["important"]
+This is some text                                        * kwargs = {"class":"log"}
+split into several                                       * tags = ["alternate"]
+lines just for fun.                                      * subtype = "warning"
+----
+++++
+
+There are, however, other arguments that have a special meaning for blocks, as we will see in the next paragraphs and chapters. As you will see, the most important of them is the _engine_, which changes the way Mau processes the content of the block.
+
+== Built-in block subtypes
+
+Mau provides some built-in block subtypes that might be useful in standard cases.
+
+=== Quotes
+
+The simplest block sub type that Mau provides is `*quote`. This block's content is the quote itself, while the secondary content is the source of the quote, commonly called attribution.
+
+. Mau source
+[*source]
+++++
+[*quote]
+----
+Learn about the Force, Luke.
+----
+_Star Wars_, 1977
+++++
+
+You can see `quote` blocks rendered at the beginning of each chapter in this book.
+
+=== Admonitions
+
+Admonitions are blocks meant to be highlighted and separated from the rest of the text. For example, admonitions can be rendered with an icon on the side, or with a different background and a title. This generally includes asides, notes, warnings, tips, and other similar blocks of text.
+
+The block is specified as `[*admonition, CLASS, ICON, LABEL]`.
+
+. Mau source
+[*source]
+++++
+[*admonition, note, "fas fa-info", "Info"]
+----
+This is my note
+----
+++++
+
+TODO TODO TODO
+
+[*rendered]
+++++
+[*admonition, note, "fas fa-info", "Info"]
+----
+This is an example of admonition with a title, an icon, and a specific colour for the border and the background.
+----
+++++
+
+== Block conditions
+
+TODO TODO TODO
+
+You can conditionally render a block according to the result of a test. The test is expressed with the syntax `condition=CONDITION:VARIABLE:[VALUE]`.
+
+. Mau source
+[*source]
+++++
+:render:yes
+
+[*aside, condition="if:render:yes"]
+----
+This will be rendered
+----
+
+[*aside, condition="if:render:no"]
+----
+This will not be rendered
+----
+++++
+
+[*rendered]
+++++
+:render:yes
+
+[*aside, condition="if:render:yes"]
+----
+This will be rendered
+----
+
+[*aside, condition="if:render:no"]
+----
+This will not be rendered
+----
+++++
+
+=== Boolean variables
+
+You can use boolean values leaving out the `VALUE` part in the condition
+
+[*source, callouts="|"]
+++++
+:+render:
+
+[condition="if:render:"]
+----
+This will be rendered
+----
+
+:-render:
+
+[condition="if:render:"]
+----
+This will not be rendered
+----
+++++
+
+[*rendered]
+++++
+:+render:
+
+[condition="if:render:"]
+----
+This will be rendered
+----
+
+:-render:
+
+[condition="if:render:"]
+----
+This will not be rendered
+----
+++++
+
+=== Reverse condition
+
+You can reverse the condition using `ifnot`
+
+[*source, callouts="|"]
+++++
+:+render:
+
+[condition="ifnot:render:"]
+----
+This will not be rendered
+----
+++++
+
+[*rendered]
+++++
+:+render:
+
+[condition="ifnot:render:"]
+----
+This will not be rendered
+----
+++++
+
+=== Condition and subtype
+
+Conditions can be used together with other arguments, in particular the subtype.
+
+[*source, callouts="|"]
+++++
+:+detailed:
+
+[*aside, condition="if:detailed:"]
+----
+This will be rendered only when the variable `detailed` is true.
+----
+
+[*aside, condition="ifnot:detailed:"]
+----
+This will be rendered only when the variable `detailed` is false
+----
+++++
+
+== Block classes
+
+You can add custom classes to a block using the attribute `classes`, which is a comma separated list of names. These classes will be then rendered according to the output format. For example, in HTML these will become CSS classes.
+
+[*source]
+++++
+[classes="myclass1,myclass2"]
+----
+This is a block of type `aside` with additional classes
+----
+++++
+
+== Include content in blocks
+
+:basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
+:basic-syntax-header:[header](chapter-basic-syntax)
+
+As mentioned in [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header), the directive `#include` can be used at any point (at the beginning of the line), and this means that the content of the block can be generated including the content of an external file.
+
+. Mau source
+[*source]
+++++
+[*aside]
+----
+\::#include:/path/to/important_aside.mau
+----
+++++
+
+This might be very useful for `source` blocks (see the dedicated chapter)
+
+. Mau source
+[*source]
+++++
+[*source, python]
+----
+\::#include:/path/to/myscript.py
+----
+++++
+
+::footnotes:

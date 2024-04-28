@@ -1,13 +1,13 @@
-:pelican.title:Code Blocks
+:pelican.title:Source Code Blocks
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
-:pelican.series_index:11
+:pelican.series_index:14
 :pelican.template:doc
 ----
 
-[id=code-blocks]
+[id=chapter-source-code-blocks]
 = {pelican.title}
 
 [*quote]
@@ -16,11 +16,12 @@ The older authorities seemed rather more helpful than the newer ones, and Armita
 ----
 H.P. Lovecraft, _The Dunwich Horror_ (1929)
 
+
 For programmers, one of the most useful features of a markup language is source code blocks. Mau provides full support to source code highlighting, and allows you to highlight single lines and add callouts to the code to mark specific steps of the process or to add explanations.
 
 == Basic source blocks
 
-Verbatim paragraphs and source code can be printed using `[*source]` and surrounding the code with a fence of four hyphens `----`
+Verbatim paragraphs and source code can be printed using `[*source]` and surrounding the code with a standard block fence
 
 . Mau source
 [*source]
@@ -82,12 +83,33 @@ def header_anchor(text, level):
 ----
 ++++
 
-[condition="if:mau.visitor.format:html"]
-----
-Highlighting for the HTML output format is provided by [link](https://pygments.org/,Pygments). On the official website you can find the list of [link](https://pygments.org/languages/,"supported languages").
-----
+@if:mau.visitor.format:=html
+====
+Highlighting for the HTML output format is provided by [link](https://pygments.org/,Pygments). On the official website you can find the list of [link](https://pygments.org/languages/,"supported languages"). If you want to use third-party tools like JavaScript libraries you can set `highlighter=none` for a specific block or set `mau.visitor.highlighter` to `"none"` in the global configuration.
 
-[condition="if:mau.visitor.format:tex"]
+. Mau source
+[*source]
+++++
+[*source,python]
+----
+# This code is not highlighted
+def add(a, b):
+    return a + b
+----
+++++
+
+[*rendered]
+++++
+[*source,python, highlighter=none]
+----
+# This code is not highlighted
+def add(a, b):
+    return a + b
+----
+++++
+====
+
+@if:mau.visitor.format:=tex
 ----
 Highlighting for TeX output format is not provided by default inside Mau. Templates make it easy to use third-party tools, however. For example, this book has been highlighted using [link]("https://ctan.org/pkg/minted?lang=en","minted").
 ----
@@ -110,7 +132,7 @@ def header_anchor(text, level)::1:
 2: Some memory-related wizardry
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ++++
@@ -126,7 +148,7 @@ def header_anchor(text, level)::1:
 ++++
 %%%%
 
-[condition="if:mau.visitor.format:tex"]
+@if:mau.visitor.format:=tex
 %%%%
 Callouts are not supported by the TeX package `minted`, so they are not rendered in this PDF.
 %%%%
@@ -147,7 +169,7 @@ def header_anchor(text, level):|1|
 2: Some memory-related wizardry
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ++++
@@ -182,7 +204,7 @@ def header_anchor(text, level)::1:
 3: This is the return value
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ++++
@@ -211,12 +233,12 @@ def header_anchor(text, level)::step1:
         level, quote(text.lower())[:20], str(id(text))[:8]:step2:
     )  # pragma: no cover
 ----
-1: The name of the function
-2: Some memory-related wizardry
-3: This is the return value
+step1: The name of the function
+step2: Some memory-related wizardry
+step3: This is the return value
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ++++
@@ -227,9 +249,9 @@ def header_anchor(text, level)::step1:
         level, quote(text.lower())[:20], str(id(text))[:8]:step2:
     )  # pragma: no cover
 ----
-1: The name of the function
-2: Some memory-related wizardry
-3: This is the return value
+step1: The name of the function
+step2: Some memory-related wizardry
+step3: This is the return value
 ++++
 %%%%
 
@@ -247,7 +269,7 @@ def header_anchor(text, level)::1:
 ----
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ++++
@@ -279,7 +301,7 @@ def header_anchor(text, level)::@:
 ----
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 %%%%
 [*rendered]
 ++++
@@ -320,7 +342,7 @@ def header_anchor(text, level):
 
 == Titles
 
-Code blocks can have titles, created before the block by a line starting with a dot 
+Code blocks support titles
 
 . Mau source
 [*source, python]
@@ -339,7 +361,7 @@ def header_anchor(text, level):
 ----
 ++++
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 ----
 [*rendered]
 ++++

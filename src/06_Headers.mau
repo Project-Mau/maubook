@@ -1,13 +1,13 @@
 :pelican.title:Headers
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
-:pelican.series_index:7
+:pelican.series_index:6
 :pelican.template:doc
 ----
 
-[id=headers]
+[id=chapter-headers]
 = {pelican.title}
 
 [*quote]
@@ -15,6 +15,8 @@
 The abbot gave him a brief glare and began reading. The silence was awkward. “You found this over in the ‘Unclassified’ section, I believe?” he asked after a few seconds.
 ----
 Walter M. Miller Jr., _A Canticle for Leibowitz_ (1959)
+
+== Headers
 
 To properly structure some text you need to divide it into sections and the best way to highlight sections is through headers. Mau supports them and automatically stores them in a table of context.
 
@@ -26,7 +28,8 @@ To create a header in Mau use the symbol `=` followed by the text of the header
 = A very important section
 ----
 
-[*rendered, engine=mau, condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
+[*rendered, engine=mau]
 ----
 = A very important section
 ----
@@ -39,14 +42,35 @@ Mau converts it into a suitable header in the target format and assigns an ID to
 === A less important section
 ----
 
-[*rendered, engine=mau, condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
+[*rendered, engine=mau]
 ----
 === A less important section
 ----
 
-[condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
 ----
 As you can see, the headers in the examples have the same style of the headers of the documentation as they are rendered using the same CSS code.
+----
+
+== Headers and rich text
+
+Headers can contain rich text just like paragraphs. For example you can have styles
+
+. Mau source
+[*source,callouts="|"]
+----
+== Section _42_
+
+== The function `answer()`
+----
+
+@if:mau.visitor.format:=html
+[*rendered, engine=mau]
+----
+== Section _42_
+
+== The function `answer()`
 ----
 
 == Table of Contents
@@ -79,7 +103,8 @@ Text of the very specific section
 
 This will be rendered as
 
-[*rendered, engine=mau, condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
+[*rendered, engine=mau]
 ----
 = Main section
 
@@ -124,7 +149,8 @@ You can avoid including specific headers in the TOC using tags. You can tag the 
 ::toc:
 ----
 
-[*rendered, engine=mau, condition="if:mau.visitor.format:html"]
+@if:mau.visitor.format:=html
+[*rendered, engine=mau]
 ----
 = Section 1
 
@@ -144,25 +170,6 @@ You can avoid including specific headers in the TOC using tags. You can tag the 
 ----
 
 This will exclude from the rendered TOC both `Section 1.2` and `Section 1.2.1`, but not `Section 1.3`.
-
-== Headers and formatting
-
-Headers can contain rich text just like paragraphs. For example you can have styles
-
-. Mau source
-[*source,callouts="|"]
-----
-== Section _42_
-
-== The function `answer()`
-----
-
-[*rendered, engine=mau, condition="if:mau.visitor.format:html"]
-----
-== Section _42_
-
-== The function `answer()`
-----
 
 == Anchors
 
@@ -186,15 +193,13 @@ config = {
 }
 ----
 
-[condition="if:mau.website:"]
-----
-You can read more about configuration variables in [link](\{filename}08_Variables.mau, "Variables") and [link](\{filename}20_Configuration.mau, "Configuration").
-----
+:basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
+:basic-syntax-header:[header](chapter-basic-syntax)
 
-[condition="ifnot:mau.website:"]
-----
-You can read more about configuration variables in [header](variables) and [header](configuration).
-----
+:configuration-link:[link](\{filename}19_Configuration.mau, "Configuration")
+:configuration-header:[header](chapter-configuration)
+
+You can read more about configuration variables in [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header) and [@ifeval:mau.website:&true](configuration-link, configuration-header).
 
 == Header macro and IDs
 

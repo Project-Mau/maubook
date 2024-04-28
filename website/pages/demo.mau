@@ -1,0 +1,301 @@
+:pelican.title:Demo
+:pelican.template:demo
+:pelican.save_as:demo.html
+
+
+. Text styles
+[engine=group, group=text-styles, position=header]
+----
+Text can be style using simple inline syntax.
+----
+
+. Mau source
+[engine=group, group=text-styles, position=source]
+++++
+[*source]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text.
+
+Carets for ^superscript^ and tildes for ~subscript~.
+
+Backticks are used for `verbatim` text.
+----
+++++
+
+. Mau output
+[engine=group, group=text-styles, position=output]
+----
+Stars identify *strong* text.
+
+Underscores for _emphasized_ text.
+
+Carets for ^superscript^ and tildes for ~subscript~.
+
+Backticks are used for `verbatim` text.
+----
+
+::blockgroup:text-styles
+
+
+
+. Paragraphs
+[engine=group, group=paragraphs, position=header]
+----
+Paragraphs of text can contain style and macros.
+----
+
+. Mau source
+[engine=group, group=paragraphs, position=source]
+++++
+[*source]
+----
+Paragraphs are separated by empty lines.
+
+Paragraphs can contain macros.
+The source code can be found
+at [link](https://github.com/Project-Mau/mau).
+----
+++++
+
+. Mau output
+[engine=group, group=paragraphs, position=output]
+----
+Paragraphs are separated by empty lines.
+
+Paragraphs can contain macros. The source code can be found at [link](https://github.com/Project-Mau/mau).
+----
+
+::blockgroup:paragraphs
+
+
+. Variables
+[engine=group, group=variables, position=header]
+----
+Variables can be defined inside and outside Mau documents and used to customise the output.
+----
+
+. Mau source
+[engine=group, group=variables, position=source]
+++++
+[*source, callouts="|"]
+----
+:answer:42
+:+trueflag:
+
+Mau supports variables. The answer is {answer}.
+
+Macros can render
+[if](trueflag, text conditionally, whatever).
+----
+++++
+
+. Mau output
+[engine=group, group=variables, position=output]
+----
+:answer:42
+:+trueflag:
+
+Mau supports variables. The answer is {answer}.
+
+Macros can render
+[if](trueflag, text conditionally, whatever).
+----
+
+::blockgroup:variables
+
+
+. Headers and footnotes
+[engine=group, group=headers, position=header]
+----
+Mau has full support for headers and footnotes, and provides commands to insert objects like the ToC.
+----
+
+. Mau source
+[engine=group, group=headers, position=source]
+++++
+[*source, callouts="|"]
+----
+= Mau has headers
+
+== Mau has subheaders
+
+A ToC can be created with
+
+::toc:
+
+Paragraphs can contain footnotes[footnote](note).
+
+[*footnote, note]
+====
+This is a footnote.
+====
+
+::footnotes:
+----
+++++
+
+. Mau output
+[engine=group, group=headers, position=output]
+----
+= Mau has headers
+
+== Mau has subheaders
+
+A ToC can be created with
+
+::toc:
+
+Paragraphs can contain footnotes[footnote](note).
+
+[*footnote, note]
+====
+This is a footnote.
+====
+
+::footnotes:
+----
+
+::blockgroup:headers
+
+
+. Lists
+[engine=group, group=lists, position=header]
+----
+Mau lists are very flexible and can be easily interrupted and restarted.
+----
+
+. Mau source
+[engine=group, group=lists, position=source]
+++++
+[*source, callouts="|"]
+----
+# Lists can be
+# Ordered
+** Or unordered
+** Both with multiple levels
+
+And can be interrupted
+
+[start=auto]
+# And restarted
+# Automatically
+----
+++++
+
+. Mau output
+[engine=group, group=lists, position=output]
+----
+# Lists can be
+# Ordered
+** Or unordered
+** Both with multiple levels
+
+And can be interrupted
+
+[start=auto]
+# And restarted
+# Automatically
+----
+
+::blockgroup:lists
+
+
+. Templates
+[engine=group, group=templates, position=header]
+----
+The true power of Mau is the use of multiple visitors and templating engines. Jinja templates can be used to render content in completely different ways depending on the context.
+----
+
+. Mau source
+[engine=group, group=templates, position=source]
+++++
+[*source, callouts="|"]
+----
+= Templates can transform content
+
+== And radically change the output!
+
+[#alternate]
+= Templates can transform content
+
+[#alternate]
+== And radically change the output!
+----
+++++
+
+. Mau output
+[engine=group, group=templates, position=output]
+----
+= Templates can transform content
+
+== And radically change the output!
+
+[#alternate]
+= Templates can transform content
+
+[#alternate]
+== And radically change the output!
+----
+
+::blockgroup:templates
+
+
+. Blocks
+[engine=group, group=blacks, position=header]
+----
+Blocks are a powerful structure that can isolate and manipulate the content in different ways.
+----
+
+. Mau source
+[engine=group, group=blacks, position=source]
+++++
+[*source, callouts="|"]
+----
+[*quote]
+====
+Blocks can be used in multiple ways such as quotes.
+====
+Anonymous
+
+[*admonition, note, "fas fa-info", "Info"]
+====
+Or admonitions, but not only.
+====
+
+[*callout]
+====
+Through templates we can heavily customise the output.
+====
+----
+++++
+
+. Mau output
+[engine=group, group=blacks, position=output]
+----
+[*quote]
+====
+Blocks can be used in multiple ways.
+====
+Anonymous
+
+[*admonition, note, "fas fa-info", "Info"]
+====
+Or admonitions, but not only.
+====
+
+[*callout]
+====
+Through templates we can heavily customise the output.
+====
+----
+
+::blockgroup:blacks
+
+
+[*more]
+Mau has many other features like including external content, source code highlighting, block engines, and rich templating options. In this documentation Mau is rendered using this website's templates and CSS, but the possibilities are endless.
+
+[*more]
+Read the [link]("\{filename}01_Introduction.mau", "full documentation").

@@ -1,0 +1,11 @@
+<div class="code mb-3 mt-1">
+  <div class="content">
+    <div class="highlight">
+      <pre>
+      {% for line, callout in code %}
+      {{ line }}{% if callout %} {{ callout }}{% endif %}{{ '\n' }}
+      {% endfor %}
+      </pre>
+    </div>
+  </div>
+</div>

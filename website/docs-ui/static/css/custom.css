@@ -35,3 +35,25 @@ h6, .h6 {
 div.duik-callout p:last-child {
     margin-bottom: 0;
 }
+
+
+span.callout {
+    border-radius: 1rem;
+    border: 1px solid black;
+    background-color: #ffd500;
+    color: #49483e;
+    text-align: center;
+    padding: 0 .5rem;
+    display: inline-block;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+div.code div.callouts table {
+    margin-top: 1rem;
+}
+
+div.code div.callouts table td {
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+}

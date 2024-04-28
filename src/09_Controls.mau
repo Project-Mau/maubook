@@ -1,0 +1,111 @@
+:pelican.title:Controls
+
+@if:mau.pelican:&true
+----
+:pelican.series:maubook
+:pelican.series_index:9
+:pelican.template:doc
+----
+
+[id=chapter-controls]
+= {pelican.title}
+
+[*quote]
+----
+There was but one slight chance and that we must take quickly. Raising my strange Martian rifle to my shoulder I sighted and touched the button which controlled the trigger; there was a sharp explosion as the missile reached its goal, and the charging chieftain pitched backward from his flying mount.
+----
+Edgar Rice Burroughs, _A Princess of Mars_ (1912)
+
+
+Mau provides a uniform syntax for controls that can render components conditionally.
+
+Controls come in the form `@operator:statement` and can be found both before document nodes or in paragraphs as macros
+
+[*source]
+----
+@operator:statement <---------- This operator controls the
+This is some text.              rendering of the paragraph
+
+
+A simple paragraph that [@operator:statement](contains a macro).
+                                  ^
+                                  |
+                        This operator controls the
+                        rendering of the text
+                        in its arguments
+----
+
+== Operator `if`
+
+This operator comes in the form `@if:variable:test`. It will render a node document if the result of the test is positive and hide it if negative
+
+[*source]
+----
+@if:variable:test
+This is some text. <------ This paragraph is rendered according
+                           to the result of the previous test
+----
+
+The variable is any variable stored in the document environment, while the test is one of the following
+
+* `=VALUE` checks if the variable value is VALUE
+* `!=VALUE` checks if the variable value is different from VALUE
+* `&true` checks if the boolean variable is true.
+* `&false` checks if the boolean variable is false.
+
+Remember that while Mau supports boolean variables, all other values are just strings.
+
+For example, you can render blocks according to the output format with
+
+[*source]
+++++
+@if:mau.visitor.format:=html
+This is a paragraph for the HTML version of the document.
+
+@if:mau.visitor.format:=tex
+This is a paragraph for the TeX version of the document.
+++++
+
+When if comes in macro form, the operator `if` supports two arguments, namely the text for the true case and the text for the false one.
+
+[*source, callouts="|"]
+++++
+:+flag:
+
+This is a paragraph that contains [@if:flag:&true](positive words, negative thoughts).
+++++
+
+[*rendered]
+++++
+:+flag:
+
+This is a paragraph that contains [@if:flag:&true](positive words, negative thoughts).
+++++
+
+== Operator `ifeval`
+
+The operator `ifeval` is very similar to `if`, but it is available only as macro. It accepts two variables as arguments, and renders the content of one of them according to the result of the test. The rendering is lazy, so it happens only once the choice has been made.
+
+This is useful when you have Mau syntax that might be invalid in a certain case.
+
+For example, a book might be written as a Mau documents per chapter and then used in two different ways
+
+* collected in a single Mau document and rendered as a single TeX file containing the whole book
+* rendered independently as a set of HTML files shown as part of a Website
+
+in such cases, linking content of different chapters has to be done in two different ways.
+
+* for the TeX output format, a link can be a header macro in the form `[header](id)`, as the target chapter is part of the same source code.
+* for the HTML output, an hyperlink to another URL.
+
+Such a situation can be solved with `ifeval`, for example
+
+[*source, callouts="|"]
+++++
+:link:[link](/the/other/chapter, "the other chapter")
+:header:[header](the-other-chapter)
+
+Please see [@if:mau.visitor.format:=html](link, header)
+++++
+
+::footnotes:

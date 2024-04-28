@@ -1,13 +1,13 @@
 :pelican.title:History of Mau
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
-:pelican.series_index:21
+:pelican.series_index:20
 :pelican.template:doc
 ----
 
-[id=history-of-mau]
+[id=chapter-history-of-mau]
 = {pelican.title}
 
 [*quote]
@@ -17,7 +17,7 @@
 Brandon Sanderson, _The Final Empire_ (2006)
 
 
-== The story so far
+== Why another markup language?
 
 Markdown is a great format, and I used it for all the posts in my blog since I started writing. Pelican, which is the static site generator that I use, supports Markdown out of the box, so it was extremely easy to start using it, and overall I had an enjoyable experience.
 
@@ -57,11 +57,11 @@ I have been studying compilers all my life, even though I can by no means be cal
 
 After one month I had a working tool that I successfully connected with Pelican and used to render some posts that I had already written in Markdown. I don't consider the project revolutionary, but I can honestly say that the day I saw Mau working for the first time is one of the best days of my career as a software developer. At that point, Mau had already slightly diverged from the original idea, though.
 
-While initially I was aiming to an implementation of AsciiDoctor's syntax, and retained a great deal of it, I took the opportunity to try a different path when it came to rendering. Having already successfully used Jinja2 in other contexts, I had this idea of using Jinja templates to render Mau's output, so that the user could either use the standard one or provide their own and thus easily customise the final result.
+While I was initially aiming to an implementation of AsciiDoctor's syntax, and retained a great deal of it, I took the opportunity to try a different path when it came to rendering. Having already successfully used Jinja2 in other contexts, I had this idea of using Jinja templates to render Mau's output, so that the user could either use the standard one or provide their own and thus easily customise the final result.
 
 I later wrote a visitor (a rendering class) that converts Mau's input into AsciiDoctor or Markua, and even though it doesn't cover all the features of the two languages, it allowed me to use Mau to rewrite my book and publish it online while using the Markua output to feed Leanpub's processing chain that produces the PDF.
 
-== Where we are now
+== Where are we now?
 
 The short story is that Mau works, and as I already mentioned is used for both my blog and my books. Mau's features are
 

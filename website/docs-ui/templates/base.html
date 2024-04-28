@@ -26,10 +26,12 @@
     <link rel="stylesheet" href="{{ SITEURL }}/theme/vendor/prism/prism.css">
 
     <!-- CSS Template -->
-    {% assets filters="cssmin", output="css/main.min.css", "css/theme.css", "css/layout.css", "css/custom.css", "css/pygments/default.css" %}
+    {% assets filters="cssmin", output="css/main.min.css", "css/theme.css", "css/layout.css", "css/custom.css", "css/pygments/custom_mau.css" %}
     <link rel="stylesheet" href="/{{ ASSET_URL }}">
     {% endassets %}
 
+    {% block custom_css %}{% endblock %}
+    
   </head>
   <body class="bg-white">
 

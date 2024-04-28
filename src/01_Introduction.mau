@@ -1,13 +1,13 @@
 :pelican.title:Introduction
 
-[condition="if:mau.pelican:"]
+@if:mau.pelican:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:1
 :pelican.template:doc
 ----
 
-[id=introduction]
+[id=chapter-introduction]
 = {pelican.title}
 
 [*quote]
@@ -55,7 +55,3 @@ In particular, you might be interested in:
 If you find Mau useful, please spread the word and share the link to this documentation.
 
 ::footnotes:
-
-
-
-

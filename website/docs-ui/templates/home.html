@@ -2,6 +2,13 @@
 
 {% block title %}{{ page.title|striptags }}{% endblock %}
 
+{% block custom_css %}
+<!-- Pygments CSS Template -->
+{% assets filters="cssmin", output="css/pygments.min.css", "css/pygments/default.css" %}
+<link rel="stylesheet" href="/{{ ASSET_URL }}">
+{% endassets %}
+{% endblock %}
+
 {% block content %}
 <!-- Header -->
 <header class="duik-header">
@@ -19,8 +26,8 @@
       <div class="collapse navbar-collapse my-3 my-lg-0" id="navbarCollapse">
         <!-- Header Links -->
         <ul class="navbar-nav mr-lg-auto ml-lg-2 ml-xl-4">
-          <li class="js-scroll-nav nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
-            <a class="nav-link" href="#demos">Examples</a>
+          <li class="nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
+            <a class="nav-link" href="demo.html">Examples</a>
           </li>
           <li class="nav-item mx-lg-1 mx-xl-2 mb-2 mb-lg-0">
             <a class="nav-link" href="pages/introduction.html">Documentation</a>
@@ -142,177 +149,6 @@
     </div>
   </section>
   <!-- End Main features -->
-
-  <hr>
-  
-  <!-- Examples -->
-  <section id="demos" class="py-11">
-    <div class="container">
-      <header class="w-md-75 w-lg-50 mx-auto text-center mb-7">
-        <h2 class="h3 mb-3">Examples</h2>
-        <p>The following examples show the Mau syntax and the rendered version using this website theme.</p>
-      </header>
-
-      <hr class="my-7">
-
-      <!-- Lead -->
-      <div class="container">
-        <div class="container">
-          <header class="mx-auto mb-10 text-center">
-            <p>A paragraph can be given a title that can be transformed into a header.</p>
-          </header>
-        </div>
-        <div class="row align-items-center">
-          <div class="col">
-            <pre>
-. Lead paragraph
-[*lead]
-This is Lead text vulputate volutpat ex, a faucibus
-ligula laoreet eget. Duis in tempus ipsum. Mauris maximus
-condimentum arcu nec sollicitudin. Maecenas iaculis luctus
-est, at rutrum lorem auctor quis. Nam dapibus accumsan
-mauris at hendrerit.
-            </pre>
-          </div>
-          <div class="col">
-            <h3 class="h5 mb-3">Lead paragraph</h3>
-            <p class="lead">This is Lead text vulputate volutpat ex, a faucibus ligula laoreet eget. Duis in tempus ipsum. Mauris maximus condimentum arcu nec sollicitudin. Maecenas iaculis luctus est, at rutrum lorem auctor quis. Nam dapibus accumsan mauris at hendrerit.</p>
-          </div>
-        </div>
-      </div>
-      <!-- End Lead -->
-
-      <hr class="my-7">
-
-      <!-- Blockquotes -->
-      <div class="container">
-        <div class="container">
-          <header class="mx-auto mb-10 text-center">
-            <p>A block can contain primary and secondary text that can be assigned different roles.</p>
-          </header>
-        </div>
-        <div class="row align-items-center">
-          <div class="col">
-            <pre>
-[*quote]
-----
-"Maecenas aliquet nisl ut ultrices eleifend. Sed et felis
-nec arcu porttitor efficitur sed fermentum velit. Etiam
-hendrerit aliquet quam et varius. Proin sed lacinia
-nisl. Sed eu mauris fringilla, euismod elit eget,
-fermentum nunc."
-----
-User feedback
-            </pre>
-          </div>
-          <div class="col">
-            <!-- Centered -->
-            <blockquote class="text-center">
-              <p>"Maecenas aliquet nisl ut ultrices eleifend. Sed et felis nec arcu porttitor efficitur sed fermentum velit. Etiam hendrerit aliquet quam et varius. Proin sed lacinia nisl. Sed eu mauris fringilla, euismod elit eget, fermentum nunc."</p>
-              <footer class="blockquote-footer">User feedback</footer>
-            </blockquote>
-            <!-- End Centered -->
-          </div>
-        </div>
-      </div>
-      <!-- End Blockquotes -->
-
-      <hr class="my-7">
-
-      <!-- Alert Primary -->
-      <div class="container">
-        <div class="container">
-          <header class="mx-auto mb-10 text-center">
-            <p>Components can receive arguments to customise their appearance</p>
-          </header>
-        </div>
-        <div class="row align-items-center">
-          <div class="col">
-            <pre>
-[*alert, icon=peace]
-This is a primary alert — check it out!
-            </pre>
-          </div>
-          <div class="col">
-            <div class="alert alert-primary" role="alert">
-              <i class="fas fa-peace mr-2"></i> This is a primary alert — check it out!
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End Alert Primary -->
-
-      <hr class="my-7">
-      
-      <!-- duik-callout Primary -->
-      <div class="container">
-        <div class="container">
-          <header class="mx-auto mb-10 text-center">
-            <p>An aside can be created either with a paragraph and a title or with a block that contains header and text.</p>
-          </header>
-        </div>
-        <div class="row align-items-center">
-          <div class="col">
-            <pre>
-. Primary
-[*callout, type=primary]
-In eu felis velit. Donec massa erat, viverra nec viverra a,
-porta et dolor. Vivamus finibus mauris non ipsum porttitor
-elementum. Aliquam erat volutpat. Praesent vel felis mauris.
-Aenean iaculis arcu pulvinar leo scelerisque placerat.
-            </pre>
-
-            <p>or</p>
-
-            <pre>
-[*callout, type=primary]
-----
-== Primary
-
-In eu felis velit. Donec massa erat, viverra nec viverra a,
-porta et dolor. Vivamus finibus mauris non ipsum porttitor
-elementum. Aliquam erat volutpat. Praesent vel felis mauris.
-Aenean iaculis arcu pulvinar leo scelerisque placerat.
-----
-            </pre>
-            
-          </div>
-          <div class="col">
-            <div class="duik-callout duik-callout-primary mb-5">
-              <h4 class="h5">Primary</h4>
-              <p class="mb-0">In eu felis velit. Donec massa erat, viverra nec viverra a, porta et dolor. Vivamus finibus mauris non ipsum porttitor elementum. Aliquam erat volutpat. Praesent vel felis mauris. Aenean iaculis arcu pulvinar leo scelerisque placerat.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End duik-callout Primary -->
-
-      <hr class="my-7">
-
-      <!-- Images -->
-      <div class="container">
-        <div class="container">
-          <header class="mx-auto mb-10 text-center">
-            <p>Including content like images is trivial, and attributes grant a high degree of customisation.</p>
-          </header>
-        </div>
-        <div class="row align-items-center">
-          <div class="col">
-            <pre>
-[shoadow, rounded-circle]
-<< image:images/img1.jpg
-            </pre>
-          </div>
-          <div class="col text-center">
-            <img class="shadow img-fluid rounded-circle mt-1" src="{{ SITEURL }}/theme/img/chair.jpg" alt="image">
-          </div>
-        </div>
-      </div>
-      <!-- End Images -->
-
-    </div>
-  </section>
-  <!-- End Examples -->
 
   <hr>
 

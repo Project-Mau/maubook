@@ -1,0 +1,7 @@
+{% if level == 1 %}
+<h3 class="h4 mt-6">
+  # {{ value | upper }}
+</h3>
+{% else %}
+<span class="badge badge-pill badge-success">{{ value }}</span>
+{% endif %}
