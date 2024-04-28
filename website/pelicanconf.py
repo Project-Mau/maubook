@@ -41,13 +41,14 @@ STATIC_PATHS = [
 
 
 MAU = {
-    "pelican": True,
     "website": True,
-    "visitor": {
-        "templates_directory": "mau/templates",
-        "pygments": {
-            "html": {
-                "nowrap": True,
+    "mau": {
+        "visitor": {
+            "templates_directory": "mau/templates",
+            "pygments": {
+                "html": {
+                    "nowrap": True,
+                },
             },
         },
     },

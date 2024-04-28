@@ -1,6 +1,6 @@
 :pelican.title:History of Mau
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:20

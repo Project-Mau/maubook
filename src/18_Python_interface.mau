@@ -1,6 +1,6 @@
 :pelican.title:Python Interface
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:18
@@ -86,6 +86,6 @@ The basic usage of the plugin is simple. Every file in your content directory th
 :basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
 :basic-syntax-header:[header](chapter-basic-syntax)
 
-See [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header) to learn more about Mau variables.
+See [@ifeval:website:&true](basic-syntax-link, basic-syntax-header) to learn more about Mau variables.
 
 ::footnotes:

@@ -1,6 +1,6 @@
 :pelican.title:Headers
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:6
@@ -199,7 +199,7 @@ config = {
 :configuration-link:[link](\{filename}19_Configuration.mau, "Configuration")
 :configuration-header:[header](chapter-configuration)
 
-You can read more about configuration variables in [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header) and [@ifeval:mau.website:&true](configuration-link, configuration-header).
+You can read more about configuration variables in [@ifeval:website:&true](basic-syntax-link, basic-syntax-header) and [@ifeval:website:&true](configuration-link, configuration-header).
 
 == Header macro and IDs
 

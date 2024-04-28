@@ -1,6 +1,6 @@
 :pelican.title:Blocks
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:10
@@ -326,7 +326,7 @@ This is a block of type `aside` with additional classes
 :basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
 :basic-syntax-header:[header](chapter-basic-syntax)
 
-As mentioned in [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header), the directive `#include` can be used at any point (at the beginning of the line), and this means that the content of the block can be generated including the content of an external file.
+As mentioned in [@ifeval:website:&true](basic-syntax-link, basic-syntax-header), the directive `#include` can be used at any point (at the beginning of the line), and this means that the content of the block can be generated including the content of an external file.
 
 . Mau source
 [*source]

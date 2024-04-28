@@ -1,6 +1,6 @@
 :pelican.title:Block Engines and Custom Definitions
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:11
@@ -86,7 +86,7 @@ Please note that with this engine the content of the block is still rendered in 
 
 The engine `raw` is useful every time we want to include text in the output format directly, as this engine doesn't process the content at all. For example, you might want to add custom HTML code.
 
-@if:mau.website:&true
+@if:website:&true
 ####
 The following is an example from the UI kit I used for this website
 
@@ -115,7 +115,7 @@ The following is an example from the UI kit I used for this website
 :basic-templates-link:[link](\{filename}15_Basic_templates.mau, "Basic templates")
 :basic-templates-header:[header](chapter-basic-templates)
 
-Please note that while the content of the block is not processed by Mau it is still rendered as any other block through templates. See [@ifeval:mau.website:&true](basic-templates-link, basic-templates-header) to find out how to include custom content without any wrapper.
+Please note that while the content of the block is not processed by Mau it is still rendered as any other block through templates. See [@ifeval:website:&true](basic-templates-link, basic-templates-header) to find out how to include custom content without any wrapper.
 
 == Custom block definitions
 
@@ -125,7 +125,7 @@ Please note that while the content of the block is not processed by Mau it is st
 :link_advanced_templates:[link](\{filename}16_Advanced_templates.mau, "Advanced templates")
 :header_advanced_templates:[header](chapter-advanced-templates)
 
-As we saw previously, blocks have many attributes that you can set on them. In [@ifeval:mau.website:&true](link_basic_templates, header_basic_templates) and [@ifeval:mau.website:&true](link_advanced_templates, header_advanced_templates) we will also see how you can create and use custom attributes.
+As we saw previously, blocks have many attributes that you can set on them. In [@ifeval:website:&true](link_basic_templates, header_basic_templates) and [@ifeval:website:&true](link_advanced_templates, header_advanced_templates) we will also see how you can create and use custom attributes.
 
 Setting the same parameters over and over can become tedious and error prone, so Mau provides a way to define blocks through the command `::defblock:ALIAS, ARGUMENTS`.
 

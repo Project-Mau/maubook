@@ -1,6 +1,6 @@
 :pelican.title:Controls
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:9

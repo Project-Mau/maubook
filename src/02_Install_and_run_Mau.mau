@@ -1,6 +1,6 @@
 :pelican.title:Install and Run Mau
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:1
@@ -133,14 +133,14 @@ mau -c config.yml -f html -i test.mau -o test.html
 :basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
 :basic-syntax-header:[header](chapter-basic-syntax)
 
-Each value defined in the config file is stored as a variable and can be used in the Mau source. A complete description of the configuration file can be found in [@ifeval:mau.website:&true](configuration-link, configuration-header). You can learn more about variables in Mau documents in [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header).
+Each value defined in the config file is stored as a variable and can be used in the Mau source. A complete description of the configuration file can be found in [@ifeval:website:&true](configuration-link, configuration-header). You can learn more about variables in Mau documents in [@ifeval:website:&true](basic-syntax-link, basic-syntax-header).
 
 == Using Mau programmatically
 
 :python-interface-link:[link](\{filename}18_Python_interface.mau, "Python interface")
 :python-interface-header:[header](chapter-python-interface)
 
-You can use Mau programmatically in your Python code. See [@ifeval:mau.website:&true](python-interface-link, python-interface-header) to know more about the API.
+You can use Mau programmatically in your Python code. See [@ifeval:website:&true](python-interface-link, python-interface-header) to know more about the API.
 
 That chapter also details how to use Mau to write posts and pages in [link](https://docs.getpelican.com/en/latest/, Pelican) through a specific plugin.
 

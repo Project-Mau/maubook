@@ -1,6 +1,6 @@
 :pelican.title:Formatting text
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:5
@@ -217,7 +217,7 @@ The source code can be found at [link](https://github.com/Project-Mau/mau).
 :basic-syntax-link:[link](\{filename}04_Basic_syntax.mau, "Basic syntax")
 :basic-syntax-header:[header](chapter-basic-syntax)
 
-The values between round brackets are arguments (see [@ifeval:mau.website:&true](basic-syntax-link, basic-syntax-header)).
+The values between round brackets are arguments (see [@ifeval:website:&true](basic-syntax-link, basic-syntax-header)).
 
 === Add text to the link
 

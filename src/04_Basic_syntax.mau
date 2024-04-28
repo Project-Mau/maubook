@@ -1,6 +1,6 @@
 :pelican.title:Basic Syntax
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:4
@@ -228,7 +228,7 @@ The answer is {answer}.
 :blocks-link:[link](\{filename}10_Blocks.mau, "Blocks")
 :blocks-header:[header](chapter-blocks)
 
-Variables can also be used in block definitions, see [@ifeval:mau.website:&true](blocks-link, blocks-header).
+Variables can also be used in block definitions, see [@ifeval:website:&true](blocks-link, blocks-header).
 
 Last, variables can contain other variables
 
@@ -294,7 +294,7 @@ the Universe, and Everything is `{answer}`
 :controls-link:[link](\{filename}09_Controls.mau, "Controls")
 :controls-header:[header](chapter-controls)
 
-Variables can have boolean values and be used as flags in conditional rendering (see [@ifeval:mau.website:&true](controls-link, controls-header)). To create a boolean you need to use a `+` or `-` in front of the variable name, which will assig respectively a true or false value. The name of the variable will not contain the initial symbol.
+Variables can have boolean values and be used as flags in conditional rendering (see [@ifeval:website:&true](controls-link, controls-header)). To create a boolean you need to use a `+` or `-` in front of the variable name, which will assig respectively a true or false value. The name of the variable will not contain the initial symbol.
 
 [*source,callouts="|"]
 ----
@@ -345,7 +345,7 @@ The values are {value} and {module.value}.
 :configuration-link:[link](\{filename}19_Configuration.mau, "Configuration")
 :configuration-header:[header](chapter-configuration)
 
-Mau's configuration values are available under the `mau` namespace (see [@ifeval:mau.website:&true](configuration-link, configuration-header)).
+Mau's configuration values are available under the `mau` namespace (see [@ifeval:website:&true](configuration-link, configuration-header)).
 
 == Arguments
 

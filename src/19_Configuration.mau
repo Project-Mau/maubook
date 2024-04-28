@@ -1,6 +1,6 @@
 :pelican.title:Configuration
 
-@if:mau.pelican:&true
+@if:website:&true
 ----
 :pelican.series:maubook
 :pelican.series_index:19
@@ -52,8 +52,8 @@ The template providers plugin we want to load. Mau autodetects template plugins 
 :basic-templates-link:[link](\{filename}15_Basic_templates.mau, "Basic templates")
 :basic-templates-header:[header](chapter-basic-templates)
 
-The directory that contains template files, saved either with a flat or a nested structure. See [@ifeval:mau.website:&true](basic-templates-link, basic-templates-header).
+The directory that contains template files, saved either with a flat or a nested structure. See [@ifeval:website:&true](basic-templates-link, basic-templates-header).
 
 `mau.visitor.custom_templates`
 
-Custom templates that we want to define through configuration. See [@ifeval:mau.website:&true](basic-templates-link, basic-templates-header).
+Custom templates that we want to define through configuration. See [@ifeval:website:&true](basic-templates-link, basic-templates-header).
