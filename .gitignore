@@ -2,4 +2,5 @@
 *.tex
 aux
 
-
+# Cloned websites
+website-*
